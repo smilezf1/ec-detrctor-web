@@ -1,0 +1,203 @@
+<template>
+  <div class="index">
+    <div class="indexHeader">
+      <p>当前位置:我的检测任务</p>
+    </div>
+    <div class="indexBody">
+      <template>
+        <el-table ref="listItem" :data="listItem">
+          <el-table-column type="index" label="序号" width="60">
+            <template slot-scope="scope">
+              <span>{{ (curpage - 1) * limit + scope.$index + 1 }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            width="240"
+            prop="appName"
+            label="应用名称"
+            :show-overflow-tooltip="true"
+          >
+            <template slot-scope="scope">
+              <img
+                :src="'data:image/jpg;base64,' + scope.row.appIcon"
+                class="appIcon"
+              />
+              <el-tooltip
+                effect="dark"
+                :content="scope.row.appName"
+                placement="top-start"
+              >
+                <span style="margin-left:7px">{{ scope.row.appName }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column
+            width="240"
+            prop="appFileName"
+            label="文件名称"
+            :show-overflow-tooltip="true"
+          >
+            <template slot-scope="scope">{{ scope.row.appFileName }}</template>
+          </el-table-column>
+          <el-table-column width="150" prop="appVersion" label="版本">
+            <template slot-scope="scope">
+              <div class="version">
+                <img src="../../assets/version.png" style="width:28px" />
+                <span>{{ scope.row.appVersion }}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column width="120" prop="terminalType" label="适用系统">
+            <template slot-scope="scope">
+              <span v-if="scope.row.terminalType == 1">Android</span>
+              <span v-else>iOs</span>
+            </template>
+          </el-table-column>
+          <el-table-column widt="200" prop="detectionFormwork" label="检测策略">
+            <template slot-scope="scope">{{
+              scope.row.detectionFormwork
+            }}</template>
+          </el-table-column>
+          <el-table-column width="100" prop="detectionNumber" label="检测分数">
+            <template slot-scope="scope">{{
+              scope.row.detectionNumber
+            }}</template>
+          </el-table-column>
+          <el-table-column prop="detectionTime" label="检测时间" width="200">
+            <template slot-scope="scope">{{
+              scope.row.detectionTime
+            }}</template>
+          </el-table-column>
+          <el-table-column prop="terminalType" label="检测状态" width="130">
+            <template slot-scope="scope">
+              <span v-if="scope.row.detectionStatus == 0">
+                <img src="../../assets/wait.png" class="detectionStatusimg" />
+                等待检测
+              </span>
+              <span v-else-if="scope.row.detectionStatus == 1">
+                <img
+                  src="../../assets/execute.png"
+                  class="detectionStatusimg"
+                />
+                检测中
+              </span>
+              <span v-else-if="scope.row.detectionStatus == 2">
+                <img
+                  src="../../assets/correct.png"
+                  class="detectionStatusimg"
+                />
+                已完成
+              </span>
+              <span v-else-if="scope.row.detectionStatus == 3">
+                <img src="../../assets/error.png" class="detectionStatusimg" />
+                检测失败
+              </span>
+              <span v-else-if="scope.row.detectionStatus == 4">
+                <img
+                  src="../../assets/correct.png"
+                  class="detectionStatusimg"
+                />
+                引擎检测完成
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="userName" label="上传人" width="130">
+            <template slot-scope="scope">{{ scope.row.userName }}</template>
+          </el-table-column>
+          <el-table-column prop="createTime" label="上传时间" width="200">
+            <template slot-scope="scope">{{ scope.row.createTime }}</template>
+          </el-table-column>
+        </el-table>
+      </template>
+    </div>
+    <div class="indexBase">
+      <pagination @pageChanged="onPageChanged"></pagination>
+    </div>
+  </div>
+</template>
+<script>
+import api from "../request/api";
+import pagination from "../common/pagination";
+import pageMixins from "../../pageMixins";
+export default {
+  name: "index",
+  components: { pagination },
+  mixins: [pageMixins],
+  data() {
+    return {
+      listItem: [],
+      curpage: 1,
+      limit: 10
+    };
+  },
+  methods: {
+    async getData() {
+      const params = {};
+      this.getDataItem(this.addPageInfo(params));
+    },
+    getDataItem(params) {
+      api.detrctorTaskService.detrctorTaskList(params).then(res => {
+        if (res.code == "00") {
+          const count = res.data.count,
+            number = params.pn,
+            size = params.limit;
+          this.listItem = res.data.items;
+          this.curpage = number;
+          this.limit = size;
+          this.onGotPageData({ totalElements: count, size, number });
+        }
+      });
+    }
+  },
+  beforeMount() {
+    this.getData();
+  }
+};
+</script>
+<style>
+.indexHeader {
+  height: 50px;
+  line-height: 50px;
+  font-size: 14px;
+}
+.indexBody .appIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+.indexBody .detectionStatusimg {
+  width: 33px;
+  height: 33px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+.indexBody .version {
+  display: flex;
+  align-items: center;
+}
+.el-table {
+  font-size: 12px;
+  border: 1px solid #dcdee2;
+  border-bottom: 1px solid transparent;
+}
+.el-table thead {
+  color: #515a6e !important;
+  font-weight: 700;
+}
+.el-table__header-wrapper {
+  background: #f8f8f9;
+}
+.el-table__header-wrapper th {
+  background: #f2f5f7;
+}
+.el-table ::before {
+  background: white;
+}
+.el-pager li.active {
+  color: #517fc3;
+}
+.indexBase {
+  margin-top: 15px;
+}
+</style>
