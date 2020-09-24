@@ -50,7 +50,7 @@
           <el-table-column width="120" prop="terminalType" label="适用系统">
             <template slot-scope="scope">
               <span v-if="scope.row.terminalType == 1">Android</span>
-              <span v-else>iOs</span>
+              <span v-else>iOS</span>
             </template>
           </el-table-column>
           <el-table-column widt="200" prop="detectionFormwork" label="检测策略">
@@ -176,22 +176,22 @@ export default {
   display: flex;
   align-items: center;
 }
-.el-table {
+.index .el-table {
   font-size: 12px;
   border: 1px solid #dcdee2;
   border-bottom: 1px solid transparent;
 }
-.el-table thead {
+.index .el-table thead {
   color: #515a6e !important;
   font-weight: 700;
 }
-.el-table__header-wrapper {
+.index .el-table__header-wrapper {
   background: #f8f8f9;
 }
-.el-table__header-wrapper th {
+.index .el-table__header-wrapper th {
   background: #f2f5f7;
 }
-.el-table ::before {
+.index .el-table ::before {
   background: white;
 }
 .el-pager li.active {

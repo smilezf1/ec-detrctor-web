@@ -223,23 +223,26 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column width="120" prop="terminalType" label="适用系统">
+          <!--   <el-table-column width="120" prop="terminalType" label="适用系统">
             <template slot-scope="scope">
               <span v-if="scope.row.terminalType == 1">Android</span>
-              <span v-else>iOs</span>
+              <span v-else>iOS</span>
             </template>
-          </el-table-column>
-          <el-table-column widt="200" prop="detectionFormwork" label="检测策略">
+          </el-table-column> -->
+          <el-table-column widt="150" prop="detectionFormwork" label="检测策略">
             <template slot-scope="scope">{{
               scope.row.detectionFormwork
             }}</template>
           </el-table-column>
-          <el-table-column width="80" prop="detectionNumber" label="检测分数">
-            <template slot-scope="scope">{{
-              scope.row.detectionNumber
-            }}</template>
+          <el-table-column width="100" prop="detectionNumber" label="检测分数">
+            <template slot-scope="scope">
+              <span v-if="scope.row.detectionNumber">{{
+                scope.row.detectionNumber
+              }}</span>
+              <span v-else>N/A</span>
+            </template>
           </el-table-column>
-          <el-table-column prop="detectionTime" label="检测时间" width="170">
+          <el-table-column prop="detectionTime" label="检测时间" width="200">
             <template slot-scope="scope">{{
               scope.row.detectionTime
             }}</template>
@@ -679,22 +682,22 @@ export default {
   display: flex;
   align-items: center;
 }
-.el-table {
+.android .el-table {
   font-size: 12px;
   border: 1px solid #dcdee2;
   border-bottom: 1px solid transparent;
 }
-.el-table thead {
+.android .el-table thead {
   color: #515a6e !important;
   font-weight: 700;
 }
-.el-table__header-wrapper {
+.android .el-table__header-wrapper {
   background: #f8f8f9;
 }
-.el-table__header-wrapper th {
+.android .el-table__header-wrapper th {
   background: #f2f5f7;
 }
-.el-table ::before {
+.android .el-table ::before {
   background: white;
 }
 .dowmloadApplicationIcon,

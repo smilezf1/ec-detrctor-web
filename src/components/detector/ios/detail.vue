@@ -1,7 +1,7 @@
 <template>
   <div class="iosDetail">
     <div class="iosDetailHeader">
-      <p>当前位置:iOs检测详细</p>
+      <p>当前位置:iOS检测详细</p>
     </div>
     <div class="operateBox">
       <el-button type="primary" size="small" class="back" @click="back()"
@@ -64,21 +64,36 @@
               <el-col :span="5">
                 <div class="imgBox">
                   <img src="../../../assets/danger.png" />
-                  <cite style="color:red">{{ listItem.countDto.nx }}</cite>
+                  <cite style="color:red">
+                    <span v-if="listItem.countDto">
+                      {{ listItem.countDto.nx }}
+                    </span>
+                    <span v-else>N/A</span>
+                  </cite>
                 </div>
                 <p>高危(未通过)</p>
               </el-col>
               <el-col :span="5">
                 <div class="imgBox">
                   <img src="../../../assets/mDanger.png" />
-                  <cite style="color:#ed7d31">{{ listItem.countDto.ny }}</cite>
+                  <cite style="color:#ed7d31">
+                    <span v-if="listItem.countDto">
+                      {{ listItem.countDto.ny }}
+                    </span>
+                    <span v-else>N/A</span>
+                  </cite>
                 </div>
                 <p>中危(未通过)</p>
               </el-col>
               <el-col :span="5">
                 <div class="imgBox">
                   <img src="../../../assets/lDanger.png" />
-                  <cite style="color:#ffbc93">{{ listItem.countDto.nz }}</cite>
+                  <cite style="color:#ffbc93">
+                    <span v-if="listItem.countDto">{{
+                      listItem.countDto.nz
+                    }}</span>
+                    <span v-else>N/A</span>
+                  </cite>
                 </div>
                 <p>低危(未通过)</p>
               </el-col>

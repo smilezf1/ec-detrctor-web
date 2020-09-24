@@ -214,12 +214,12 @@
                         auto-complete="off"
                       ></el-input>
                     </el-form-item>
-                    <el-form label="资源路径">
+                    <el-form-item label="资源路径">
                       <el-input
                         v-model="addLinkForm.address"
                         auto-complete="off"
                       ></el-input>
-                    </el-form>
+                    </el-form-item>
                   </el-form>
                 </div>
                 <div class="el-drawer-footer">
@@ -518,22 +518,22 @@ export default {
 .typeT {
   margin-left: 20px;
 }
-.el-table {
+.menuManagement .el-table {
   font-size: 12px;
   border: 1px solid #dcdee2;
   border-bottom: 1px solid transparent;
 }
-.el-table thead {
+.menuManagement .el-table thead {
   color: #515a6e !important;
   font-weight: 700;
 }
-.el-table__header-wrapper {
+.menuManagement .el-table__header-wrapper {
   background: #f8f8f9;
 }
-.el-table__header-wrapper th {
+.menuManagement .el-table__header-wrapper th {
   background: #f2f5f7;
 }
-.el-table ::before {
+.menuManagement .el-table ::before {
   background-color: white !important;
 }
 .editIcon,

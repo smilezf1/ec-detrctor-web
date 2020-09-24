@@ -153,7 +153,7 @@
               <pagination @pageChanged="onPageChanged"></pagination>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="iOs">
+          <el-tab-pane label="iOS">
             <el-table ref="listItem" :data="listItem">
               <el-table-column type="index" label="序号" width="60">
                 <template slot-scope="scope">
@@ -424,22 +424,22 @@ export default {
 .searchBox .el-input {
   width: auto;
 }
-.el-table {
+.detectorItem .el-table {
   font-size: 12px;
   border: 1px solid #dcdee2;
   border-bottom: 1px solid transparent;
 }
-.el-table thead {
+.detectorItem .el-table thead {
   color: #515a6e !important;
   font-weight: 700;
 }
-.el-table__header-wrapper {
+.detectorItem .el-table__header-wrapper {
   background: #f8f8f9;
 }
-.el-table__header-wrapper th {
+.detectorItem .el-table__header-wrapper th {
   background: #f2f5f7;
 }
-.el-table ::before {
+.detectorItem .el-table ::before {
   background: white;
 }
 .detectorItem .el-drawer-footer {

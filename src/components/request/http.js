@@ -11,7 +11,9 @@ if (process.env.NODE_ENV == 'development') {//开发环境
     axios.defaults.baseURL = 'http://192.168.3.58:9980/ec_detector';
 } else if (process.env.NODE_ENV == 'production') { //生产环境
     axios.defaults.baseURL = 'http://192.168.3.58:9980/ec_detector';
-} axios.defaults.timeout = 200000;//设置超时时间
+}
+/* axios.defaults.baseURL = 'http://192.168.3.58:9990/ec_detector'; */
+axios.defaults.timeout = 200000;//设置超时时间
 //请求拦截器
 axios.interceptors.request.use(config => {
     if (localStorage.getItem("Authorization")) {
@@ -26,13 +28,15 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
     if (response.data.code == '05') {
         localStorage.removeItem("Authorization");
-        v.$alert('会话过期,请重新登录', '系统提示', {
-            confirmButtonText: '确定',
-            type: "warning",
-            callback: action => {
-                window.location.href = "/"
-            }
-        })
+        if (router.history.current.path !== '/' && router.history.current.path !== '/login') {
+            v.$alert('会话过期,请重新登录', '系统提示', {
+                confirmButtonText: '确定',
+                type: "warning",
+                callback: action => {
+                    router.push({ path: '/' });
+                }
+            })
+        }
     }
     if (response.data.code == '99') {
         v.$notify({ title: "警告", message: response.data.message, type: 'warning', duration: 2000 })
@@ -40,13 +44,15 @@ axios.interceptors.response.use(response => {
     return response;
 }, error => {
     localStorage.removeItem('Authorization');
-    v.$alert('请求超时', '系统提示', {
-        confirmButtonText: "确定",
-        type: 'warning',
-        callback: action => {
-            window.location.href = "/"
-        }
-    })
+    if (router.history.current.path !== '/' && router.history.current.path !== '/login') {
+        v.$alert('请求超时', '系统提示', {
+            confirmButtonText: "确定",
+            type: 'warning',
+            callback: action => {
+                router.push({ path: '/' })
+            }
+        })
+    }
 })
 //get请求
 export function fetchGet(url, params) {

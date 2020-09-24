@@ -1,3 +1,4 @@
+/*
 <template>
   <div class="home">
     <Header></Header>
@@ -32,15 +33,17 @@ export default {
 };
 </script>
 <style>
-.content-box {
+.home .content-box {
   width: 100%;
   position: absolute;
   padding-left: 280px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
-.content {
+.home .content {
   padding: 10px 10px 40px 20px;
   overflow-y: auto;
   margin-top: 60px;
 }
 </style>
+*/

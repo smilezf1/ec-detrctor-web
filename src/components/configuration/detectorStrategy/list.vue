@@ -73,7 +73,7 @@
                   v-model="detectorStrategyForm.strategyName"
                 ></el-input>
               </el-form-item>
-              <el-form-item prop="strategyIsDynamic">
+              <el-form-item prop="strategyIsDynamic" v-if="terminalType == 1">
                 <label slot="label">是否动态检测:</label>
                 <el-select
                   placeholder="是否动态检测"
@@ -86,7 +86,8 @@
                   <el-option :value="0" key="0" label="否">否</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item prop="strategyIsShelling">
+
+              <el-form-item prop="strategyIsShelling" v-if="terminalType == 1">
                 <label slot="label"
                   >是&nbsp;&nbsp;否&nbsp;&nbsp;脱&nbsp;&nbsp;壳:</label
                 >
@@ -101,6 +102,7 @@
                   <el-option :value="0" key="0" label="否">否</el-option>
                 </el-select>
               </el-form-item>
+
               <el-form-item>
                 <label slot="label"
                   >&nbsp;&nbsp;适&nbsp;&nbsp;用&nbsp;&nbsp;系&nbsp;&nbsp;统:</label
@@ -149,7 +151,7 @@
                       style="margin-left:20px;"
                       :disabled="
                         item.code == 'titleCode17' ||
-                          item.code == 'titleCode0014'
+                          item.code == 'titleCode001'
                       "
                       >全选</el-checkbox
                     >
@@ -165,7 +167,7 @@
                         :label="subItem.key"
                         :disabled="
                           subItem.code == 'titleCode17' ||
-                            subItem.code == 'titleCode0014'
+                            subItem.code == 'titleCode001'
                         "
                         style="width:45%;margin-bottom:15px;"
                         >{{ subItem.name }}</el-checkbox
@@ -183,7 +185,7 @@
                         :label="subItem.key"
                         :disabled="
                           subItem.code == 'titleCode17' ||
-                            subItem.code == 'titleCode0014'
+                            subItem.code == 'titleCode001'
                         "
                         style="width:45%;margin-bottom:15px;"
                         >{{ subItem.name }}</el-checkbox
@@ -216,11 +218,12 @@
               <span>{{ (curPage - 1) * limit + scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <el-table-column
+          <!--  <el-table-column
+            v-show="true"
             prop="strategy_id"
             width="100"
             label="ID"
-          ></el-table-column>
+          ></el-table-column> -->
           <el-table-column
             prop="strategy_name"
             label="策略名称"
@@ -229,7 +232,7 @@
           <el-table-column prop="strategy_type" label="适用系统" width="200">
             <template slot-scope="scope">
               <span v-if="scope.row.strategy_type == '1'">Android</span>
-              <span v-if="scope.row.strategy_type == '2'">iOs</span>
+              <span v-if="scope.row.strategy_type == '2'">iOS</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -304,7 +307,7 @@
                           v-model="detectorStrategyDetailItem.strategyType"
                         >
                           <el-radio :label="1" disabled>Android</el-radio>
-                          <el-radio :label="2" disabled>iOs</el-radio>
+                          <el-radio :label="2" disabled>iOS</el-radio>
                         </el-radio-group>
                       </el-form-item>
                       <el-form-item
@@ -517,10 +520,16 @@ export default {
               });
             }
           });
-          if (v.code == "titleCode17" || v.code == "titleCode0014") {
+
+          if (v.code == "titleCode17" || v.code == "titleCode001") {
             v.isSubCheckedAll = true;
             this.getDefaultOption(v.children, terminalType);
+          }
+          if (v.code == "titleCode17") {
             v.selectedOptions = this.detectorAndroidItemList;
+          }
+          if (v.code == "titleCode001") {
+            v.selectedOptions = this.detectorIosItemList;
           }
         });
       }
@@ -566,7 +575,7 @@ export default {
       this.isIndeterminate = false;
       this.detectorTypeList.forEach(v => {
         v.isSubCheckedAll = val ? true : false;
-        if (v.code == "titleCode17" || v.code == "titleCode0014") {
+        if (v.code == "titleCode17" || v.code == "titleCode001") {
           v.isSubCheckedAll = true;
         }
         if (terminalType == 1) {
@@ -885,22 +894,22 @@ export default {
   box-sizing: border-box !important;
   overflow-y: auto !important;
 }
-.el-table {
+.detectorStrategy .el-table {
   font-size: 12px;
   border: 1px solid #dcdee2;
   border-bottom: 1px solid transparent;
 }
-.el-table thead {
+.detectorStrategy .el-table thead {
   color: #515a6e !important;
   font-weight: 700;
 }
-.el-table__header-wrapper {
+.detectorStrategy .el-table__header-wrapper {
   background: #f8f8f9;
 }
-.el-table__header-wrapper th {
+.detectorStrategy .el-table__header-wrapper th {
   background: #f2f5f7;
 }
-.el-table ::before {
+.detectorStrategy .el-table ::before {
   background: white;
 }
 </style>

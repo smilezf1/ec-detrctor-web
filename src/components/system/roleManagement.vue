@@ -588,22 +588,22 @@ export default {
   padding: 10px 20px;
   border-top: 1px solid #ebebeb;
 }
-.el-table {
+.roleManagement .el-table {
   font-size: 12px;
   border: 1px solid #dcdee2;
   border-bottom: 1px solid transparent;
 }
-.el-table thead {
+.roleManagement .el-table thead {
   color: #515a6e !important;
   font-weight: 700;
 }
-.el-table__header-wrapper {
+.roleManagement .el-table__header-wrapper {
   background: #f8f8f9;
 }
-.el-table__header-wrapper th {
+.roleManagement .el-table__header-wrapper th {
   background: #f2f5f7;
 }
-.el-table ::before {
+.roleManagement .el-table ::before {
   background: white;
 }
 .roleManagementBase {

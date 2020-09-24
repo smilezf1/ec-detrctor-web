@@ -50,7 +50,7 @@
             class="searchButton"
           ></el-button>
         </el-tooltip>
-           <el-tooltip effect="dark" content="刷新" placement="top-start">
+        <el-tooltip effect="dark" content="刷新" placement="top-start">
           <el-button
             type="primary"
             icon="el-icon-refresh-right"
@@ -167,8 +167,8 @@
                   style="width:60%"
                 ></el-input>
               </el-form-item>
-              <!-- isDynamic 动态检测  isShelling 是否脱壳-->
-              <el-form-item prop="isDynamic">
+
+              <!-- <el-form-item prop="isDynamic">
                 <label slot="label">是否动态检测</label>
                 <el-select
                   v-model="addUserForm.isDynamic"
@@ -181,7 +181,6 @@
                 </el-select>
               </el-form-item>
               <el-form-item prop="isShelling">
-                <!--  <label slot="label">是&nbsp;否&nbsp;脱&nbsp;壳</label> -->
                 <label slot="label"
                   >是&nbsp;&nbsp;否&nbsp;&nbsp;脱&nbsp;&nbsp;壳</label
                 >
@@ -194,7 +193,7 @@
                   <el-option label="是" value="1"></el-option>
                   <el-option label="否" value="0"></el-option>
                 </el-select>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item prop="status">
                 <label slot="label"
                   >是&nbsp;&nbsp;否&nbsp;&nbsp;有&nbsp;&nbsp;效</label
@@ -276,7 +275,8 @@
               <span v-else>否</span>
             </template>
           </el-table-column>
-          <el-table-column
+
+          <!-- <el-table-column
             prop="isDynamic"
             label="是否动态检测"
             width="100"
@@ -297,7 +297,8 @@
               <span v-if="scope.row.isShelling == '1'">是</span>
               <span v-if="scope.row.isShelling == '0'">否</span>
             </template>
-          </el-table-column>
+          </el-table-column> -->
+
           <el-table-column
             prop="createTime"
             label="创建时间"
@@ -390,7 +391,7 @@
                         style="width:60%"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item prop="isDynamic">
+                    <!--  <el-form-item prop="isDynamic">
                       <label slot="label">是否动态检测</label>
                       <el-select
                         v-model="editForm.isDynamic"
@@ -415,7 +416,7 @@
                         <el-option label="是" value="1"></el-option>
                         <el-option label="否" value="0"></el-option>
                       </el-select>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item prop="status">
                       <label slot="label"
                         >是&nbsp;&nbsp;否&nbsp;&nbsp;有&nbsp;&nbsp;效</label
@@ -1022,7 +1023,7 @@ export default {
   display: inline-block;
   box-sizing: border-box;
   margin: 0px 0px 15px 10px;
-} 
+}
 .editIcon,
 .resetIcon,
 .settingIcon,
@@ -1055,22 +1056,22 @@ export default {
   padding: 10px 20px;
   border-top: 1px solid #ebebeb;
 }
-.el-table {
+.userManagement .el-table {
   font-size: 12px;
   border: 1px solid #dcdee2;
   border-bottom: 1px solid transparent;
 }
-.el-table th {
+.userManagement .el-table th {
   color: #515a6e !important;
   font-weight: 700;
 }
-.el-table thead {
+.userManagement .el-table thead {
   font-size: 12px !important;
 }
-.el-table__header-wrapper th {
+.userManagement .el-table__header-wrapper th {
   background: #f2f5f7 !important;
 }
-.el-table ::before {
+.userManagement .el-table ::before {
   background: white;
 }
 
