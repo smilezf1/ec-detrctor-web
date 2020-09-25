@@ -188,6 +188,11 @@
             </template>
           </el-table-column>
           <el-table-column
+            width="60"
+            prop="taskId"
+            label="id"
+          ></el-table-column>
+          <el-table-column
             width="200"
             prop="appName"
             label="应用名称"
@@ -359,9 +364,7 @@
                 </div>
                 <div class="el-drawer-footer">
                   <div class="buttonBox" style="display:inline-block">
-                    <el-button
-                      type="primary"
-                      @click="saveDownloadReport(scope.row.taskId)"
+                    <el-button type="primary" @click="saveDownloadReport()"
                       >保存</el-button
                     >
                     <el-button @click="cancelDownloadReport()" plain
@@ -370,6 +373,7 @@
                   </div>
                 </div>
               </el-drawer>
+
               <el-tooltip effect="dark" content="删除" placement="top-start">
                 <template v-if="scope.row.detectionStatus == 2">
                   <i
@@ -458,7 +462,8 @@ export default {
       loading: false,
       listItem: [],
       curpage: 1,
-      limit: 10
+      limit: 10,
+      taskId: null
     };
   },
   beforeMount() {
@@ -608,10 +613,12 @@ export default {
     },
     //下载报告
     downloadReport(id) {
+      this.taskId = id;
       this.downloadReportDrawer = true;
     },
     //保存下载报告
-    saveDownloadReport(id) {
+    saveDownloadReport() {
+      const id = this.taskId;
       const Authorization = localStorage.getItem("Authorization"),
         isCompliance = this.addDownloadReportForm.isCompliance;
       let downloadUrl =

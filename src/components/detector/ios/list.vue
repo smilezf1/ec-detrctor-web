@@ -328,6 +328,43 @@
                   <i class="el-icon-sold-out disabledIcon "></i>
                 </template>
               </el-tooltip>
+              <!-- 下载报告 -->
+              <el-drawer
+                title="下载报告"
+                :visible.sync="downloadReportDrawer"
+                :with-header="false"
+                :wrapperClosable="false"
+                :close-on-press-escape="false"
+                :destroy-on-close="true"
+                ref="downloadReportDrawer"
+                size="40%"
+                class="downloadReportDrawer"
+              >
+                <div class="el-drawer-header">
+                  <h3>下载报告</h3>
+                </div>
+                <div class="el-drawer-content">
+                  <el-form :model="addDownloadReportForm">
+                    <el-form-item prop="isCompliance">
+                      <label slot="label">报告模板:</label>
+                      <el-radio-group
+                        v-model="addDownloadReportForm.isCompliance"
+                      >
+                        <el-radio :label="0">全量报告</el-radio>
+                        <el-radio :label="2">整改报告</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                  </el-form>
+                </div>
+                <div class="el-drawer-footer">
+                  <div class="buttonBox" style="display:inline-block">
+                    <el-button type="primary" @click="saveDownloadReport()"
+                      >保存</el-button
+                    >
+                    <el-button @click="cancelDownloadReport()">取消</el-button>
+                  </div>
+                </div>
+              </el-drawer>
               <el-tooltip effect="dark" content="删除" placement="top-start">
                 <template v-if="scope.row.detectionStatus == 2">
                   <i
@@ -386,6 +423,9 @@ export default {
         minDetectionTime: "",
         maxDetectionTime: ""
       },
+      addDownloadReportForm: {
+        isCompliance: 0
+      },
       addTaskDrawer: false,
       uploadShow: true,
       fileList: [],
@@ -412,7 +452,9 @@ export default {
       loading: false,
       listItem: [],
       curpage: 1,
-      limit: 10
+      limit: 10,
+      downloadReportDrawer: false,
+      taskId: null
     };
   },
   beforeMount() {
@@ -450,14 +492,12 @@ export default {
       }, 500);
     },
     detailTask(id) {
-      console.log(id);
       this.$router.push({ path: "/home/detector/ios/detail", query: { id } });
     },
     refresh() {
       this.reload();
     },
     addTask() {
-      console.log("新增任务");
       this.addTaskDrawer = true;
     },
     /* 控制上传的数量 */
@@ -466,7 +506,6 @@ export default {
     },
     /* 上传任务开始 */
     uploadTaskFile(file) {
-      console.log(file);
       let params = new FormData(),
         _this = this;
       params.append("file", file.file);
@@ -486,7 +525,6 @@ export default {
           api.detrctorTaskService.findStrategyList(2).then(res => {
             if (res.code == "00") {
               this.detectorStrategyList = res.data;
-              console.log(this.detectorStrategyList, "##");
             }
           });
           for (var i = 0; i < _this.uploadTaskFileItem.length; i++) {
@@ -516,7 +554,6 @@ export default {
             detectionStrategyId: this.uploadForm[index].detectorStrategyId
           };
           this.$refs["uploadForm"][index].validate(valid => {
-            console.log(valid);
             if (!valid) {
               allValid = false;
             }
@@ -559,7 +596,6 @@ export default {
     },
     //下载应用
     downloadApk(id) {
-      console.log(id);
       let Authorization = localStorage.getItem("Authorization"),
         downloadUrl =
           this.api.baseUrl +
@@ -571,7 +607,29 @@ export default {
     },
     //下载报告
     downloadReport(id) {
-      console.log(id);
+      this.taskId = id;
+      this.downloadReportDrawer = true;
+    },
+    //保存下载报告
+    saveDownloadReport() {
+      const id = this.taskId;
+      const Authorization = localStorage.getItem("Authorization"),
+        isCompliance = this.addDownloadReportForm.isCompliance;
+      let downloadUrl =
+        this.api.baseUrl +
+        "/detector/android/downloadReport?id=" +
+        id +
+        "&isCompliance=" +
+        isCompliance +
+        "&Authorization=" +
+        Authorization;
+      window.location.href = downloadUrl;
+      this.downloadReportDrawer = false;
+      this.reload();
+    },
+    //取消下载报告
+    cancelDownloadReport() {
+      this.downloadReportDrawer = false;
     }
   }
 };
