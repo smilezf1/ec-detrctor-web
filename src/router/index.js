@@ -8,7 +8,7 @@ export default new Router({
     },
     {
       path: "/home", name: 'home', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/page/home"), children: [
-        { path: 'index', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/page/index.vue") },
+        { path: 'index', name: 'index', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/page/index.vue") },
         { path: "detector/android/list", name: 'androidList', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/android/list.vue") },
         { path: "detector/android/detail", name: 'androidDetail', meta: { requireAuth: true, KeepAlive: false }, component: () => import('../components/detector/android/detail.vue') },
         { path: "detector/ios/list", name: 'iosList', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/ios/list.vue") }

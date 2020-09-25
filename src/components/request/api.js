@@ -1,5 +1,5 @@
 //http://192.168.3.58:9980/ec_detector
-// 58 9990
+// 58 9980
 // 100 8080
 const baseUrl = "http://192.168.3.58:9980/ec_detector";
 import { fetchGet, fetchPost, uploadFile } from './http'

@@ -37,7 +37,6 @@ export default {
       total: 0
     };
   },
-  beforeMount() {},
   methods: {
     emitPaginationChangeInfo() {
       //触发父组件中特定的pageChanged函数

@@ -358,7 +358,7 @@
 <script>
 import api from "../../request/api";
 import pagination from "../../common/pagination";
-import pageMixins from "../../../pageMixins";
+import pageMixins from "../../../utils/pageMixins";
 export default {
   name: "detectorStrategy",
   components: { pagination },

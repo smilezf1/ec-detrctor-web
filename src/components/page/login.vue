@@ -67,6 +67,7 @@ import md5 from "js-md5";
 import { mapMutations } from "vuex";
 export default {
   name: "login",
+  inject: ["reload"],
   data() {
     return {
       ruleForm: {
@@ -146,11 +147,9 @@ export default {
       e = window.event || e;
       if (e.code == "NumpadEnter" || e.code == "Enter" || e.code == "enter") {
         _this.submitForm("ruleForm");
-      } else {
       }
     };
-  },
-  mounted() {}
+  }
 };
 </script>
 <style>
@@ -158,7 +157,7 @@ html,
 body,
 #app {
   height: 100%;
-  overflow:auto;
+  overflow: auto;
 }
 .Login {
   height: 100%;

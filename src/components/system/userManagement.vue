@@ -572,7 +572,7 @@
 import api from "../request/api";
 import md5 from "js-md5";
 import pagination from "../common/pagination";
-import pageMixins from "../../pageMixins";
+import pageMixins from "../../utils/pageMixins";
 export default {
   name: "userList",
   components: { pagination },

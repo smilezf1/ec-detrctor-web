@@ -6,7 +6,7 @@
     <div class="recommendContent">
       <template v-if="listItem">
         <div class="recommendContentBody">
-          <div class="section">
+          <div class="section" v-if="listItem">
             <div class="left">
               <p class="name">
                 <span> 平台名称:</span>
