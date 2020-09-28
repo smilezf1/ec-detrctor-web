@@ -629,7 +629,6 @@ export default {
     api.androidService.detailAndroidListById(id).then(res => {
       if (res.code == "00") {
         this.listItem = res.data;
-        console.log(res.data.countDto);
       }
     });
     api.androidService.detailItemAndroidListById(id, 1).then(res => {

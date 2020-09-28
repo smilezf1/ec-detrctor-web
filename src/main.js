@@ -8,11 +8,13 @@ import api from './components/request/api'
 import guid from '../src/utils/guid'
 import axios from 'axios'
 import resetMessage from '../src/utils/resetMessage'//设置ElementUi的Message消息提示每次值弹出一次
+import confirm from '../src/utils/confirm';
 Vue.use(ElementUI);
 Vue.prototype.$message = resetMessage;
+Vue.prototype.$messageTips = confirm;
 Vue.config.productionTip = false
 Vue.prototype.guid = guid;
-Vue.prototype.axios = axios
+Vue.prototype.axios = axios;
 Vue.prototype.api = api
 new Vue({
   el: '#app',
@@ -31,7 +33,6 @@ router.beforeEach((to, from, next) => {
         next({ path: '/login' })
       }
     }
-
   } else {
     next()
   }

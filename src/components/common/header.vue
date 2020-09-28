@@ -19,6 +19,7 @@
 import api from "../request/api";
 export default {
   name: "Header",
+  inject: ["reload"],
   data() {
     return {
       name: "test"
@@ -35,19 +36,16 @@ export default {
     handleCommand(command) {
       if (command == "loginout") {
         localStorage.removeItem("userName");
-        this.$confirm("确定要退出吗?", "退出提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            api.userService.logout().then(res => {
-              if (res.code == "00") {
-                this.$router.push({ path: "/" });
-              }
-            });
-          })
-          .catch(() => {});
+        new this.$messageTips(({ confirm }) => {
+          confirm({ content: "确定要退出吗?", tip: "退出提示" });
+        }).then(() => {
+          api.userService.logout().then(res => {
+            if (res.code == "00") {
+              this.$router.push({ path: "/" });
+              this.reload();
+            }
+          });
+        });
       }
     }
   }

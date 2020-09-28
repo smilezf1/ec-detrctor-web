@@ -363,7 +363,6 @@ export default {
     },
     //保存修改的目录
     saveAmendCatalogue(formName, form) {
-      console.log("执行了嘛", form);
       let id = parseInt(this.id),
         name = form.name,
         icon = form.icon,
@@ -457,50 +456,38 @@ export default {
     saveAddLink() {},
     //停用
     blockUp(id) {
-      this.$alert("确定要停用吗?", "确定停用", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          api.systemService.menuManageBlockUp(id).then(res => {
-            if (res.code == "00") {
-              this.reload();
-              this.$notify({
-                message: "停用成功",
-                type: "warning",
-                showClose: false,
-                duration: 1000
-              });
-            }
-          });
-        })
-        .catch(() => {
-          console.log("取消停用");
+      new this.$messageTips(({ alert }) => {
+        alert({ content: "确定要停用吗?", tip: "确定停用" });
+      }).then(() => {
+        api.systemService.menuManageBlockUp(id).then(res => {
+          if (res.code == "00") {
+            this.reload();
+            this.$notify({
+              message: "停用成功",
+              type: "warning",
+              showClose: false,
+              duration: 1000
+            });
+          }
         });
+      });
     },
     //启用
     launch(id) {
-      this.$alert("确定要启用吗?", "确定启用", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          api.systemService.menuManageLaunch(id).then(res => {
-            if (res.code == "00") {
-              this.reload();
-              this.$notify.success({
-                message: "启用成功",
-                showClose: false,
-                duration: 1000
-              });
-            }
-          });
-        })
-        .catch(() => {
-          console.log("取消启用");
+      new this.$messageTips(({ alert }) => {
+        alert({ content: "确定要启用吗?", tip: "确定启用" });
+      }).then(() => {
+        api.systemService.menuManageLaunch(id).then(res => {
+          if (res.code == "00") {
+            this.reload();
+            this.$notify.success({
+              message: "启用成功",
+              showClose: false,
+              duration: 1000
+            });
+          }
         });
+      });
     }
   }
 };

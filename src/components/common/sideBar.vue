@@ -1,6 +1,5 @@
 <template>
   <div class="sidebar">
-    
     <el-menu
       class="sidebar-el-menu"
       background-color="#517fc3"

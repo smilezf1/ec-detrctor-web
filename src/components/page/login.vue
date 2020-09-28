@@ -174,6 +174,7 @@ body,
 }
 .login-header .title {
   font-size: 22px;
+  font-family: URW Chancery L, cursive;
 }
 .user-login-main-box {
   width: 400px;
@@ -191,6 +192,7 @@ body,
   font-size: 24px;
   text-align: center;
   font-weight: normal;
+  font-family: URW Chancery L, cursive;
 }
 .user-login-main-box .ruleForm {
   margin-top: 20px;
@@ -226,6 +228,7 @@ body,
   border: none;
   font-size: 22px;
   border-radius: 30px;
+  font-family: URW Chancery L, cursive;
 }
 .user-login-main-box .el-button:hover {
   background: #5380c3 !important;
@@ -239,7 +242,5 @@ body,
   color: white;
   font-size: 15px;
   transform: translateX(-50%);
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", 微软雅黑, Tahoma,
-    Arial, sans-serif;
 }
 </style>

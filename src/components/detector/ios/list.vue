@@ -578,18 +578,13 @@ export default {
     },
     cancelTask() {
       if (this.uploadTaskFileItem.length) {
-        this.$confirm("会清空当前上传的文件,是否继续?", "提示", {
-          closeOnClickModal: false,
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.addTaskDrawer = false;
-            this.$refs.uploadTask.clearFiles();
-            this.reload();
-          })
-          .catch(() => {});
+        new this.$messageTips(({ confirm }) => {
+          confirm({ content: "会清空当前上传的文件,是否继续?" });
+        }).then(() => {
+          this.addTaskDrawer = false;
+          this.$refs.uploadTask.clearFiles();
+          this.reload();
+        });
       } else {
         this.addTaskDrawer = false;
       }

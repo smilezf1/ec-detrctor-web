@@ -352,7 +352,6 @@ export default {
       });
     },
     cancelSaveaddRole() {
-      console.log("取消保存角色");
       this.addRoleDrawer = false;
     },
     //编辑
@@ -390,9 +389,7 @@ export default {
     //设置菜单开始
     handleCheck(checkedNodes, checkedKeys) {
       this.checkedNodes = checkedKeys.checkedNodes;
-      this.checkedNodes.forEach(v => {
-        console.log(v.id);
-      });
+      this.checkedNodes.forEach(v => {});
     },
     //设置菜单
     setting(id) {
@@ -456,78 +453,61 @@ export default {
             nodes[i].id = nodes[i].id.replace("T", "");
             menuList.push(nodes[i].id);
             menuList = Array.from(new Set(menuList));
-            console.log(menuList, "菜单选中的值");
-          } else {
-            console.log(nodes[i].id, "333");
           }
         }
       }
-      this.$confirm("确定要更新菜单列表吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(res => {
-          console.log(menuList, "选中的值");
-          const params = { btnList: [], itemList: menuList, roleId: id };
-          console.log(menuList, "更新菜单列表");
-          api.systemService.roleManageSettingMenuSave(params).then(res => {
-            if (res.code == "00") {
-              this.$notify({
-                message: "更新成功",
-                type: "success",
-                duration: 1000
-              });
-              this.reload();
-              this.menuDialog = false;
-            }
-          });
-        })
-        .catch(() => {});
+      new this.$messageTips(({ confirm }) => {
+        confirm({ content: "确定要更新菜单列表吗?" });
+      }).then(res => {
+        const params = { btnList: [], itemList: menuList, roleId: id };
+        api.systemService.roleManageSettingMenuSave(params).then(res => {
+          if (res.code == "00") {
+            this.$notify({
+              message: "更新成功",
+              type: "success",
+              duration: 1000
+            });
+            this.reload();
+            this.menuDialog = false;
+          }
+        });
+      });
     },
     resetForm() {},
     //停用
     blockUp(id) {
-      this.$alert("确定要停用吗?", "确定停用", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          api.systemService.roleManageBolockUp(id).then(res => {
-            if (res.code === "00") {
-              this.reload();
-              this.$notify.success({
-                message: "停用成功",
-                type: "warning",
-                showClose: false,
-                duration: 1000
-              });
-            }
-          });
-        })
-        .catch(() => {});
+      new this.$messageTips(({ alert }) => {
+        alert({ content: "确定要停用吗?", tip: "确定停用" });
+      }).then(() => {
+        api.systemService.roleManageBolockUp(id).then(res => {
+          if (res.code === "00") {
+            this.reload();
+            this.$notify.success({
+              message: "停用成功",
+              type: "warning",
+              showClose: false,
+              duration: 1000
+            });
+          }
+        });
+      });
     },
     //启用
     launch(id) {
-      this.$alert("确定要启用吗?", "确定启用", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          api.systemService.roleManageLaunch(id).then(res => {
-            if (res.code === "00") {
-              this.reload();
-              this.$notify.success({
-                message: "启用成功",
-                showClose: false,
-                duration: 1000
-              });
-            }
-          });
-        })
-        .catch(() => {});
+      new this.$messageTips(({ alert }) => {
+        alert({ content: "确定要启用吗?", tip: "确定启用" });
+      }).then(() => {
+        api.systemService.roleManageLaunch(id).then(res => {
+          if (res.code === "00") {
+            this.reload();
+            this.$notify.success({
+              message: "启用成功",
+              showClose: false,
+              duration: 1000
+            });
+          }
+        });
+      });
     }
   }
 };
