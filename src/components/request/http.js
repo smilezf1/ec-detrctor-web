@@ -2,7 +2,6 @@ import axios from 'axios'
 import router from '../../router'
 import Vue from 'vue';
 import { config } from 'shelljs';
-import Axios from 'axios';
 let v = new Vue();
 //环境的切换
 if (process.env.NODE_ENV == 'development') {//开发环境
@@ -60,6 +59,7 @@ export function fetchGet(url, params) {
     return new Promise((resolve, reject) => {
         axios.get(url, params).then
             (res => {
+                console.log(res)
                 resolve(res)
             }, error => {
                 reject(error)

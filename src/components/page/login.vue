@@ -106,7 +106,8 @@ export default {
           api.userService
             .login(params)
             .then(res => {
-              if (res.code == "00") {
+              console.log(res);
+              /* if (res.code == "00") {
                 const accessToken = res.data.accessToken,
                   userName = res.data.userName;
                 localStorage.setItem("Authorization", accessToken);
@@ -124,7 +125,7 @@ export default {
                 _this.Guid = this.guid.getGuid();
               } else {
                 _this.Guid = this.guid.getGuid();
-              }
+              } */
             })
             .catch(() => {});
         } else {

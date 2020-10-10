@@ -589,7 +589,7 @@ export default {
         }
       });
     },
-    //全选 子项目
+    //全选 子项目subHandleCheckAllChange
     subHandleCheckAllChange(val, index) {
       const terminalType = this.terminalType;
       let tickCount = 0;

@@ -1,4 +1,3 @@
-/*
 <template>
   <div class="home">
     <Header></Header>
@@ -23,13 +22,7 @@ export default {
     return {
       collapse: false
     };
-  },
-  updated() {
-    /*  bus.$on("collapse-content", msg => {
-      this.collapse = msg;
-    }); */
-  },
-  mounted() {}
+  }
 };
 </script>
 <style>
@@ -46,4 +39,3 @@ export default {
   margin-top: 60px;
 }
 </style>
-*/

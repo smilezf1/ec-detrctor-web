@@ -38,7 +38,7 @@ export default class MessageTips {
         MessageBox.confirm(this.content, this.tip, { closeOnClickModal: false, confirmButtonText: "确定", cancelButtonText: "取消", type: this.type }).then(() => { callback() }).catch(() => { })
     }
     alert(callback) {
-        MessageBox.alert(this.content, this.tip, { confirmButtonText: "确定", type: this.type, callback: () => { callback() } })
+        MessageBox.alert(this.content, this.tip, { confirmButtonText: "确定", type: this.type }).then(() => { callback() }).catch(() => { })
     }
     promot(callback) {
         MessageBox.prompt(this.content, this.tip, { confirmButtonText: "确定", cancelButtonText: "取消", type: this.type }).then((value) => { callback(value) })

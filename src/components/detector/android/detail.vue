@@ -129,9 +129,8 @@
                   }}</el-col
                 >
                 <el-col :span="12"
-                  >文件大小:&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    listItem.appInfo.appMbyte
-                  }}MB</el-col
+                  >文件大小:&nbsp;&nbsp;&nbsp;&nbsp;
+                  {{ listItem.appInfo.appMbyte }}MB</el-col
                 >
               </el-row>
               <el-row>
@@ -146,12 +145,11 @@
                   }}</el-col
                 >
               </el-row>
-              <el-row>
-                <el-col
-                  >签名信息:&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    listItem.appInfo.signature
-                  }}</el-col
-                >
+              <el-row style="display:flex;align-items:center">
+                <el-col :span="1.5">签名信息:&nbsp;&nbsp;&nbsp;&nbsp;</el-col>
+                <el-col :span="20.5">
+                  <pre>{{ listItem.appInfo.signature }}</pre>
+                </el-col>
               </el-row>
             </el-tab-pane>
             <el-tab-pane label="应用权限列表">
@@ -228,16 +226,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                  <el-row>
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5">
+                      <pre>{{ item.riskReason }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果: </el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -262,10 +272,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row><el-col>评测过程:</el-col></el-row>
-                  <el-col>评测依据:{{ item.riskReason }}</el-col>
-                  <el-col>评测描述:{{ item.riskDesc }}</el-col>
-                  <el-col>评测结果:{{ item.resultDesc }}</el-col>
+                  <el-row>
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-col>解决方案:{{ item.solution }}</el-col>
                 </el-collapse-item>
               </el-collapse>
@@ -286,16 +314,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -320,16 +360,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -354,16 +406,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5">
+                      <pre>{{ item.riskReason }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -388,16 +452,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -422,16 +498,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -456,16 +544,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -490,16 +590,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -524,16 +636,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -558,16 +682,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -592,16 +728,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5">
+                      <pre>{{ item.detectionDetail }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -658,6 +806,9 @@ export default {
 };
 </script>
 <style>
+pre {
+  font-family: sans-serif;
+}
 .el-button--primary:hover,
 .el-button--primary {
   background: #517fc3;
@@ -739,6 +890,7 @@ export default {
   padding: 20px 0;
   color: #606266;
   font-size: 14px;
+  line-height: 20px;
 }
 .detectorMessage .el-row:not(:last-child) {
   border-bottom: 1px solid rgb(230, 230, 230);
