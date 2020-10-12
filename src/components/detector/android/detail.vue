@@ -791,6 +791,7 @@ export default {
             }
           }
         }
+        console.log(this.detailListItem);
       }
     });
   },

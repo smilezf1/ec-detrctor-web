@@ -2,13 +2,16 @@
 // 58 9980
 // 100 8080
 const baseUrl = "http://192.168.3.58:9980/ec_detector";
+import { configure } from 'nprogress';
 import { fetchGet, fetchPost, uploadFile } from './http'
 //登录
 let userService = {
     //登录
     login(params) {
-        return fetchGet(`/login?userName=${params.userName}&password=${params.password}&vercode=${params.verCode}&guid=${params.guid}`).then(
-            res => res.data)
+        /* return fetchGet(`/login?userName=${params.userName}&password=${params.password}&vercode=${params.verCode}&guid=${params.guid}`).then(
+            res => res.data) */
+        console.log(params)
+        return fetchPost("/login", params).then(res => res.data)
     },
     //退出登录
     logout(params) {
@@ -22,8 +25,25 @@ let userService = {
 let uploadService = {
     uploadFile(params, config) {
         return uploadFile("/detector/android/uploadAppFile", params, config).then(res => res.data)
+    },
+    //上传授权文件
+    uploadAuthorizeFile(params, config) {
+        return uploadFile("/api/system/auth/uploadAuthFile", params, config).then(res => res.data)
     }
-
+}
+//授权管理
+let authorizeService = {
+    //生成userCode
+    authorizeManageList() {
+        return fetchGet("/api/system/auth/findAuthInfo").then(res => res.data)
+    },
+    getUserCode() {
+        return fetchGet("/api/system/auth/generateUserCode").then(res => res.data)
+    },
+    //更新授权信息
+    updateAuthorizeInfo(params) {
+        return fetchPost("/api/system/auth/updateAuthInfo", params).then(res => res.data)
+    }
 }
 //首页检测任务
 let detrctorTaskService = {
@@ -182,4 +202,4 @@ let systemService = {
     },
     //用户管理结束--
 }
-export default { baseUrl, userService, detrctorTaskService, detectorItemService, detectorStrategyService, androidService, uploadService, systemService }
+export default { baseUrl, userService, detrctorTaskService, detectorItemService, detectorStrategyService, androidService, uploadService, systemService, authorizeService }

@@ -202,19 +202,19 @@
                         auto-complete="off"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="资源类型">
+                    <el-form-item label="资源类型" prop="type">
                       <el-input
                         v-model="addLinkForm.type"
                         :disabled="true"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="资源图标">
+                    <!--   <el-form-item label="资源图标" prop="icon">
                       <el-input
                         v-model="addLinkForm.icon"
                         auto-complete="off"
                       ></el-input>
-                    </el-form-item>
-                    <el-form-item label="资源路径">
+                    </el-form-item> -->
+                    <el-form-item label="资源路径" prop="address">
                       <el-input
                         v-model="addLinkForm.address"
                         auto-complete="off"
@@ -274,7 +274,12 @@ export default {
         type: "",
         icon: ""
       },
-      rules: {},
+      rules: {
+        name: [{ required: true, message: "请输入资源名称", trigger: "blur" }],
+        address: [
+          { required: true, message: "请输入资源路径", trigger: "blur" }
+        ]
+      },
       form: {
         name: "",
         type: "",
@@ -294,7 +299,8 @@ export default {
       },
       menusItem: [],
       editDrawer: false,
-      addLinkDrawer: false
+      addLinkDrawer: false,
+      linkID: null
     };
   },
   beforeMount() {
@@ -449,11 +455,39 @@ export default {
       this.addLinkDrawer = false;
     },
     //新增链接
-    addLink() {
+    addLink(id) {
       this.addLinkDrawer = true;
+      this.linkID = id;
     },
     //保存新增的链接
-    saveAddLink() {},
+    saveAddLink(formName, addLinkForm) {
+      const name = addLinkForm.name,
+        address = addLinkForm.address,
+        pId = this.linkID;
+      let type = null;
+      if (addLinkForm.type == "目录") {
+        type = "M";
+      } else {
+        type = "T";
+      }
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          const params = { pId, name, type, address };
+          api.systemService.menuManageSaveAddCatalogue(params).then(res => {
+            if (res.code == "00") {
+              this.reload();
+              this.$notify.success({
+                message: "新增成功",
+                showClose: false,
+                duration: 1000
+              });
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
     //停用
     blockUp(id) {
       new this.$messageTips(({ alert }) => {

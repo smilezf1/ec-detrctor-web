@@ -97,6 +97,7 @@
               multiple
               :limit="5"
               :on-exceed="handleExceed"
+              :on-progress="handleProgress"
               accept=".apk"
               ref="uploadTask"
               size="40%"
@@ -109,6 +110,18 @@
                 最多只能上传5个文件
               </div>
             </el-upload>
+            <div
+              class="fileUploading"
+              v-if="getLoadingNum > 0 && !uploadShow"
+              style="margin-top:20px;text-align:center"
+            >
+              <p
+                class="el-loading-text"
+                style="font-size:14px;color:red;margin-top:5px"
+              >
+                请稍等还有{{ getLoadingNum }}个文件加载中...
+              </p>
+            </div>
             <!-- 上传文件的列表 -->
             <div v-for="(item, index) in uploadTaskFileItem" :key="index">
               <el-form
@@ -463,14 +476,21 @@ export default {
       listItem: [],
       curpage: 1,
       limit: 10,
-      taskId: null
+      taskId: null,
+      uploadTaskNum: null,
+      loadingNum: null
     };
   },
   beforeMount() {
     this.getData();
   },
+  computed: {
+    getLoadingNum: function() {
+      return (this.loadingNum =
+        this.uploadTaskNum - this.uploadTaskFileItem.length);
+    }
+  },
   methods: {
-    //测试
     async getData() {
       const params = {};
       params.queryInfo = this.ruleForm;
@@ -494,6 +514,9 @@ export default {
     //限制文件上传的数量
     handleExceed(file, fileList) {
       this.$message.warning("最多只能上传5个文件哦");
+    },
+    handleProgress(event, file, fileList) {
+      this.uploadTaskNum = fileList.length;
     },
     //上传任务开始----
     uploadTaskFile(file) {

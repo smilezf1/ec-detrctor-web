@@ -1,13 +1,13 @@
 <template>
-  <div class="iosDetail">
-    <div class="iosDetailHeader">
+  <div class="iOSDetail">
+    <div class="iOSDetailHeader">
       <p>当前位置:iOS检测详细</p>
     </div>
     <div class="operateBox">
       <el-button type="primary" size="small" class="back" @click="back()"
         >返回</el-button
       >
-      <!--  <el-button
+      <!--   <el-button
         type="primary"
         size="small"
         class="downloadReport"
@@ -16,9 +16,9 @@
         >下载报告</el-button
       > -->
     </div>
-    <div class="iosBody">
+    <div class="iOSBody">
+      <!-- 应用信息 -->
       <template v-if="listItem">
-        <!-- 检测信息 -->
         <div class="applicationMessage">
           <div class="applicationMessageHeader">
             <div class="applicationMessageHeaderLeft">
@@ -55,9 +55,12 @@
               <el-col :span="5">
                 <div class="imgBox">
                   <img src="../../../assets/tested.png" />
-                  <cite style="color:#00d4eb">{{
-                    listItem.countDto.score
-                  }}</cite>
+                  <cite style="color:#00d4eb">
+                    <span v-if="listItem.countDto">
+                      {{ listItem.countDto.score }}
+                    </span>
+                    <span v-else>N/A</span>
+                  </cite>
                 </div>
                 <p>检测分数</p>
               </el-col>
@@ -66,8 +69,8 @@
                   <img src="../../../assets/danger.png" />
                   <cite style="color:red">
                     <span v-if="listItem.countDto">
-                      {{ listItem.countDto.nx }}
-                    </span>
+                      {{ listItem.countDto.nx }}</span
+                    >
                     <span v-else>N/A</span>
                   </cite>
                 </div>
@@ -77,9 +80,9 @@
                 <div class="imgBox">
                   <img src="../../../assets/mDanger.png" />
                   <cite style="color:#ed7d31">
-                    <span v-if="listItem.countDto">
-                      {{ listItem.countDto.ny }}
-                    </span>
+                    <span v-if="listItem.countDto">{{
+                      listItem.countDto.ny
+                    }}</span>
                     <span v-else>N/A</span>
                   </cite>
                 </div>
@@ -88,10 +91,11 @@
               <el-col :span="5">
                 <div class="imgBox">
                   <img src="../../../assets/lDanger.png" />
+
                   <cite style="color:#ffbc93">
-                    <span v-if="listItem.countDto">{{
-                      listItem.countDto.nz
-                    }}</span>
+                    <span v-if="listItem.countDto">
+                      {{ listItem.countDto.nz }}</span
+                    >
                     <span v-else>N/A</span>
                   </cite>
                 </div>
@@ -100,8 +104,6 @@
             </el-row>
           </div>
         </div>
-
-        <!-- 检测具体信息 -->
 
         <div class="detectorMessage">
           <el-tabs type="border-card" v-if="detailListItem">
@@ -127,9 +129,8 @@
                   }}</el-col
                 >
                 <el-col :span="12"
-                  >文件大小:&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    listItem.appInfo.appMbyte
-                  }}MB</el-col
+                  >文件大小:&nbsp;&nbsp;&nbsp;&nbsp;
+                  {{ listItem.appInfo.appMbyte }}MB</el-col
                 >
               </el-row>
               <el-row>
@@ -144,12 +145,11 @@
                   }}</el-col
                 >
               </el-row>
-              <el-row>
-                <el-col
-                  >签名信息:&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    listItem.appInfo.signature
-                  }}</el-col
-                >
+              <el-row style="display:flex;align-items:center">
+                <el-col :span="1.5">签名信息:&nbsp;&nbsp;&nbsp;&nbsp;</el-col>
+                <el-col :span="20.5">
+                  <pre>{{ listItem.appInfo.signature }}</pre>
+                </el-col>
               </el-row>
             </el-tab-pane>
             <el-tab-pane label="应用权限列表">
@@ -208,10 +208,10 @@
                 <el-table-column label="行为" prop="sdkDesc"></el-table-column>
               </el-table>
             </el-tab-pane>
-            <el-tab-pane label="恶意应用评测">
-              <el-collapse>
+            <el-tab-pane label="应用代码安全评测 ">
+              <el-collapse v-model="detailListItem.titleCode005.activeNames">
                 <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode05"
+                  v-for="(item, index) in detailListItem.titleCode005"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
@@ -221,80 +221,75 @@
                       >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
                     ></el-row
                   >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
-                </el-collapse-item>
-              </el-collapse>
-            </el-tab-pane>
-            <el-tab-pane label="应用代码安全评测 ">
-              <el-collapse>
-                <el-collapse-item
-                  v-for="item in detailListItem.titleCode06"
-                  :key="item.id"
-                  :title="item.name"
-                >
-                  <el-row>
-                    <el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
                   <el-row>
                     <el-col
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row><el-col>评测过程:</el-col></el-row>
-                  <el-col>评测依据:{{ item.riskReason }}</el-col>
-                  <el-col>评测描述:{{ item.riskDesc }}</el-col>
-                  <el-col>评测结果:{{ item.resultDesc }}</el-col>
+                  <el-row>
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-col>解决方案:{{ item.solution }}</el-col>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="应用调试安全评测">
-              <el-collapse>
+              <el-collapse v-model="detailListItem.titleCode006.activeNames">
                 <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode07"
+                  v-for="(item, index) in detailListItem.titleCode006"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
                 >
                   <el-col
-                    >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}--{{
-                      index
-                    }}</el-col
+                    >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
                   >
                   <el-row
                     ><el-col
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -302,9 +297,9 @@
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="应用运行环境评测">
-              <el-collapse>
+              <el-collapse v-model="detailListItem.titleCode007.activeNames">
                 <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode08"
+                  v-for="(item, index) in detailListItem.titleCode007"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
@@ -319,16 +314,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -336,9 +343,9 @@
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="数据存储安全评测">
-              <el-collapse>
+              <el-collapse v-model="detailListItem.titleCode008.activeNames">
                 <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode09"
+                  v-for="(item, index) in detailListItem.titleCode008"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
@@ -353,16 +360,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5">
+                      <pre>{{ item.riskReason }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -370,9 +389,9 @@
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="加密算法安全评测">
-              <el-collapse>
+              <el-collapse v-model="detailListItem.titleCode009.activeNames">
                 <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode10"
+                  v-for="(item, index) in detailListItem.titleCode009"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
@@ -387,50 +406,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
-                </el-collapse-item>
-              </el-collapse>
-            </el-tab-pane>
-            <el-tab-pane label="应用组件安全评测">
-              <el-collapse>
-                <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode11"
-                  :key="item.id"
-                  :title="item.name"
-                  :name="index"
-                >
-                  <el-row
-                    ><el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -438,7 +435,7 @@
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="WebView组件风险">
-              <el-collapse>
+              <el-collapse v-model="detailListItem.titleCode0010.activeNames">
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode12"
                   :key="item.id"
@@ -455,26 +452,38 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="数据输入安全评测">
-              <el-collapse>
+            <el-tab-pane label="数据输入/输出安全评测">
+              <el-collapse v-model="detailListItem.titleCode0011.activeNames">
                 <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode13"
+                  v-for="(item, index) in detailListItem.titleCode0011"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
@@ -489,50 +498,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
-                </el-collapse-item>
-              </el-collapse>
-            </el-tab-pane>
-            <el-tab-pane label="数据输出安全评测">
-              <el-collapse>
-                <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode14"
-                  :key="item.id"
-                  :title="item.name"
-                  :name="index"
-                >
-                  <el-row
-                    ><el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -540,9 +527,9 @@
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="通讯传输安全评测">
-              <el-collapse>
+              <el-collapse v-model="detailListItem.titleCode0012.activeNames">
                 <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode15"
+                  v-for="(item, index) in detailListItem.titleCode0012"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
@@ -557,16 +544,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -574,9 +573,9 @@
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="安全漏洞评测">
-              <el-collapse>
+              <el-collapse v-model="detailListItem.titleCode0013.activeNames">
                 <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode16"
+                  v-for="(item, index) in detailListItem.titleCode0013"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
@@ -591,16 +590,28 @@
                       >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
                     ></el-row
                   >
-                  <el-row> <el-col>评测过程:</el-col></el-row>
-                  <el-row
-                    ><el-col>评测依据:{{ item.riskReason }}</el-col></el-row
-                  >
-                  <el-row
-                    ><el-col>评测描述:{{ item.riskDesc }}</el-col></el-row
-                  >
                   <el-row>
-                    <el-col>评测结果:{{ item.resultDesc }}</el-col></el-row
-                  >
+                    <el-col :span="1.5">评测过程:</el-col>
+                    <el-col :span="20.5">
+                      <pre>{{ item.detectionDetail }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测依据:</el-col>
+                    <el-col :span="20.5"
+                      ><pre>{{ item.riskReason }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">评测描述:</el-col>
+                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row style="display:flex;align-items:center">
+                    <el-col :span="1.5">评测结果:</el-col>
+                    <el-col :span="20.5" style="margin-left:10px">
+                      <pre>{{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
                   <el-row
                     ><el-col>解决方案:{{ item.solution }}</el-col></el-row
                   >
@@ -616,50 +627,62 @@
 <script>
 import api from "../../request/api";
 export default {
-  name: "iosDetail",
+  name: "iOSDetail",
   data() {
     return {
       listItem: null,
       detailListItem: null
     };
   },
-  methods: {
-    back() {
-      this.$router.back();
-    },
-    downloadReport() {
-      console.log("下载报告");
-    }
-  },
   mounted() {
     const id = this.$route.query.id;
     api.androidService.detailAndroidListById(id).then(res => {
       if (res.code == "00") {
         this.listItem = res.data;
-        console.log(this.listItem, "22");
       }
     });
     api.androidService.detailItemAndroidListById(id, 2).then(res => {
       if (res.code == "00") {
         this.detailListItem = res.data;
-        console.log(this.detailListItem, "111");
+        let detailListItem = this.detailListItem;
+        for (let key in detailListItem) {
+          if (key.indexOf("titleCode") != -1) {
+            detailListItem[key].activeNames = [];
+            for (let i = 0; i < detailListItem[key].length; i++) {
+              detailListItem[key].activeNames.push(i);
+            }
+          }
+        }
+        console.log(this.detailListItem, "详细数据");
       }
     });
+  },
+  methods: {
+    back() {
+      this.$router.back();
+    }
+    /*  downloadReport() {
+      const id = this.$route.query.id;
+      console.log("下载报告");
+    } */
   }
 };
 </script>
 <style>
+pre {
+  font-family: sans-serif;
+}
 .el-button--primary:hover,
 .el-button--primary {
   background: #517fc3;
   border-color: #517fc3;
 }
-.iosDetailHeader {
+.iOSDetailHeader {
   line-height: 50px;
   line-height: 50px;
   font-size: 14px;
 }
-.iosBody {
+.iOSBody {
   margin-top: 15px;
 }
 .applicationMessage {
@@ -730,6 +753,7 @@ export default {
   padding: 20px 0;
   color: #606266;
   font-size: 14px;
+  line-height: 20px;
 }
 .detectorMessage .el-row:not(:last-child) {
   border-bottom: 1px solid rgb(230, 230, 230);
