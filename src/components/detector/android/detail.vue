@@ -1,3 +1,4 @@
+/*
 <template>
   <div class="androidDetail">
     <div class="androidDetailHeader">
@@ -215,8 +216,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row>
+                    <!--  <el-col :span="2"> <b>评测目的</b></el-col>
+                    <el-col :span="20"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    > -->
                     <el-col
                       >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
                     ></el-row
@@ -261,8 +267,12 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
-                  <el-row>
+                  <!-- <el-table>
+                    <el-table-column :label="col">评测目的</el-table-column>
+                  </el-table> -->
+                  <!--  <el-row>
                     <el-col
                       >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
                     ></el-row
@@ -294,7 +304,7 @@
                       <pre>{{ item.resultDesc }}</pre>
                     </el-col>
                   </el-row>
-                  <el-col>解决方案:{{ item.solution }}</el-col>
+                  <el-col>解决方案:{{ item.solution }}</el-col> -->
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
@@ -305,6 +315,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-col
                     >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
@@ -349,6 +360,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -395,6 +407,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -441,6 +454,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -487,6 +501,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -533,6 +548,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -579,6 +595,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -625,6 +642,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -671,6 +689,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -717,6 +736,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -798,6 +818,18 @@ export default {
   methods: {
     back() {
       this.$router.back();
+    },
+    //得到风险等级
+    getClass(riskGroup) {
+      if (riskGroup == "高危") {
+        return "dangerInfoItem";
+      } else if (riskGroup == "中危") {
+        return "mediumInfoItem";
+      } else if (riskGroup == "低危") {
+        return "lowInfoItem";
+      } else {
+        return "na";
+      }
     }
     /*  downloadReport() {
       const id = this.$route.query.id;
@@ -896,12 +928,23 @@ pre {
 .detectorMessage .el-row:not(:last-child) {
   border-bottom: 1px solid rgb(230, 230, 230);
 }
-.el-collapse-item__header {
+.androidBody .el-collapse-item__header {
   font-size: 17px;
   background: #f2f5f7;
-  color: #515a6e;
-  font-size: 14px;
+  font-size: 12px;
   padding-left: 10px;
+}
+.androidBody .dangerInfoItem .el-collapse-item__header {
+  background: #fbc6c6;
+}
+.androidBody .mediumInfoItem .el-collapse-item__header {
+  background: rgb(237, 125, 49);
+}
+.androidBody .lowInfoItem .el-collapse-item__header {
+  background: rgb(255, 188, 147);
+}
+.androidBody .na .el-collapse-item__header {
+  background: rgb(0, 212, 235);
 }
 .el-table {
   font-size: 12px;
@@ -922,3 +965,4 @@ pre {
   background: white;
 }
 </style>
+*/

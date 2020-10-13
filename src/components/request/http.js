@@ -38,7 +38,7 @@ axios.interceptors.response.use(response => {
             })
         }
     }
-    if (response.data.code == '99') {
+    if (response.data.code == '99' || response.data.code == '500') {
         v.$notify({ title: "警告", message: response.data.message, type: 'warning', duration: 2000 })
     }
     return response;

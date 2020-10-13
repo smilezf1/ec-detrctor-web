@@ -8,9 +8,6 @@ import { fetchGet, fetchPost, uploadFile } from './http'
 let userService = {
     //登录
     login(params) {
-        /* return fetchGet(`/login?userName=${params.userName}&password=${params.password}&vercode=${params.verCode}&guid=${params.guid}`).then(
-            res => res.data) */
-        console.log(params)
         return fetchPost("/login", params).then(res => res.data)
     },
     //退出登录

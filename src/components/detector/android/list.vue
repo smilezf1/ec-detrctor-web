@@ -200,11 +200,11 @@
               <span>{{ (curpage - 1) * limit + scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <el-table-column
+          <!--  <el-table-column
             width="60"
             prop="taskId"
             label="id"
-          ></el-table-column>
+          ></el-table-column> -->
           <el-table-column
             width="200"
             prop="appName"
@@ -601,7 +601,7 @@ export default {
               });
             }
             this.addTaskDrawer = false;
-            this.reload();
+            /* this.reload(); */
           });
       }
     },
@@ -745,8 +745,8 @@ export default {
   vertical-align: middle;
 }
 .androidBody .detectionStatusimg {
-  width: 33px;
-  height: 33px;
+  width: 25px;
+  height: 25px;
   border-radius: 3px;
   vertical-align: middle;
 }

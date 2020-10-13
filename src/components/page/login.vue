@@ -165,6 +165,7 @@ body,
   background: -webkit-linear-gradient(to right, #348ac7, #7474bf);
   background: linear-gradient(to right, #348ac7, #7474bf);
   position: relative;
+  font-family: URW Chancery L, cursive;
 }
 .login-header {
   color: white;
@@ -174,7 +175,6 @@ body,
 }
 .login-header .title {
   font-size: 22px;
-  font-family: URW Chancery L, cursive;
 }
 .user-login-main-box {
   width: 400px;
@@ -192,7 +192,6 @@ body,
   font-size: 24px;
   text-align: center;
   font-weight: normal;
-  font-family: URW Chancery L, cursive;
 }
 .user-login-main-box .ruleForm {
   margin-top: 20px;
@@ -220,6 +219,7 @@ body,
   height: 50px;
   border-radius: 30px;
   box-shadow: 0 0 8px #eee;
+  font-family: URW Chancery L, cursive;
 }
 .user-login-main-box .submit {
   width: 100%;

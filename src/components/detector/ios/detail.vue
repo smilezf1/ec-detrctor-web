@@ -215,6 +215,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row>
                     <el-col
@@ -259,6 +260,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-col
                     >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
@@ -303,6 +305,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -349,6 +352,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -395,6 +399,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -437,10 +442,11 @@
             <el-tab-pane label="WebView组件风险">
               <el-collapse v-model="detailListItem.titleCode0010.activeNames">
                 <el-collapse-item
-                  v-for="(item, index) in detailListItem.titleCode12"
+                  v-for="(item, index) in detailListItem.titleCode0012"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -487,6 +493,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -533,6 +540,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -579,6 +587,7 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
+                  :class="getClass(item.riskGroup)"
                 >
                   <el-row
                     ><el-col
@@ -660,6 +669,18 @@ export default {
   methods: {
     back() {
       this.$router.back();
+    },
+    //得到风险等级
+    getClass(riskGroup) {
+      if (riskGroup == "高危") {
+        return "dangerInfoItem";
+      } else if (riskGroup == "中危") {
+        return "mediumInfoItem";
+      } else if (riskGroup == "低危") {
+        return "lowInfoItem";
+      } else {
+        return "na";
+      }
     }
     /*  downloadReport() {
       const id = this.$route.query.id;
@@ -758,12 +779,24 @@ pre {
 .detectorMessage .el-row:not(:last-child) {
   border-bottom: 1px solid rgb(230, 230, 230);
 }
-.el-collapse-item__header {
+.iOSBody .el-collapse-item__header {
   font-size: 17px;
   background: #f2f5f7;
   color: #515a6e;
   font-size: 14px;
   padding-left: 10px;
+}
+.iOSBody .dangerInfoItem .el-collapse-item__header {
+  background: #fbc6c6;
+}
+.iOSBody .mediumInfoItem .el-collapse-item__header {
+  background: rgb(237, 125, 49);
+}
+.iOSBody .lowInfoItem .el-collapse-item__header {
+  background: rgb(255, 188, 147);
+}
+.iOSBody .na .el-collapse-item__header {
+  background: rgb(0, 212, 235);
 }
 .el-table {
   font-size: 12px;
