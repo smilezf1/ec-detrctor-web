@@ -104,52 +104,51 @@
             </el-row>
           </div>
         </div>
-
         <div class="detectorMessage">
           <el-tabs type="border-card" v-if="detailListItem">
             <!-- 基本信息 -->
-            <el-tab-pane label="基本信息">
-              <el-row>
-                <!-- #606266 -->
-                <el-col :span="12"
-                  >应用名称:&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    listItem.appInfo.appName
-                  }}</el-col
-                >
-                <el-col :span="12"
-                  >包名:&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    listItem.appInfo.appPackage
-                  }}</el-col
+            <el-tab-pane label="基本信息" class="appInfo">
+              <el-row type="flex">
+                <el-col :span="1"><span>应用名称</span></el-col>
+                <el-col :span="21"
+                  ><span>{{ listItem.appInfo.appName }}</span></el-col
                 >
               </el-row>
-              <el-row>
-                <el-col :span="12"
-                  >版本信息:&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    listItem.appInfo.appVersion
-                  }}</el-col
-                >
-                <el-col :span="12"
-                  >文件大小:&nbsp;&nbsp;&nbsp;&nbsp;
-                  {{ listItem.appInfo.appMbyte }}MB</el-col
-                >
-              </el-row>
-              <el-row>
-                <el-col :span="12"
-                  >文件MD5:&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    listItem.appInfo.md5
-                  }}</el-col
-                >
-                <el-col :span="12"
-                  >加固厂商:&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    listItem.appInfo.dealer
-                  }}</el-col
+              <el-row type="flex">
+                <el-col :span="1"><span>包名</span></el-col>
+                <el-col :span="21"
+                  ><span>{{ listItem.appInfo.appPackage }}</span></el-col
+                ></el-row
+              >
+              <el-row type="flex">
+                <el-col :span="1"><span>版本信息</span></el-col>
+                <el-col :span="21"
+                  ><span>{{ listItem.appInfo.appVersion }}</span></el-col
                 >
               </el-row>
-              <el-row style="display:flex;align-items:center">
-                <el-col :span="1.5">签名信息:&nbsp;&nbsp;&nbsp;&nbsp;</el-col>
-                <el-col :span="20.5">
-                  <pre>{{ listItem.appInfo.signature }}</pre>
-                </el-col>
+              <el-row type="flex">
+                <el-col :span="1"><span>文件大小</span></el-col>
+                <el-col :span="21"
+                  ><span>{{ listItem.appInfo.appMbyte }}</span></el-col
+                >
+              </el-row>
+              <el-row type="flex">
+                <el-col :span="1"><span>文件MD5</span></el-col>
+                <el-col :span="21"
+                  ><span>{{ listItem.appInfo.md5 }}</span></el-col
+                >
+              </el-row>
+              <el-row type="flex">
+                <el-col :span="1"><span>加固厂商</span></el-col>
+                <el-col :span="21"
+                  ><span>{{ listItem.appInfo.dealer }}</span></el-col
+                >
+              </el-row>
+              <el-row type="flex">
+                <el-col :span="1"><span>签名信息</span></el-col>
+                <el-col :span="21"
+                  ><span>{{ listItem.appInfo.signature }}</span></el-col
+                >
               </el-row>
             </el-tab-pane>
             <el-tab-pane label="应用权限列表">
@@ -209,7 +208,8 @@
               </el-table>
             </el-tab-pane>
             <el-tab-pane label="应用代码安全评测 ">
-              <el-collapse v-model="detailListItem.titleCode005.activeNames">
+              <!-- v-model="detailListItem.titleCode005.activeNames" -->
+              <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode005"
                   :key="item.id"
@@ -217,44 +217,52 @@
                   :name="index"
                   :class="getClass(item.riskGroup)"
                 >
-                  <el-row>
-                    <el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="1.5">评测过程:</el-col>
-                    <el-col :span="20.5"
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
                       ><pre>{{ item.detectionDetail }}</pre></el-col
                     >
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测依据:</el-col>
-                    <el-col :span="20.5"
-                      ><pre>{{ item.riskReason }}</pre></el-col
-                    >
-                  </el-row>
-                  <el-row>
-                    <el-col :span="1">评测描述:</el-col>
-                    <el-col :span="20">{{ item.riskDesc }}</el-col>
-                  </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测结果:</el-col>
-                    <el-col :span="20.5" style="margin-left:10px">
-                      <pre>{{ item.resultDesc }}</pre>
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
+                      <pre>{{ item.riskReason }}</pre>
                     </el-col>
                   </el-row>
-                  <el-col>解决方案:{{ item.solution }}</el-col>
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="应用调试安全评测">
-              <el-collapse v-model="detailListItem.titleCode006.activeNames">
+              <!-- v-model="detailListItem.titleCode006.activeNames" -->
+              <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode006"
                   :key="item.id"
@@ -262,44 +270,52 @@
                   :name="index"
                   :class="getClass(item.riskGroup)"
                 >
-                  <el-col
-                    >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="1.5">评测过程:</el-col>
-                    <el-col :span="20.5"
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
                       ><pre>{{ item.detectionDetail }}</pre></el-col
                     >
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测依据:</el-col>
-                    <el-col :span="20.5"
-                      ><pre>{{ item.riskReason }}</pre></el-col
-                    >
-                  </el-row>
-                  <el-row>
-                    <el-col :span="1">评测描述:</el-col>
-                    <el-col :span="20">{{ item.riskDesc }}</el-col>
-                  </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测结果:</el-col>
-                    <el-col :span="20.5" style="margin-left:10px">
-                      <pre>{{ item.resultDesc }}</pre>
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
+                      <pre>{{ item.riskReason }}</pre>
                     </el-col>
                   </el-row>
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="应用运行环境评测">
-              <el-collapse v-model="detailListItem.titleCode007.activeNames">
+              <!-- v-model="detailListItem.titleCode007.activeNames" -->
+              <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode007"
                   :key="item.id"
@@ -307,46 +323,52 @@
                   :name="index"
                   :class="getClass(item.riskGroup)"
                 >
-                  <el-row
-                    ><el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="1.5">评测过程:</el-col>
-                    <el-col :span="20.5"
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
                       ><pre>{{ item.detectionDetail }}</pre></el-col
                     >
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测依据:</el-col>
-                    <el-col :span="20.5"
-                      ><pre>{{ item.riskReason }}</pre></el-col
-                    >
-                  </el-row>
-                  <el-row>
-                    <el-col :span="1">评测描述:</el-col>
-                    <el-col :span="20">{{ item.riskDesc }}</el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="1.5">评测结果:</el-col>
-                    <el-col :span="20.5" style="margin-left:10px">
-                      <pre>{{ item.resultDesc }}</pre>
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
+                      <pre>{{ item.riskReason }}</pre>
                     </el-col>
                   </el-row>
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="数据存储安全评测">
-              <el-collapse v-model="detailListItem.titleCode008.activeNames">
+              <!-- v-model="detailListItem.titleCode008.activeNames" -->
+              <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode008"
                   :key="item.id"
@@ -354,46 +376,52 @@
                   :name="index"
                   :class="getClass(item.riskGroup)"
                 >
-                  <el-row
-                    ><el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="1.5">评测过程:</el-col>
-                    <el-col :span="20.5"
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
                       ><pre>{{ item.detectionDetail }}</pre></el-col
                     >
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测依据:</el-col>
-                    <el-col :span="20.5">
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
                       <pre>{{ item.riskReason }}</pre>
                     </el-col>
                   </el-row>
-                  <el-row>
-                    <el-col :span="1">评测描述:</el-col>
-                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测结果:</el-col>
-                    <el-col :span="20.5" style="margin-left:10px">
-                      <pre>{{ item.resultDesc }}</pre>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
                     </el-col>
                   </el-row>
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="加密算法安全评测">
-              <el-collapse v-model="detailListItem.titleCode009.activeNames">
+              <!-- v-model="detailListItem.titleCode009.activeNames" -->
+              <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode009"
                   :key="item.id"
@@ -401,46 +429,52 @@
                   :name="index"
                   :class="getClass(item.riskGroup)"
                 >
-                  <el-row
-                    ><el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="1.5">评测过程:</el-col>
-                    <el-col :span="20.5"
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
                       ><pre>{{ item.detectionDetail }}</pre></el-col
                     >
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测依据:</el-col>
-                    <el-col :span="20.5"
-                      ><pre>{{ item.riskReason }}</pre></el-col
-                    >
-                  </el-row>
-                  <el-row>
-                    <el-col :span="1">评测描述:</el-col>
-                    <el-col :span="20">{{ item.riskDesc }}</el-col>
-                  </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测结果:</el-col>
-                    <el-col :span="20.5" style="margin-left:10px">
-                      <pre>{{ item.resultDesc }}</pre>
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
+                      <pre>{{ item.riskReason }}</pre>
                     </el-col>
                   </el-row>
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="WebView组件风险">
-              <el-collapse v-model="detailListItem.titleCode0010.activeNames">
+              <!-- v-model="detailListItem.titleCode0010.activeNames" -->
+              <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode0012"
                   :key="item.id"
@@ -448,46 +482,52 @@
                   :name="index"
                   :class="getClass(item.riskGroup)"
                 >
-                  <el-row
-                    ><el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="1.5">评测过程:</el-col>
-                    <el-col :span="20.5"
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
                       ><pre>{{ item.detectionDetail }}</pre></el-col
                     >
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测依据:</el-col>
-                    <el-col :span="20.5"
-                      ><pre>{{ item.riskReason }}</pre></el-col
-                    >
-                  </el-row>
-                  <el-row>
-                    <el-col :span="1">评测描述:</el-col>
-                    <el-col :span="20">{{ item.riskDesc }}</el-col>
-                  </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测结果:</el-col>
-                    <el-col :span="20.5" style="margin-left:10px">
-                      <pre>{{ item.resultDesc }}</pre>
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
+                      <pre>{{ item.riskReason }}</pre>
                     </el-col>
                   </el-row>
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="数据输入/输出安全评测">
-              <el-collapse v-model="detailListItem.titleCode0011.activeNames">
+            <!-- v-model="detailListItem.titleCode0011.activeNames" -->
+              <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode0011"
                   :key="item.id"
@@ -495,46 +535,52 @@
                   :name="index"
                   :class="getClass(item.riskGroup)"
                 >
-                  <el-row
-                    ><el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="1.5">评测过程:</el-col>
-                    <el-col :span="20.5"
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
                       ><pre>{{ item.detectionDetail }}</pre></el-col
                     >
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测依据:</el-col>
-                    <el-col :span="20.5"
-                      ><pre>{{ item.riskReason }}</pre></el-col
-                    >
-                  </el-row>
-                  <el-row>
-                    <el-col :span="1">评测描述:</el-col>
-                    <el-col :span="20">{{ item.riskDesc }}</el-col>
-                  </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测结果:</el-col>
-                    <el-col :span="20.5" style="margin-left:10px">
-                      <pre>{{ item.resultDesc }}</pre>
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
+                      <pre>{{ item.riskReason }}</pre>
                     </el-col>
                   </el-row>
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="通讯传输安全评测">
-              <el-collapse v-model="detailListItem.titleCode0012.activeNames">
+              <!-- v-model="detailListItem.titleCode0012.activeNames" -->
+              <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode0012"
                   :key="item.id"
@@ -542,46 +588,52 @@
                   :name="index"
                   :class="getClass(item.riskGroup)"
                 >
-                  <el-row
-                    ><el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="1.5">评测过程:</el-col>
-                    <el-col :span="20.5"
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
                       ><pre>{{ item.detectionDetail }}</pre></el-col
                     >
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测依据:</el-col>
-                    <el-col :span="20.5"
-                      ><pre>{{ item.riskReason }}</pre></el-col
-                    >
-                  </el-row>
-                  <el-row>
-                    <el-col :span="1">评测描述:</el-col>
-                    <el-col :span="20">{{ item.riskDesc }}</el-col>
-                  </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测结果:</el-col>
-                    <el-col :span="20.5" style="margin-left:10px">
-                      <pre>{{ item.resultDesc }}</pre>
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
+                      <pre>{{ item.riskReason }}</pre>
                     </el-col>
                   </el-row>
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="安全漏洞评测">
-              <el-collapse v-model="detailListItem.titleCode0013.activeNames">
+              <!-- v-model="detailListItem.titleCode0013.activeNames" -->
+              <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode0013"
                   :key="item.id"
@@ -589,41 +641,46 @@
                   :name="index"
                   :class="getClass(item.riskGroup)"
                 >
-                  <el-row
-                    ><el-col
-                      >评测目的:&nbsp;&nbsp;{{ item.detectionPurpose }}</el-col
-                    ></el-row
-                  >
-                  <el-row
-                    ><el-col
-                      >评测等级:&nbsp;&nbsp;{{ item.riskGroup }}</el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="1.5">评测过程:</el-col>
-                    <el-col :span="20.5">
-                      <pre>{{ item.detectionDetail }}</pre>
-                    </el-col>
-                  </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测依据:</el-col>
-                    <el-col :span="20.5"
-                      ><pre>{{ item.riskReason }}</pre></el-col
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
                     >
                   </el-row>
-                  <el-row>
-                    <el-col :span="1">评测描述:</el-col>
-                    <el-col :span="20">{{ item.riskDesc }}</el-col>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
                   </el-row>
-                  <el-row style="display:flex;align-items:center">
-                    <el-col :span="1.5">评测结果:</el-col>
-                    <el-col :span="20.5" style="margin-left:10px">
-                      <pre>{{ item.resultDesc }}</pre>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
+                      <pre>{{ item.riskReason }}</pre>
                     </el-col>
                   </el-row>
-                  <el-row
-                    ><el-col>解决方案:{{ item.solution }}</el-col></el-row
-                  >
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
@@ -725,6 +782,7 @@ pre {
 }
 .applicationMessageHeaderRight {
   float: right;
+  font-size: 13px;
 }
 .applicationMessageHeaderRight > span {
   margin-right: 10px;
@@ -746,13 +804,16 @@ pre {
   font-weight: 700;
   font-size: 40px;
 }
+.applicationMessageBody .imgBox img {
+  width: 100px;
+}
 .applicationMessageBody .el-row {
   display: flex;
   align-items: center;
 }
 .applicationMessageBody .appInfoImg {
-  width: 112px;
-  height: 112px;
+  width: 60px;
+  height: 60px;
 }
 .applicationMessageBody .appBox {
   display: inline-block;
@@ -776,14 +837,51 @@ pre {
   font-size: 14px;
   line-height: 20px;
 }
+.detectorMessage .el-collapse-item__content,
+.detectorMessage .detectorMessage .el-tabs__content {
+  font-family: 微软雅黑;
+  padding-bottom: 0px;
+  border-left: 1px solid rgb(230, 230, 230);
+  border-right: 1px solid rgb(230, 230, 230);
+}
+.detectorMessage .el-collapse-item__content .el-row .el-col:first-of-type {
+  display: flex;
+ /*  text-align: left;
+  justify-content: center; */
+  align-items: center;
+  font-weight: bolder;
+  color: rgb(0, 0, 0);
+  font-size: 12px;
+  border-right: 1px solid rgb(230, 230, 230);
+}
+.detectorMessage .el-collapse-item__content .el-row .el-col:last-of-type {
+  margin-left: 15px;
+  font-size: 12px;
+  color: #525252;
+}
+.detectorMessage .el-tabs__content .el-row .el-col:first-of-type {
+  display: flex;
+  align-items: center;
+  font-weight: bolder;
+  color: rgb(0, 0, 0);
+  font-size: 12px;
+  border-right: 1px solid rgb(230, 230, 230);
+}
+.detectorMessage .el-tabs__content .el-row .el-col:last-of-type {
+  margin-left: 15px;
+  font-size: 12px;
+  color: #525252;
+}
+.detectorMessage .el-tabs--border-card > .el-tabs__content .appInfo {
+  border: 1px solid rgb(220, 222, 226);
+}
 .detectorMessage .el-row:not(:last-child) {
   border-bottom: 1px solid rgb(230, 230, 230);
 }
 .iOSBody .el-collapse-item__header {
   font-size: 17px;
   background: #f2f5f7;
-  color: #515a6e;
-  font-size: 14px;
+  font-size: 12px;
   padding-left: 10px;
 }
 .iOSBody .dangerInfoItem .el-collapse-item__header {
@@ -798,22 +896,22 @@ pre {
 .iOSBody .na .el-collapse-item__header {
   background: rgb(0, 212, 235);
 }
-.el-table {
+.iOSBody .el-table {
   font-size: 12px;
   border: 1px solid #dcdee2;
   border-bottom: 1px solid transparent;
 }
-.el-table thead {
+ .iOSBody .el-table thead {
   color: #515a6e !important;
   font-weight: 700;
 }
-.el-table__header-wrapper {
+ .iOSBody .el-table__header-wrapper {
   background: #f8f8f9;
 }
-.el-table__header-wrapper th {
+.iOSBody .el-table__header-wrapper th {
   background: #f2f5f7;
 }
-.el-table ::before {
+.iOSBody .el-table ::before {
   background: white;
 }
 </style>

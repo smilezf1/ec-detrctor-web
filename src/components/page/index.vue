@@ -167,8 +167,8 @@ export default {
   vertical-align: middle;
 }
 .indexBody .detectionStatusimg {
-  width: 33px;
-  height: 33px;
+  width: 25px;
+  height: 25px;
   border-radius: 3px;
   vertical-align: middle;
 }
