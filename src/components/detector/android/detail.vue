@@ -1,4 +1,3 @@
-/*
 <template>
   <div class="androidDetail">
     <div class="androidDetailHeader">
@@ -8,19 +7,11 @@
       <el-button type="primary" size="small" class="back" @click="back()"
         >返回</el-button
       >
-      <!--   <el-button
-        type="primary"
-        size="small"
-        class="downloadReport"
-        @click="downloadReport()"
-        icon="el-icon-download"
-        >下载报告</el-button
-      > -->
     </div>
     <div class="androidBody">
-      <!-- 应用信息 -->
       <template v-if="listItem">
         <div class="applicationMessage">
+          <!-- 应用信息 -->
           <div class="applicationMessageHeader">
             <div class="applicationMessageHeaderLeft">
               <span class="title">应用信息</span>
@@ -56,7 +47,7 @@
               <el-col :span="5">
                 <div class="imgBox">
                   <img src="../../../assets/tested.png" />
-                  <cite style="color:#00d4eb">
+                  <cite style="color:#11C2D6">
                     <span v-if="listItem.countDto">
                       {{ listItem.countDto.score }}
                     </span>
@@ -105,8 +96,41 @@
             </el-row>
           </div>
         </div>
+        <!-- 检测结果 -->
+        <div class="detectorResult">
+          <div class="searchForm">
+            <div class="searchBox">
+              <el-form :model="searchForm">
+                <el-autocomplete
+                  v-model="searchForm.detectorKeyword"
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="请输入检测项关键字"
+                  size="small"
+                ></el-autocomplete>
+                <el-select size="small" v-model="searchForm.status">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.isCompliance"
+                    :label="item.label"
+                    :value="item.isCompliance"
+                  ></el-option>
+                </el-select>
+              </el-form>
+            </div>
+            <div class="operateBox">
+              <el-button type="primary" size="small" @click="search(searchForm)"
+                >查询</el-button
+              >
+            </div>
+          </div>
+        </div>
         <div class="detectorMessage">
-          <el-tabs type="border-card" v-if="detailListItem">
+          <el-tabs
+            type="border-card"
+            v-if="detailListItem"
+            v-loading="loading"
+            element-loading-text="拼命加载中"
+          >
             <!-- 基本信息 -->
             <el-tab-pane label="基本信息" class="appInfo">
               <el-row type="flex">
@@ -160,21 +184,24 @@
                   width="80"
                 ></el-table-column>
                 <el-table-column
-                  prop="permissionDesc"
-                  label="权限描述"
-                ></el-table-column>
-                <el-table-column
                   prop="permissionName"
                   label="权限名称"
+                  width="450"
+                  show-overflow-tooltip
                 ></el-table-column>
                 <el-table-column
                   prop="sensitiveLevel"
                   label="敏感等级"
+                  width="200"
+                ></el-table-column>
+                <el-table-column
+                  prop="permissionDesc"
+                  label="权限描述"
                 ></el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane label="敏感行为评测">
-              <el-table :data="detailListItem.sensitiveList">
+              <!--  <el-table :data="detailListItem.sensitiveList">
                 <el-table-column type="index" label="序号" width="80">
                 </el-table-column>
                 <el-table-column
@@ -191,7 +218,57 @@
                   label="	
 评测结果"
                 ></el-table-column>
-              </el-table>
+              </el-table> -->
+              <el-collapse>
+                <el-collapse-item
+                  v-for="(item, index) in detailListItem.titleCode03"
+                  :key="item.id"
+                  :title="item.name"
+                  :name="index"
+                  :class="getClass(item.riskGroup)"
+                >
+                  <el-row type="flex">
+                    <el-col :span="1"> <span>评测目的</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>评测等级</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.detectionPurpose }}</span></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测过程</el-col>
+                    <el-col :span="21"
+                      ><pre>{{ item.detectionDetail }}</pre></el-col
+                    >
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测依据</el-col>
+                    <el-col :span="21">
+                      <pre>{{ item.riskReason }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测描述</el-col>
+                    <el-col :span="21">{{ item.riskDesc }}</el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1">评测结果</el-col>
+                    <el-col :span="21" style="margin-left:10px">
+                      <pre> {{ item.resultDesc }}</pre>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex">
+                    <el-col :span="1"><span>解决方案</span></el-col>
+                    <el-col :span="21"
+                      ><span>{{ item.solution }}</span></el-col
+                    >
+                  </el-row>
+                </el-collapse-item>
+              </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="第三方SDK统计">
               <el-table :data="detailListItem.sdkList">
@@ -203,9 +280,23 @@
                 <el-table-column
                   label="SDK名称"
                   prop="sdkName"
+                  width="250"
+                  show-overflow-tooltip
                 ></el-table-column>
-                <el-table-column label="标识" prop="sdkMark"></el-table-column>
-                <el-table-column label="行为" prop="sdkDesc"></el-table-column>
+                <el-table-column
+                  label="标识"
+                  prop="sdkMark"
+                  width="250"
+                  show-overflow-tooltip
+                ></el-table-column>
+                <el-table-column
+                  label="SDK类型"
+                  prop="sdkType"
+                  width="100"
+                  show-overflow-tooltip
+                ></el-table-column>
+                <el-table-column label="地址" prop="sdkLink"></el-table-column>
+                <el-table-column label="描述" prop="sdkDesc"></el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane label="恶意应用评测">
@@ -261,6 +352,7 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
+
             <el-tab-pane label="应用代码安全评测 ">
               <!-- detailListItem.titleCode06.activeNames -->
               <el-collapse>
@@ -857,34 +949,88 @@ export default {
   data() {
     return {
       listItem: null,
-      detailListItem: null
+      detailListItem: null,
+      searchForm: {
+        detectorKeyword: "",
+        status: "全部"
+      },
+      options: [
+        { label: "全部", isCompliance: 0 },
+        { label: "通过", isCompliance: 1 },
+        { label: "未通过", isCompliance: 2 }
+      ],
+      detectorKeyword: "",
+      detectorItemList: [],
+      timeout: "",
+      loading: false
     };
   },
+  created() {
+    this.getDetectorList(1);
+  },
   mounted() {
-    const id = this.$route.query.id;
+    const id = this.$route.query.id,
+      params = {
+        taskId: id,
+        terminalType: 1,
+        isCompliance: 0,
+        itemName: ""
+      };
     api.androidService.detailAndroidListById(id).then(res => {
       if (res.code == "00") {
         this.listItem = res.data;
       }
     });
-    api.androidService.detailItemAndroidListById(id, 1).then(res => {
-      if (res.code == "00") {
-        this.detailListItem = res.data;
-        let detailListItem = this.detailListItem;
-        for (let key in detailListItem) {
-          if (key.indexOf("titleCode") != -1) {
-            detailListItem[key].activeNames = [];
-            for (let i = 0; i < detailListItem[key].length; i++) {
-              detailListItem[key].activeNames.push(i);
-            }
-          }
-        }
-      }
-    });
+    this.getDetailItem(params);
   },
   methods: {
     back() {
       this.$router.back();
+    },
+    querySearchAsync(queryString, cb) {
+      let detectorItemList = this.detectorItemList,
+        results = queryString
+          ? detectorItemList.filter(this.createStateFilter(queryString))
+          : detectorItemList;
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(results);
+      }, 1000 * Math.random());
+    },
+    createStateFilter(queryString) {
+      return item => {
+        return item.value.indexOf(queryString) !== -1;
+      };
+    },
+    //得到检测项的所有数据
+    getDetectorList(terminalType) {
+      const detectorItemList = api.detectorStrategyService
+        .getDetectionItemList(terminalType)
+        .then(res => {
+          if (res.code == "00") {
+            let data = JSON.parse(
+              JSON.stringify(res.data).replace(/name/g, "value")
+            );
+            this.detectorItemList = data;
+          }
+        });
+    },
+    //得到检测详细数据
+    getDetailItem(params) {
+      api.androidService.detailItemAndroidListById(params).then(res => {
+        if (res.code == "00") {
+          this.detailListItem = res.data;
+          let detailListItem = this.detailListItem;
+          for (let key in detailListItem) {
+            if (key.indexOf("titleCode") != -1) {
+              detailListItem[key].activeNames = [];
+              for (let i = 0; i < detailListItem[key].length; i++) {
+                detailListItem[key].activeNames.push(i);
+              }
+            }
+          }
+        }
+      });
     },
     //得到风险等级
     getClass(riskGroup) {
@@ -897,11 +1043,24 @@ export default {
       } else {
         return "na";
       }
+    },
+    search(searchForm) {
+      this.loading = true;
+      if (searchForm.status == "全部") {
+        searchForm.status = 0;
+      }
+      const id = this.$route.query.id,
+        params = {
+          taskId: id,
+          terminalType: 1,
+          isCompliance: searchForm.status,
+          itemName: searchForm.detectorKeyword
+        };
+      this.getDetailItem(params);
+      setTimeout(() => {
+        this.loading = false;
+      }, 500);
     }
-    /*  downloadReport() {
-      const id = this.$route.query.id;
-      console.log("下载报告");
-    } */
   }
 };
 </script>
@@ -921,6 +1080,38 @@ pre {
 }
 .androidBody {
   margin-top: 15px;
+}
+.androidBody .el-icon-arrow-left,
+.androidBody .el-icon-arrow-right {
+  color: #517fc3;
+  font-weight: 700;
+  font-size: 18px;
+}
+.androidBody .el-tabs__nav-wrap.is-scrollable {
+  padding: 0 40px;
+}
+.androidBody .el-tabs__nav-prev {
+  left: 10px;
+}
+.androidBody .el-tabs__nav-next {
+  right: 10px;
+}
+.androidBody .searchForm {
+  display: flex;
+}
+.androidBody .searchForm .operateBox {
+  margin-left: 15px;
+}
+.androidBody .el-input {
+  width: auto;
+  margin-right: 15px;
+}
+.androidBody .detectorResult {
+  margin-top: 15px;
+}
+.androidBody .detectorResult .searchBox .el-form {
+  display: flex;
+  align-items: center;
 }
 .applicationMessage {
   border: 1px solid #e3e5e5;
@@ -990,14 +1181,12 @@ pre {
 .detectorMessage {
   margin-top: 15px;
 }
-
 .detectorMessage .el-col {
   padding: 10px 0;
   color: #606266;
   font-size: 14px;
   line-height: 20px;
 }
-
 .detectorMessage .el-collapse-item__content,
 .detectorMessage .detectorMessage .el-tabs__content {
   font-family: 微软雅黑;
@@ -1005,8 +1194,6 @@ pre {
 }
 .detectorMessage .el-collapse-item__content .el-row .el-col:first-of-type {
   display: flex;
-  /* text-align: left; */
-  /* justify-content: center; */
   align-items: center;
   font-weight: bolder;
   color: rgb(0, 0, 0);
@@ -1020,8 +1207,6 @@ pre {
 }
 .detectorMessage .el-tabs__content .el-row .el-col:first-of-type {
   display: flex;
-  /* text-align: left; */
-  /* justify-content: center; */
   align-items: center;
   font-weight: bolder;
   color: rgb(0, 0, 0);

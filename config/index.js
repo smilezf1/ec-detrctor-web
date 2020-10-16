@@ -38,10 +38,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../ec-detector-web/index.html'),
+    index: path.resolve(__dirname, '../manxi-detector-web/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../ec-detector-web'),
+    assetsRoot: path.resolve(__dirname, '../manxi-detector-web'),
     assetsSubDirectory: 'static',
     assetsPublicPath: './',
     //assetsPublicPath: '/' 未打包前

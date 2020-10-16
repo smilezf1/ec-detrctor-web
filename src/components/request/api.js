@@ -70,8 +70,9 @@ let androidService = {
         return fetchGet("/detector/android/detail?id=" + params).then(res => res.data)
     },
     //检测具体结果
-    detailItemAndroidListById(id, terminalType) {
-        return fetchGet("/detector/android/itemDetail?id=" + id + "&terminalType=" + terminalType).then(res => res.data)
+    detailItemAndroidListById(params) {
+        /* return fetchGet("/detector/android/itemDetail?id=" + id + "&terminalType=" + terminalType + "&isCompliance=" + isCompliance).then(res => res.data) */
+        return fetchPost("/detector/android/itemDetail", params).then(res => res.data)
     },
     //保存应用并开始检测
     saveAndStartDetection(params) {
@@ -86,7 +87,6 @@ let androidService = {
 //检测项配置服务
 let detectorItemService = {
     findDetectionItemList(params) {
-
         return fetchPost("/api/detection/item/findDetectionItemPage", params).then(res => res.data)
 
     }

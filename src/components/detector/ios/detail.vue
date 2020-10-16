@@ -7,14 +7,6 @@
       <el-button type="primary" size="small" class="back" @click="back()"
         >返回</el-button
       >
-      <!--   <el-button
-        type="primary"
-        size="small"
-        class="downloadReport"
-        @click="downloadReport()"
-        icon="el-icon-download"
-        >下载报告</el-button
-      > -->
     </div>
     <div class="iOSBody">
       <!-- 应用信息 -->
@@ -55,7 +47,7 @@
               <el-col :span="5">
                 <div class="imgBox">
                   <img src="../../../assets/tested.png" />
-                  <cite style="color:#00d4eb">
+                  <cite style="color:#11C2D6">
                     <span v-if="listItem.countDto">
                       {{ listItem.countDto.score }}
                     </span>
@@ -104,8 +96,41 @@
             </el-row>
           </div>
         </div>
+        <!-- 检测结果 -->
+        <div class="detectorResult">
+          <div class="searchForm">
+            <div class="searchBox">
+              <el-form :model="searchForm">
+                <el-autocomplete
+                  v-model="searchForm.detectorKeyword"
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="请输入检测项关键字"
+                  size="small"
+                ></el-autocomplete>
+                <el-select size="small" v-model="searchForm.status">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.isCompliance"
+                    :label="item.label"
+                    :value="item.isCompliance"
+                  ></el-option>
+                </el-select>
+              </el-form>
+            </div>
+            <div class="operateBox">
+              <el-button type="primary" size="small" @click="search(searchForm)"
+                >查询</el-button
+              >
+            </div>
+          </div>
+        </div>
         <div class="detectorMessage">
-          <el-tabs type="border-card" v-if="detailListItem">
+          <el-tabs
+            type="border-card"
+            v-if="detailListItem"
+            v-loading="loading"
+            element-loading-text="拼命加载中"
+          >
             <!-- 基本信息 -->
             <el-tab-pane label="基本信息" class="appInfo">
               <el-row type="flex">
@@ -202,9 +227,23 @@
                 <el-table-column
                   label="SDK名称"
                   prop="sdkName"
+                  width="250"
+                  show-overflow-tooltip
                 ></el-table-column>
-                <el-table-column label="标识" prop="sdkMark"></el-table-column>
-                <el-table-column label="行为" prop="sdkDesc"></el-table-column>
+                <el-table-column
+                  label="标识"
+                  prop="sdkMark"
+                  width="250"
+                  show-overflow-tooltip
+                ></el-table-column>
+                <el-table-column
+                  label="SDK类型"
+                  prop="sdkType"
+                  width="100"
+                  show-overflow-tooltip
+                ></el-table-column>
+                <el-table-column label="地址" prop="sdkLink"></el-table-column>
+                <el-table-column label="描述" prop="sdkDesc"></el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane label="应用代码安全评测 ">
@@ -526,7 +565,7 @@
               </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="数据输入/输出安全评测">
-            <!-- v-model="detailListItem.titleCode0011.activeNames" -->
+              <!-- v-model="detailListItem.titleCode0011.activeNames" -->
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode0011"
@@ -697,35 +736,87 @@ export default {
   data() {
     return {
       listItem: null,
-      detailListItem: null
+      detailListItem: null,
+      searchForm: {
+        detectorKeyword: "",
+        status: "全部"
+      },
+      detectorItemList: [],
+      options: [
+        { label: "全部", isCompliance: 0 },
+        { label: "通过", isCompliance: 1 },
+        { label: "未通过", isCompliance: 2 }
+      ],
+      timeout: "",
+      loading: false
     };
   },
+  created() {
+    this.getDetectorList(2);
+  },
   mounted() {
-    const id = this.$route.query.id;
+    const id = this.$route.query.id,
+      params = {
+        taskId: id,
+        terminalType: 2,
+        isCompliance: 0,
+        itemName: ""
+      };
     api.androidService.detailAndroidListById(id).then(res => {
       if (res.code == "00") {
         this.listItem = res.data;
       }
     });
-    api.androidService.detailItemAndroidListById(id, 2).then(res => {
-      if (res.code == "00") {
-        this.detailListItem = res.data;
-        let detailListItem = this.detailListItem;
-        for (let key in detailListItem) {
-          if (key.indexOf("titleCode") != -1) {
-            detailListItem[key].activeNames = [];
-            for (let i = 0; i < detailListItem[key].length; i++) {
-              detailListItem[key].activeNames.push(i);
-            }
-          }
-        }
-        console.log(this.detailListItem, "详细数据");
-      }
-    });
+    this.getDetailItem(params);
   },
   methods: {
     back() {
       this.$router.back();
+    },
+    querySearchAsync(queryString, cb) {
+      let detectorItemList = this.detectorItemList,
+        results = queryString
+          ? detectorItemList.filter(this.createStateFilter(queryString))
+          : detectorItemList;
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(results);
+      }, 1000 * Math.random());
+    },
+    createStateFilter(queryString) {
+      return item => {
+        return item.value.indexOf(queryString) !== -1;
+      };
+    },
+    //得到检测项的所有数据
+    getDetectorList(terminalType) {
+      const detectorItemList = api.detectorStrategyService
+        .getDetectionItemList(terminalType)
+        .then(res => {
+          if (res.code == "00") {
+            let data = JSON.parse(
+              JSON.stringify(res.data).replace(/name/g, "value")
+            );
+            this.detectorItemList = data;
+          }
+        });
+    },
+    //得到检测详细数据
+    getDetailItem(params) {
+      api.androidService.detailItemAndroidListById(params).then(res => {
+        if (res.code == "00") {
+          this.detailListItem = res.data;
+          let detailListItem = this.detailListItem;
+          for (let key in detailListItem) {
+            if (key.indexOf("titleCode") != -1) {
+              detailListItem[key].activeNames = [];
+              for (let i = 0; i < detailListItem[key].length; i++) {
+                detailListItem[key].activeNames.push(i);
+              }
+            }
+          }
+        }
+      });
     },
     //得到风险等级
     getClass(riskGroup) {
@@ -738,11 +829,24 @@ export default {
       } else {
         return "na";
       }
+    },
+    search(searchForm) {
+      this.loading = true;
+      if (searchForm.status == "全部") {
+        searchForm.status = 0;
+      }
+      const id = this.$route.query.id,
+        params = {
+          taskId: id,
+          terminalType: 2,
+          isCompliance: searchForm.status,
+          itemName: searchForm.detectorKeyword
+        };
+      this.getDetailItem(params);
+      setTimeout(() => {
+        this.loading = false;
+      }, 500);
     }
-    /*  downloadReport() {
-      const id = this.$route.query.id;
-      console.log("下载报告");
-    } */
   }
 };
 </script>
@@ -762,6 +866,38 @@ pre {
 }
 .iOSBody {
   margin-top: 15px;
+}
+.iOSBody .el-icon-arrow-left,
+.iOSBody .el-icon-arrow-right {
+  color: #517fc3;
+  font-weight: 700;
+  font-size: 18px;
+}
+.iOSBody .el-tabs__nav-wrap.is-scrollable {
+  padding: 0 40px;
+}
+.iOSBody .el-tabs__nav-prev {
+  left: 10px;
+}
+.iOSBody .el-tabs__nav-next {
+  right: 10px;
+}
+.iOSBody .searchForm {
+  display: flex;
+}
+.iOSBody .searchForm .operateBox {
+  margin-left: 15px;
+}
+.iOSBody .el-input {
+  width: auto;
+  margin-right: 15px;
+}
+.iOSBody .detectorResult {
+  margin-top: 15px;
+}
+.iOSBody .detectorResult .searchBox .el-form {
+  display: flex;
+  align-items: center;
 }
 .applicationMessage {
   border: 1px solid #e3e5e5;
@@ -846,8 +982,6 @@ pre {
 }
 .detectorMessage .el-collapse-item__content .el-row .el-col:first-of-type {
   display: flex;
- /*  text-align: left;
-  justify-content: center; */
   align-items: center;
   font-weight: bolder;
   color: rgb(0, 0, 0);
@@ -866,6 +1000,7 @@ pre {
   color: rgb(0, 0, 0);
   font-size: 12px;
   border-right: 1px solid rgb(230, 230, 230);
+  margin-left: 20px;
 }
 .detectorMessage .el-tabs__content .el-row .el-col:last-of-type {
   margin-left: 15px;
@@ -901,11 +1036,11 @@ pre {
   border: 1px solid #dcdee2;
   border-bottom: 1px solid transparent;
 }
- .iOSBody .el-table thead {
+.iOSBody .el-table thead {
   color: #515a6e !important;
   font-weight: 700;
 }
- .iOSBody .el-table__header-wrapper {
+.iOSBody .el-table__header-wrapper {
   background: #f8f8f9;
 }
 .iOSBody .el-table__header-wrapper th {

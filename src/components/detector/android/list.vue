@@ -46,6 +46,7 @@
           ></el-date-picker>
         </el-form>
       </div>
+
       <div class="operateBox">
         <el-tooltip effect="dark" content="查询" placement="top-start">
           <el-button
@@ -311,29 +312,6 @@
             <template slot-scope="scope">
               <el-tooltip
                 effect="dark"
-                content="下载应用"
-                placement="top-start"
-              >
-                <i
-                  class="el-icon-download dowmloadApplicationIcon"
-                  @click="downloadApk(scope.row.taskId)"
-                ></i>
-              </el-tooltip>
-
-              <el-tooltip effect="dark" content="详情" placement="top-start">
-                <template v-if="scope.row.detectionStatus == 2">
-                  <i
-                    class="el-icon-tickets detailIcon"
-                    @click="detailTask(scope.row.taskId)"
-                  ></i>
-                </template>
-                <template v-else>
-                  <i class="el-icon-tickets disabledIcon"></i>
-                </template>
-              </el-tooltip>
-
-              <el-tooltip
-                effect="dark"
                 content="下载报告"
                 placement="top-start"
               >
@@ -386,7 +364,27 @@
                   </div>
                 </div>
               </el-drawer>
-
+              <el-tooltip effect="dark" content="详情" placement="top-start">
+                <template v-if="scope.row.detectionStatus == 2">
+                  <i
+                    class="el-icon-tickets detailIcon"
+                    @click="detailTask(scope.row.taskId)"
+                  ></i>
+                </template>
+                <template v-else>
+                  <i class="el-icon-tickets disabledIcon"></i>
+                </template>
+              </el-tooltip>
+              <el-tooltip
+                effect="dark"
+                content="下载应用"
+                placement="top-start"
+              >
+                <i
+                  class="el-icon-download dowmloadApplicationIcon"
+                  @click="downloadApk(scope.row.taskId)"
+                ></i>
+              </el-tooltip>
               <el-tooltip effect="dark" content="删除" placement="top-start">
                 <template v-if="scope.row.detectionStatus == 2">
                   <i
