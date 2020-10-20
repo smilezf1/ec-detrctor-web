@@ -172,12 +172,15 @@
               <el-row type="flex">
                 <el-col :span="1"><span>签名信息</span></el-col>
                 <el-col :span="21"
-                  ><span>{{ listItem.appInfo.signature }}</span></el-col
+                  ><pre>{{ listItem.appInfo.signature }}</pre></el-col
                 >
               </el-row>
             </el-tab-pane>
             <el-tab-pane label="应用权限列表">
-              <el-table :data="detailListItem.permissionList">
+              <el-table
+                :data="permissionListTableData"
+                v-if="permissionListTableData"
+              >
                 <el-table-column
                   type="index"
                   label="序号"
@@ -195,37 +198,31 @@
                   width="200"
                 ></el-table-column>
                 <el-table-column
+                  prop="permissionType"
+                  label="权限分类"
+                  width="200"
+                ></el-table-column>
+                <el-table-column
                   prop="permissionDesc"
                   label="权限描述"
                 ></el-table-column>
               </el-table>
             </el-tab-pane>
+
             <el-tab-pane label="敏感行为评测">
-              <!--  <el-table :data="detailListItem.sensitiveList">
-                <el-table-column type="index" label="序号" width="80">
-                </el-table-column>
-                <el-table-column
-                  prop="sensitiveItem"
-                  label="敏感行为项"
-                ></el-table-column>
-                <el-table-column
-                  prop="sensitiveDesc"
-                  label="	
-行为描述"
-                ></el-table-column>
-                <el-table-column
-                  prop="sensitiveResult"
-                  label="	
-评测结果"
-                ></el-table-column>
-              </el-table> -->
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode03"
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '敏感行为评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -255,16 +252,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -307,7 +313,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '恶意应用评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -337,23 +349,32 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
 
-            <el-tab-pane label="应用代码安全评测 ">
+            <el-tab-pane label="应用代码安全评测">
               <!-- detailListItem.titleCode06.activeNames -->
               <el-collapse>
                 <el-collapse-item
@@ -361,7 +382,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '应用代码安全评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -391,16 +418,27 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
-                    <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                    <el-col :span="21">
+                      <pre>{{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre v-html="item.solution">{{
+                        item.solution
+                      }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -414,7 +452,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '应用调试安全评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -444,16 +488,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -467,7 +520,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '应用运行环境评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -497,16 +556,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -520,7 +588,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '数据存储安全评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -550,16 +624,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -573,7 +656,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '加密算法安全评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -603,16 +692,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -626,7 +724,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '应用组件安全评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -656,16 +760,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -679,7 +792,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      'WebView组件风险'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -709,16 +828,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -732,7 +860,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '数据输入安全评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -762,16 +896,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -785,7 +928,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '数据输出安全评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -815,16 +964,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -838,7 +996,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '通讯传输安全评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -868,16 +1032,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -891,7 +1064,13 @@
                   :key="item.id"
                   :title="item.name"
                   :name="index"
-                  :class="getClass(item.riskGroup)"
+                  :class="
+                    getRiskGradeColor(
+                      item.result,
+                      item.riskGroup,
+                      '安全漏洞评测'
+                    )
+                  "
                 >
                   <el-row type="flex">
                     <el-col :span="1"> <span>评测目的</span></el-col>
@@ -921,16 +1100,25 @@
                     <el-col :span="1">评测描述</el-col>
                     <el-col :span="21">{{ item.riskDesc }}</el-col>
                   </el-row>
-                  <el-row type="flex">
+                  <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.resultDesc }}</pre>
+                      <pre> {{ item.result }}</pre>
+                      <el-image
+                        style="width:200px"
+                        :src="'data:image/png;base64,' + item.pic"
+                        :preview-src-list="[
+                          'data:image/png;base64,' + item.pic
+                        ]"
+                        v-if="item.pic"
+                      >
+                      </el-image>
                     </el-col>
                   </el-row>
                   <el-row type="flex">
                     <el-col :span="1"><span>解决方案</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.solution }}</span></el-col
+                      ><pre>{{ item.solution }}</pre></el-col
                     >
                   </el-row>
                 </el-collapse-item>
@@ -962,7 +1150,8 @@ export default {
       detectorKeyword: "",
       detectorItemList: [],
       timeout: "",
-      loading: false
+      loading: false,
+      permissionListTableData: []
     };
   },
   created() {
@@ -1021,6 +1210,7 @@ export default {
         if (res.code == "00") {
           this.detailListItem = res.data;
           let detailListItem = this.detailListItem;
+          this.getPermissionList(detailListItem.permissionList);
           for (let key in detailListItem) {
             if (key.indexOf("titleCode") != -1) {
               detailListItem[key].activeNames = [];
@@ -1032,16 +1222,47 @@ export default {
         }
       });
     },
+    //封装应用权限列表数据
+    getPermissionList(list) {
+      const data = [];
+      if (list.dangerous) {
+        data.push(...list.dangerous);
+      }
+      if (list.signature) {
+        data.push(...list.signature);
+      }
+      if (list.deprecated) {
+        data.push(...list.deprecated);
+      }
+      if (list.other) {
+        data.push(...list.other);
+      }
+      if (list.normal) {
+        data.push(...list.normal);
+      }
+      if (list.customer) {
+        data.push(...list.customer);
+      }
+      this.permissionListTableData = data;
+    },
     //得到风险等级
-    getClass(riskGroup) {
-      if (riskGroup == "高危") {
-        return "dangerInfoItem";
-      } else if (riskGroup == "中危") {
-        return "mediumInfoItem";
-      } else if (riskGroup == "低危") {
-        return "lowInfoItem";
+    getRiskGradeColor(result, riskGroup, name) {
+      if (result == "安全") {
+        return "none";
       } else {
-        return "na";
+        if (riskGroup == "高危") {
+          return "dangerInfoItem";
+        } else if (riskGroup == "中危") {
+          return "mediumInfoItem";
+        } else if (riskGroup == "低危") {
+          return "lowInfoItem";
+        } else {
+          if ((name = "敏感行为评测")) {
+            return "lowInfoItem";
+          } else {
+            return "none";
+          }
+        }
       }
     },
     search(searchForm) {
@@ -1066,7 +1287,9 @@ export default {
 </script>
 <style>
 pre {
+  display: inline-block;
   font-family: sans-serif;
+  margin-right: 10px;
 }
 .el-button--primary:hover,
 .el-button--primary {
@@ -1112,6 +1335,11 @@ pre {
 .androidBody .detectorResult .searchBox .el-form {
   display: flex;
   align-items: center;
+}
+.androidBody .evaluationResult .el-col:last-of-type {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
 }
 .applicationMessage {
   border: 1px solid #e3e5e5;
@@ -1242,7 +1470,7 @@ pre {
 .androidBody .lowInfoItem .el-collapse-item__header {
   background: rgb(255, 188, 147);
 }
-.androidBody .na .el-collapse-item__header {
+.androidBody .none .el-collapse-item__header {
   background: rgb(0, 212, 235);
 }
 .androidBody .el-collapse-item__wrap {
