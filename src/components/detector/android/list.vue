@@ -385,7 +385,7 @@
                   @click="downloadApk(scope.row.taskId)"
                 ></i>
               </el-tooltip>
-              <el-tooltip effect="dark" content="删除" placement="top-start">
+              <!--  <el-tooltip effect="dark" content="删除" placement="top-start">
                 <template v-if="scope.row.detectionStatus == 2">
                   <i
                     class="el-icon-delete deleteIcon"
@@ -396,6 +396,13 @@
                 <template v-else>
                   <i class="el-icon-delete  disabledIcon"></i>
                 </template>
+              </el-tooltip> -->
+              <el-tooltip effect="dark" content="删除" placement="top-start">
+                <i
+                  class="el-icon-delete deleteIcon"
+                  @click="deleteTask(scope.row.taskId)"
+                >
+                </i>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -599,7 +606,7 @@ export default {
               });
             }
             this.addTaskDrawer = false;
-            /* this.reload(); */
+            this.reload();
           });
       }
     },

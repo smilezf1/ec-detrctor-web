@@ -365,7 +365,8 @@
                   @click="downloadApk(scope.row.taskId)"
                 ></i>
               </el-tooltip>
-              <el-tooltip effect="dark" content="删除" placement="top-start">
+
+              <!-- <el-tooltip effect="dark" content="删除" placement="top-start">
                 <template v-if="scope.row.detectionStatus == 2">
                   <i
                     class="el-icon-delete deleteIcon"
@@ -376,6 +377,13 @@
                 <template v-else>
                   <i class="el-icon-delete  disabledIcon"></i>
                 </template>
+              </el-tooltip> -->
+              <el-tooltip effect="dark" content="删除" placement="top-start">
+                <i
+                  class="el-icon-delete deleteIcon"
+                  @click="deleteTask(scope.row.taskId)"
+                >
+                </i>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -588,6 +596,20 @@ export default {
       } else {
         this.addTaskDrawer = false;
       }
+    },
+    //删除任务
+    deleteTask(id) {
+      const _this = this;
+      new this.$messageTips(({ confirm }) => {
+        confirm({ content: "确定要删除应用及其所有检测记录?" });
+      }).then(res => {
+        api.androidService.deleteAndroidListById(id).then(res => {
+          if (res.code == "00") {
+            _this.$message({ type: "success", message: "删除成功" });
+            _this.reload();
+          }
+        });
+      });
     },
     //下载应用
     downloadApk(id) {
