@@ -4,10 +4,9 @@
     <sideBar></sideBar>
     <div class="content-box" :class="{ 'content-collapse': collapse }">
       <div class="content">
-        <keep-alive>
-          <router-view v-if="$route.meta.KeepAlive"></router-view>
+        <keep-alive :include="getCacheComponents">
+          <router-view></router-view>
         </keep-alive>
-        <router-view v-if="!$route.meta.KeepAlive"></router-view>
       </div>
     </div>
   </div>
@@ -18,6 +17,11 @@ import sideBar from "../common/sideBar";
 export default {
   name: "home",
   components: { Header, sideBar },
+  computed: {
+    getCacheComponents() {
+      return this.$store.state.cacheComponents;
+    }
+  },
   data() {
     return {
       collapse: false

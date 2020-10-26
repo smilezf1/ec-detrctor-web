@@ -317,12 +317,12 @@
               >
                 <template v-if="scope.row.detectionStatus == 2">
                   <i
-                    class="el-icon-sold-out downloadReportIcon"
+                    class="el-icon-download  downloadReportIcon"
                     @click="downloadReport(scope.row.taskId)"
                   ></i>
                 </template>
                 <template v-else>
-                  <i class="el-icon-sold-out disabledIcon "></i>
+                  <i class="el-icon-download disabledIcon "></i>
                 </template>
               </el-tooltip>
               <!-- 下载报告 -->
@@ -381,7 +381,7 @@
                 placement="top-start"
               >
                 <i
-                  class="el-icon-download dowmloadApplicationIcon"
+                  class="el-icon-sold-out  dowmloadApplicationIcon"
                   @click="downloadApk(scope.row.taskId)"
                 ></i>
               </el-tooltip>
@@ -685,11 +685,11 @@ export default {
       });
     }
   },
-  beforeRouteEnter(to, from, next) {
-    if (from.name == "androidDetail") {
-      to.meta.KeepAlive = true;
+  beforeRouteLeave(to, from, next) {
+    if (to.name == "androidDetail") {
+      this.$store.commit("getCacheComponents", ["android"]);
     } else {
-      to.meta.KeepAlive = false;
+      this.$store.commit("getCacheComponents", []);
     }
     next();
   }
@@ -755,7 +755,7 @@ export default {
   border-radius: 3px;
   vertical-align: middle;
 }
-.el-input {
+.android .el-input {
   width: auto;
 }
 .android .searchForm {

@@ -299,12 +299,12 @@
               >
                 <template v-if="scope.row.detectionStatus == 2">
                   <i
-                    class="el-icon-sold-out downloadReportIcon"
+                    class="el-icon-download downloadReportIcon"
                     @click="downloadReport(scope.row.taskId)"
                   ></i>
                 </template>
                 <template v-else>
-                  <i class="el-icon-sold-out disabledIcon "></i>
+                  <i class="el-icon-download  disabledIcon "></i>
                 </template>
               </el-tooltip>
               <!-- 下载报告 -->
@@ -361,7 +361,7 @@
                 placement="top-start"
               >
                 <i
-                  class="el-icon-download dowmloadApplicationIcon"
+                  class=" el-icon-sold-out dowmloadApplicationIcon"
                   @click="downloadApk(scope.row.taskId)"
                 ></i>
               </el-tooltip>
@@ -648,6 +648,15 @@ export default {
     cancelDownloadReport() {
       this.downloadReportDrawer = false;
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log(to.name);
+    if (to.name == "iosDetail") {
+      this.$store.commit("getCacheComponents", ["ios"]);
+    } else {
+      this.$store.commit("getCacheComponents", []);
+    }
+    next();
   }
 };
 </script>
@@ -676,7 +685,7 @@ export default {
   display: flex;
   align-items: center;
 }
-.el-input {
+.ios .el-input {
   width: auto;
 }
 .ios .searchForm {
