@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     userName() {
-      let userName = localStorage.getItem("userName");
+      const userName = localStorage.getItem("userName");
       return userName ? userName : this.name;
     }
   },

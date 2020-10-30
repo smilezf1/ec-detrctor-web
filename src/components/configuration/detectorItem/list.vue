@@ -312,9 +312,10 @@ export default {
       api.detectorItemService.findDetectionItemList(params).then(res => {
         if (res.code == "00") {
           const count = res.data.count,
-            number = params.pn,
+            { pn: number, limit: size, queryInfo } = params;
+          /* number = params.pn,
             size = params.limit,
-            queryInfo = params.queryInfo;
+            queryInfo = params.queryInfo; */
           this.listItem = res.data.items;
           this.curPage = number;
           this.limit = size;

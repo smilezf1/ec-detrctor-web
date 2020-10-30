@@ -476,11 +476,10 @@ export default {
       this.getDataItem(this.addPageInfo(params));
     },
     getDataItem(params) {
-      api.androidService.androidList(params).then(res => {
+      api.detectorAndroidService.androidList(params).then(res => {
         if (res.code == "00") {
           const count = res.data.count,
-            number = params.pn,
-            size = params.limit;
+            { pn: number, limit: size } = params;
           this.listItem = res.data.items;
           this.curpage = number;
           this.limit = size;
@@ -514,13 +513,13 @@ export default {
     },
     /* 上传任务开始 */
     uploadTaskFile(file) {
-      let params = new FormData(),
+      const params = new FormData(),
         _this = this;
       params.append("file", file.file);
       //进度条配置
-      let config = {
+      const config = {
         onUploadProgress: ProgressEvent => {
-          let progressPercent =
+          const progressPercent =
             ((ProgressEvent.loaded / ProgressEvent.total) * 100) | 0;
           file.onProgress({ percent: progressPercent });
         }
@@ -570,7 +569,7 @@ export default {
         }
       );
       if (allValid) {
-        api.androidService
+        api.detectorAndroidService
           .saveAndStartDetection(detectionStrategyDtoList)
           .then(res => {
             if (res.code == "00") {
@@ -603,7 +602,7 @@ export default {
       new this.$messageTips(({ confirm }) => {
         confirm({ content: "确定要删除应用及其所有检测记录?" });
       }).then(res => {
-        api.androidService.deleteAndroidListById(id).then(res => {
+        api.detectorAndroidService.deleteAndroidListById(id).then(res => {
           if (res.code == "00") {
             _this.$message({ type: "success", message: "删除成功" });
             _this.reload();
@@ -613,7 +612,7 @@ export default {
     },
     //下载应用
     downloadApk(id) {
-      let Authorization = localStorage.getItem("Authorization"),
+      const Authorization = localStorage.getItem("Authorization"),
         downloadUrl =
           this.api.baseUrl +
           "/detector/android/downloadApk?id=" +
@@ -629,20 +628,20 @@ export default {
     },
     //保存下载报告
     saveDownloadReport() {
-      const id = this.taskId;
-      const Authorization = localStorage.getItem("Authorization"),
-        isCompliance = this.addDownloadReportForm.isCompliance;
-      let downloadUrl =
-        this.api.baseUrl +
-        "/detector/android/downloadReport?id=" +
-        id +
-        "&isCompliance=" +
-        isCompliance +
-        "&Authorization=" +
-        Authorization;
+      const id = this.taskId,
+        Authorization = localStorage.getItem("Authorization"),
+        isCompliance = this.addDownloadReportForm.isCompliance,
+        downloadUrl =
+          this.api.baseUrl +
+          "/detector/android/downloadReport?id=" +
+          id +
+          "&isCompliance=" +
+          isCompliance +
+          "&Authorization=" +
+          Authorization;
       window.location.href = downloadUrl;
       this.downloadReportDrawer = false;
-      this.reload();
+      /* this.reload(); */
     },
     //取消下载报告
     cancelDownloadReport() {

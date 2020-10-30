@@ -415,8 +415,7 @@ export default {
       activeNames: [],
       terminalType: 1,
       allChecked: false,
-      selectedOptions: [],
-      xx: []
+      selectedOptions: []
     };
   },
   beforeMount() {
@@ -437,9 +436,7 @@ export default {
       api.detrctorTaskService.findStrategyPage(params).then(res => {
         if (res.code == "00") {
           const count = res.data.count,
-            number = params.pn,
-            size = params.limit,
-            queryInfo = params.queryInfo;
+            { pn: number, limit: size, queryInfo } = params;
           this.listItem = res.data.items;
           this.curPage = number;
           this.limit = size;
@@ -591,13 +588,12 @@ export default {
     },
     //全选 子项目subHandleCheckAllChange
     subHandleCheckAllChange(val, index) {
-      const terminalType = this.terminalType;
-      let tickCount = 0;
-      let selectedOptions = this.getSelectedOptions(
-        this.detectorTypeList[index].children,
-        val,
-        index
-      );
+      const terminalType = this.terminalType,
+        selectedOptions = this.getSelectedOptions(
+          this.detectorTypeList[index].children,
+          val,
+          index
+        );
       if (terminalType == 1) {
         this.detectorTypeList[index].selectedOptions = val
           ? selectedOptions
@@ -612,12 +608,7 @@ export default {
     //单独选
     //Android
     AndroidHandleCheckChange(val, index) {
-      let selectedOptions = this.getSelectedOptions(
-        this.detectorTypeList[index].children,
-        val,
-        index
-      );
-      let checkedCount = this.detectorTypeList[index].selectedOptions.length,
+      const checkedCount = this.detectorTypeList[index].selectedOptions.length,
         allOptionsLength = this.countArray(
           this.detectorAndroidItemOptions,
           index
@@ -629,12 +620,7 @@ export default {
     },
     //ios
     iosHandleCheckChange(val, index) {
-      let selectedOptions = this.getSelectedOptions(
-        this.detectorTypeList[index].children,
-        val,
-        index
-      );
-      let checkedCount = this.detectorTypeList[index].selectedOptions.length,
+      const checkedCount = this.detectorTypeList[index].selectedOptions.length,
         allOptionsLength = this.countArray(this.detectorIosItemOptions, index);
       this.detectorTypeList[index].isSubCheckedAll =
         checkedCount == allOptionsLength;
@@ -647,10 +633,8 @@ export default {
       array.forEach((v, i) => {
         if (checked) {
           this.selectedOptions.push(v.key);
-          this.xx.push(v.key);
         } else {
           this.selectedOptions = this.selectedOptions.splice(0, v.key);
-          this.xx = this.xx.splice(0, v.key);
         }
       });
       return this.selectedOptions;
@@ -758,19 +742,19 @@ export default {
     detail(id, type) {
       this.detectorStrategyDetailDrawer = true;
       const getDetectorTitleList = api.detectorStrategyService
-        .getDetectionItemTypeList(type)
-        .then(res => {
-          if (res.code == "00") {
-            return res.data;
-          }
-        });
-      const getDetectorDetailList = api.androidService
-        .getStrategyDetail(id)
-        .then(res => {
-          if (res.code == "00") {
-            return res.data;
-          }
-        });
+          .getDetectionItemTypeList(type)
+          .then(res => {
+            if (res.code == "00") {
+              return res.data;
+            }
+          }),
+        getDetectorDetailList = api.detectorAndroidService
+          .getStrategyDetail(id)
+          .then(res => {
+            if (res.code == "00") {
+              return res.data;
+            }
+          });
       Promise.all([getDetectorTitleList, getDetectorDetailList]).then(item => {
         this.detectorStrategyDetailItem = item[1];
         this.detectorStrategyDetailItem.children = this.getAllList(
@@ -872,7 +856,7 @@ export default {
 .detectorStrategy .el-form-item__label {
   text-align: left;
 }
-.addTaskDrawer .el-select-dropdown {
+.detectorStrategy .el-select-dropdown {
   position: absolute !important;
   top: 35px !important;
   left: 0 !important;

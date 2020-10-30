@@ -96,7 +96,7 @@
               :file-list="fileList"
               v-show="uploadShow"
               multiple
-              :limit="5"
+              :limit="20"
               :on-exceed="handleExceed"
               :on-progress="handleProgress"
               accept=".apk"
@@ -108,7 +108,7 @@
                 将文件拖到此处,或<em>点击上传</em>
               </div>
               <div class="el-upload_tip" slot="tip">
-                最多只能上传5个文件
+                最多只能上传20个文件
               </div>
             </el-upload>
             <div
@@ -129,6 +129,7 @@
                 :model="uploadForm[index]"
                 :rules="rules"
                 ref="uploadForm"
+                class="uploadForm"
               >
                 <el-collapse
                   v-model="activeNames"
@@ -162,6 +163,7 @@
                             v-model="uploadForm[index].detectorStrategyId"
                             placeholder="请选择检测策略"
                             size="small"
+                            :popper-append-to-body="false"
                           >
                             <el-option
                               v-for="item in detectorStrategyList"
@@ -188,6 +190,7 @@
         </el-drawer>
       </div>
     </div>
+
     <div class="androidBody">
       <template>
         <el-table
@@ -341,21 +344,42 @@
                   <h3>下载报告</h3>
                 </div>
                 <div class="el-drawer-content">
-                  <el-form :model="addDownloadReportForm">
-                    <el-form-item prop="isCompliance">
+                  <el-form>
+                    <el-form-item>
                       <label slot="label">报告模板:</label>
-                      <el-radio-group
-                        v-model="addDownloadReportForm.isCompliance"
-                      >
-                        <el-radio :label="0">全量报告</el-radio>
-                        <el-radio :label="2">整改报告</el-radio>
-                      </el-radio-group>
+                      <div style="margin-left:10%">
+                        <el-radio v-model="reportParameter" label="0"
+                          >全量报告</el-radio
+                        >
+                        <el-radio v-model="reportParameter" label="2"
+                          >整改报告</el-radio
+                        >
+                        <el-radio v-model="reportParameter" label="3"
+                          >山东网安报告(详细)</el-radio
+                        >
+                        <el-radio v-model="reportParameter" label="4"
+                          >山东网安报告(简版)</el-radio
+                        >
+                        <el-radio v-model="reportParameter" label="5"
+                          >上海网安检测报告</el-radio
+                        >
+                        <el-radio v-model="reportParameter" label="6"
+                          >上海网安检测报告(水印)</el-radio
+                        >
+                      </div>
+                    </el-form-item>
+                    <el-form-item>
+                      <label slot="label">报告类型:</label>
+                      <el-radio v-model="reportType" :label="2">PDF </el-radio>
+                      <el-radio v-model="reportType" :label="1">WORD</el-radio>
                     </el-form-item>
                   </el-form>
                 </div>
                 <div class="el-drawer-footer">
                   <div class="buttonBox" style="display:inline-block">
-                    <el-button type="primary" @click="saveDownloadReport()"
+                    <el-button
+                      type="primary"
+                      @click="saveDownloadReport(reportParameter)"
                       >保存</el-button
                     >
                     <el-button @click="cancelDownloadReport()" plain
@@ -385,18 +409,6 @@
                   @click="downloadApk(scope.row.taskId)"
                 ></i>
               </el-tooltip>
-              <!--  <el-tooltip effect="dark" content="删除" placement="top-start">
-                <template v-if="scope.row.detectionStatus == 2">
-                  <i
-                    class="el-icon-delete deleteIcon"
-                    @click="deleteTask(scope.row.taskId)"
-                  >
-                  </i>
-                </template>
-                <template v-else>
-                  <i class="el-icon-delete  disabledIcon"></i>
-                </template>
-              </el-tooltip> -->
               <el-tooltip effect="dark" content="删除" placement="top-start">
                 <i
                   class="el-icon-delete deleteIcon"
@@ -409,6 +421,7 @@
         </el-table>
       </template>
     </div>
+
     <div class="androidBase">
       <pagination @pageChanged="onPageChanged"></pagination>
     </div>
@@ -425,6 +438,8 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      reportParameter: "0",
+      reportType: 2,
       pickOptionsStart: {
         disabledDate: time => {
           return (
@@ -450,6 +465,7 @@ export default {
         minDetectionTime: "",
         maxDetectionTime: ""
       },
+
       rules: {
         detectorStrategyId: [
           {
@@ -458,9 +474,6 @@ export default {
             trigger: "blur"
           }
         ]
-      },
-      addDownloadReportForm: {
-        isCompliance: 0
       },
       detectionStatusOptions: [
         { value: "0", label: "等待检测" },
@@ -493,6 +506,15 @@ export default {
     getLoadingNum: function() {
       return (this.loadingNum =
         this.uploadTaskNum - this.uploadTaskFileItem.length);
+    },
+    getParameter() {
+      return reportParameter => {
+        if (reportParameter <= 2) {
+          return { isCompliance: reportParameter };
+        } else {
+          return { isCompliance: 2, reportDesignId: reportParameter };
+        }
+      };
     }
   },
   methods: {
@@ -503,11 +525,10 @@ export default {
       this.getDataItem(this.addPageInfo(params));
     },
     getDataItem(params) {
-      api.androidService.androidList(params).then(res => {
+      api.detectorAndroidService.androidList(params).then(res => {
         if (res.code == "00") {
           const count = res.data.count,
-            number = params.pn,
-            size = params.limit;
+            { pn: number, limit: size } = params;
           this.listItem = res.data.items;
           this.curpage = number;
           this.limit = size;
@@ -518,35 +539,35 @@ export default {
     },
     //限制文件上传的数量
     handleExceed(file, fileList) {
-      this.$message.warning("最多只能上传5个文件哦");
+      this.$message.warning("最多只能上传20个文件哦");
     },
     handleProgress(event, file, fileList) {
       this.uploadTaskNum = fileList.length;
     },
     //上传任务开始----
     uploadTaskFile(file) {
-      let params = new FormData(),
+      const params = new FormData(),
         _this = this;
       params.append("file", file.file);
       //进度条配置
-      let config = {
+      const config = {
         onUploadProgress: ProgressEvent => {
-          let progressPercent =
+          const progressPercent =
             ((ProgressEvent.loaded / ProgressEvent.total) * 100) | 0;
           file.onProgress({ percent: progressPercent });
         }
       };
+      api.detrctorTaskService.findStrategyList(1).then(res => {
+        if (res.code == "00") {
+          this.detectorStrategyList = res.data;
+        }
+      });
       api.uploadService.uploadFile(params, config).then(res => {
         if (res.code == "00") {
           this.uploadForm.push({ detectorStrategyId: "" });
           _this.uploadTaskFileItem.push(res.data);
           _this.uploadShow = false;
-          api.detrctorTaskService.findStrategyList(1).then(res => {
-            if (res.code == "00") {
-              this.detectorStrategyList = res.data;
-            }
-          });
-          for (var i = 0; i < _this.uploadTaskFileItem.length; i++) {
+          for (let i = 0; i < _this.uploadTaskFileItem.length; i++) {
             _this.activeNames.push(i + 1);
             _this.activeNames = Array.from(new Set(_this.activeNames));
           }
@@ -596,7 +617,7 @@ export default {
         }
       );
       if (allValid) {
-        api.androidService
+        api.detectorAndroidService
           .saveAndStartDetection(detectionStrategyDtoList)
           .then(res => {
             if (res.code == "00") {
@@ -625,7 +646,7 @@ export default {
     },
     //下载应用
     downloadApk(id) {
-      let Authorization = localStorage.getItem("Authorization"),
+      const Authorization = localStorage.getItem("Authorization"),
         downloadUrl =
           this.api.baseUrl +
           "/detector/android/downloadApk?id=" +
@@ -640,21 +661,42 @@ export default {
       this.downloadReportDrawer = true;
     },
     //保存下载报告
-    saveDownloadReport() {
-      const id = this.taskId;
-      const Authorization = localStorage.getItem("Authorization"),
-        isCompliance = this.addDownloadReportForm.isCompliance;
-      let downloadUrl =
-        this.api.baseUrl +
-        "/detector/android/downloadReport?id=" +
-        id +
-        "&isCompliance=" +
-        isCompliance +
-        "&Authorization=" +
-        Authorization;
+    saveDownloadReport(reportParameter) {
+      const parameter = this.getParameter(reportParameter),
+        id = this.taskId,
+        Authorization = localStorage.getItem("Authorization"),
+        isCompliance = parameter.isCompliance,
+        reportDesignId = parameter.reportDesignId,
+        reportType = this.reportType;
+      let downloadUrl = null;
+      if (reportDesignId) {
+        downloadUrl =
+          this.api.baseUrl +
+          "/detector/android/downloadReport?id=" +
+          id +
+          "&isCompliance=" +
+          isCompliance +
+          "&reportDesignId=" +
+          reportDesignId +
+          "&reportType=" +
+          reportType +
+          "&Authorization=" +
+          Authorization;
+      } else {
+        downloadUrl =
+          this.api.baseUrl +
+          "/detector/android/downloadReport?id=" +
+          id +
+          "&isCompliance=" +
+          isCompliance +
+          "&reportType=" +
+          reportType +
+          "&Authorization=" +
+          Authorization;
+      }
       window.location.href = downloadUrl;
       this.downloadReportDrawer = false;
-      this.reload();
+      /* this.reload(); */
     },
     //取消下载报告
     cancelDownloadReport() {
@@ -676,7 +718,7 @@ export default {
       new this.$messageTips(({ confirm }) => {
         confirm({ content: "确定要删除应用及其所有检测记录?" });
       }).then(res => {
-        api.androidService.deleteAndroidListById(id).then(res => {
+        api.detectorAndroidService.deleteAndroidListById(id).then(res => {
           if (res.code == "00") {
             _this.$message({ type: "success", message: "删除成功" });
             _this.reload();
@@ -696,6 +738,20 @@ export default {
 };
 </script>
 <style>
+.android .el-select-dropdown {
+  position: absolute !important;
+  left: 0px !important;
+  top: 35px !important;
+  height: 150%;
+  overflow-y: auto !important;
+}
+.android .uploadForm .el-select {
+  width: 60%;
+  position: relative;
+}
+.android .el-collapse-item__content {
+  padding-bottom: 80px;
+}
 .androidHeader {
   height: 50px;
   line-height: 50px;
@@ -725,6 +781,10 @@ export default {
 }
 .android .el-table ::before {
   background: white;
+}
+.android .el-radio {
+  width: 40%;
+  margin-bottom: 20px;
 }
 .dowmloadApplicationIcon,
 .detailIcon,

@@ -59,7 +59,7 @@ let detrctorTaskService = {
 
 }
 //android
-let androidService = {
+let detectorAndroidService = {
     androidList(params) {
         return fetchPost("/detector/android/page", params).then(res => res.data)
     },
@@ -106,6 +106,7 @@ let detectorStrategyService = {
         return fetchPost("/api/detection/strategy/saveOrUpdateStrategy", params).then(res => res.data)
     }
 }
+
 let systemService = {
     //系统介绍
     systemAbout() {
@@ -199,4 +200,4 @@ let systemService = {
     },
     //用户管理结束--
 }
-export default { baseUrl, userService, detrctorTaskService, detectorItemService, detectorStrategyService, androidService, uploadService, systemService, authorizeService }
+export default { baseUrl, userService, detrctorTaskService, detectorItemService, detectorStrategyService, detectorAndroidService, uploadService, systemService, authorizeService }

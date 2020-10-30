@@ -909,7 +909,7 @@ export default {
         isCompliance: 0,
         itemName: ""
       };
-    api.androidService.detailAndroidListById(id).then(res => {
+    api.detectorAndroidService.detailAndroidListById(id).then(res => {
       if (res.code == "00") {
         this.listItem = res.data;
       }
@@ -950,7 +950,7 @@ export default {
     },
     //得到检测详细数据
     getDetailItem(params) {
-      api.androidService.detailItemAndroidListById(params).then(res => {
+      api.detectorAndroidService.detailItemAndroidListById(params).then(res => {
         if (res.code == "00") {
           this.detailListItem = res.data;
           let detailListItem = this.detailListItem;

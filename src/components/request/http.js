@@ -11,7 +11,7 @@ if (process.env.NODE_ENV == 'development') {//开发环境
 } else if (process.env.NODE_ENV == 'production') { //生产环境
     axios.defaults.baseURL = 'http://192.168.3.58:9980/ec_detector';
 }
-axios.defaults.timeout = 200000;//设置超时时间
+axios.defaults.timeout = 2000000;//设置超时时间
 //请求拦截器
 axios.interceptors.request.use(config => {
     if (localStorage.getItem("Authorization")) {
