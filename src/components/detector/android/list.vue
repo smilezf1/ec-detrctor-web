@@ -764,24 +764,6 @@ export default {
   display: flex;
   align-items: center;
 }
-.android .el-table {
-  font-size: 12px;
-  border: 1px solid #dcdee2;
-  border-bottom: 1px solid transparent;
-}
-.android .el-table thead {
-  color: #515a6e !important;
-  font-weight: 700;
-}
-.android .el-table__header-wrapper {
-  background: #f8f8f9;
-}
-.android .el-table__header-wrapper th {
-  background: #f2f5f7;
-}
-.android .el-table ::before {
-  background: white;
-}
 .android .el-radio {
   width: 40%;
   margin-bottom: 20px;

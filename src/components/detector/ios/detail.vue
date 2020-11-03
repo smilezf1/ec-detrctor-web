@@ -282,7 +282,7 @@
                   <el-row type="flex">
                     <el-col :span="1"><span>评测等级</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.detectionPurpose }}</span></el-col
+                      ><span>{{ item.riskGroup }}</span></el-col
                     >
                   </el-row>
                   <el-row type="flex">
@@ -304,7 +304,7 @@
                   <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21">
-                      <pre> {{ item.result }}</pre>
+                      <pre> {{ item.resultDesc }}</pre>
                       <el-image
                         style="width:200px"
                         :src="'data:image/png;base64,' + item.pic"
@@ -350,7 +350,7 @@
                   <el-row type="flex">
                     <el-col :span="1"><span>评测等级</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.detectionPurpose }}</span></el-col
+                      ><span>{{ item.riskGroup }}</span></el-col
                     >
                   </el-row>
                   <el-row type="flex">
@@ -372,7 +372,7 @@
                   <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.result }}</pre>
+                      <pre> {{ item.resultDesc }}</pre>
                       <el-image
                         style="width:200px"
                         :src="'data:image/png;base64,' + item.pic"
@@ -418,7 +418,7 @@
                   <el-row type="flex">
                     <el-col :span="1"><span>评测等级</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.detectionPurpose }}</span></el-col
+                      ><span>{{ item.riskGroup }}</span></el-col
                     >
                   </el-row>
                   <el-row type="flex">
@@ -440,7 +440,7 @@
                   <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.result }}</pre>
+                      <pre> {{ item.resultDesc }}</pre>
                       <el-image
                         style="width:200px"
                         :src="'data:image/png;base64,' + item.pic"
@@ -486,7 +486,7 @@
                   <el-row type="flex">
                     <el-col :span="1"><span>评测等级</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.detectionPurpose }}</span></el-col
+                      ><span>{{ item.riskGroup }}</span></el-col
                     >
                   </el-row>
                   <el-row type="flex">
@@ -508,7 +508,7 @@
                   <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.result }}</pre>
+                      <pre> {{ item.resultDesc }}</pre>
                       <el-image
                         style="width:200px"
                         :src="'data:image/png;base64,' + item.pic"
@@ -554,7 +554,7 @@
                   <el-row type="flex">
                     <el-col :span="1"><span>评测等级</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.detectionPurpose }}</span></el-col
+                      ><span>{{ item.riskGroup }}</span></el-col
                     >
                   </el-row>
                   <el-row type="flex">
@@ -576,7 +576,7 @@
                   <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.result }}</pre>
+                      <pre> {{ item.resultDesc }}</pre>
                       <el-image
                         style="width:200px"
                         :src="'data:image/png;base64,' + item.pic"
@@ -622,7 +622,7 @@
                   <el-row type="flex">
                     <el-col :span="1"><span>评测等级</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.detectionPurpose }}</span></el-col
+                      ><span>{{ item.riskGroup }}</span></el-col
                     >
                   </el-row>
                   <el-row type="flex">
@@ -644,7 +644,7 @@
                   <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.result }}</pre>
+                      <pre> {{ item.resultDesc }}</pre>
                       <el-image
                         style="width:200px"
                         :src="'data:image/png;base64,' + item.pic"
@@ -690,7 +690,7 @@
                   <el-row type="flex">
                     <el-col :span="1"><span>评测等级</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.detectionPurpose }}</span></el-col
+                      ><span>{{ item.riskGroup }}</span></el-col
                     >
                   </el-row>
                   <el-row type="flex">
@@ -712,7 +712,7 @@
                   <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.result }}</pre>
+                      <pre> {{ item.resultDesc }}</pre>
                       <el-image
                         style="width:200px"
                         :src="'data:image/png;base64,' + item.pic"
@@ -758,7 +758,7 @@
                   <el-row type="flex">
                     <el-col :span="1"><span>评测等级</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.detectionPurpose }}</span></el-col
+                      ><span>{{ item.riskGroup }}</span></el-col
                     >
                   </el-row>
                   <el-row type="flex">
@@ -780,7 +780,7 @@
                   <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.result }}</pre>
+                      <pre> {{ item.resultDesc }}</pre>
                       <el-image
                         style="width:200px"
                         :src="'data:image/png;base64,' + item.pic"
@@ -826,7 +826,7 @@
                   <el-row type="flex">
                     <el-col :span="1"><span>评测等级</span></el-col>
                     <el-col :span="21"
-                      ><span>{{ item.detectionPurpose }}</span></el-col
+                      ><span>{{ item.riskGroup }}</span></el-col
                     >
                   </el-row>
                   <el-row type="flex">
@@ -848,7 +848,7 @@
                   <el-row type="flex" class="evaluationResult">
                     <el-col :span="1">评测结果</el-col>
                     <el-col :span="21" style="margin-left:10px">
-                      <pre> {{ item.result }}</pre>
+                      <pre> {{ item.resultDesc }}</pre>
                       <el-image
                         style="width:200px"
                         :src="'data:image/png;base64,' + item.pic"
@@ -1214,23 +1214,5 @@ pre {
 }
 .iOSBody .none .el-collapse-item__header {
   background: rgb(0, 212, 235);
-}
-.iOSBody .el-table {
-  font-size: 12px;
-  border: 1px solid #dcdee2;
-  border-bottom: 1px solid transparent;
-}
-.iOSBody .el-table thead {
-  color: #515a6e !important;
-  font-weight: 700;
-}
-.iOSBody .el-table__header-wrapper {
-  background: #f8f8f9;
-}
-.iOSBody .el-table__header-wrapper th {
-  background: #f2f5f7;
-}
-.iOSBody .el-table ::before {
-  background: white;
 }
 </style>

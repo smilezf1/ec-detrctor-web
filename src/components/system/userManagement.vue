@@ -1043,25 +1043,6 @@ export default {
   padding: 10px 20px;
   border-top: 1px solid #ebebeb;
 }
-.userManagement .el-table {
-  font-size: 12px;
-  border: 1px solid #dcdee2;
-  border-bottom: 1px solid transparent;
-}
-.userManagement .el-table th {
-  color: #515a6e !important;
-  font-weight: 700;
-}
-.userManagement .el-table thead {
-  font-size: 12px !important;
-}
-.userManagement .el-table__header-wrapper th {
-  background: #f2f5f7 !important;
-}
-.userManagement .el-table ::before {
-  background: white;
-}
-
 .userManagementBase {
   margin-top: 20px;
 }

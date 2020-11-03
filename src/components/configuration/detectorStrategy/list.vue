@@ -878,22 +878,4 @@ export default {
   box-sizing: border-box !important;
   overflow-y: auto !important;
 }
-.detectorStrategy .el-table {
-  font-size: 12px;
-  border: 1px solid #dcdee2;
-  border-bottom: 1px solid transparent;
-}
-.detectorStrategy .el-table thead {
-  color: #515a6e !important;
-  font-weight: 700;
-}
-.detectorStrategy .el-table__header-wrapper {
-  background: #f8f8f9;
-}
-.detectorStrategy .el-table__header-wrapper th {
-  background: #f2f5f7;
-}
-.detectorStrategy .el-table ::before {
-  background: white;
-}
 </style>

@@ -539,24 +539,6 @@ export default {
 .typeT {
   margin-left: 20px;
 }
-.menuManagement .el-table {
-  font-size: 12px;
-  border: 1px solid #dcdee2;
-  border-bottom: 1px solid transparent;
-}
-.menuManagement .el-table thead {
-  color: #515a6e !important;
-  font-weight: 700;
-}
-.menuManagement .el-table__header-wrapper {
-  background: #f8f8f9;
-}
-.menuManagement .el-table__header-wrapper th {
-  background: #f2f5f7;
-}
-.menuManagement .el-table ::before {
-  background-color: white !important;
-}
 .editIcon,
 .addCatalogueIcon,
 .addLinkIcon,

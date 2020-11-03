@@ -206,6 +206,7 @@
                   <el-drawer
                     title="检测项详情"
                     :visible.sync="detailDetectorIosItemDrawer"
+                    :with-header="false"
                     size="40%"
                     :direction="direction"
                     :before-close="handleClose"
@@ -313,9 +314,6 @@ export default {
         if (res.code == "00") {
           const count = res.data.count,
             { pn: number, limit: size, queryInfo } = params;
-          /* number = params.pn,
-            size = params.limit,
-            queryInfo = params.queryInfo; */
           this.listItem = res.data.items;
           this.curPage = number;
           this.limit = size;
@@ -338,7 +336,6 @@ export default {
       }
       this.getData(tab.label);
     },
-    handleClose() {},
     //查询
     search(ruleForm) {
       this.getData();
@@ -424,24 +421,6 @@ export default {
 }
 .searchBox .el-input {
   width: auto;
-}
-.detectorItem .el-table {
-  font-size: 12px;
-  border: 1px solid #dcdee2;
-  border-bottom: 1px solid transparent;
-}
-.detectorItem .el-table thead {
-  color: #515a6e !important;
-  font-weight: 700;
-}
-.detectorItem .el-table__header-wrapper {
-  background: #f8f8f9;
-}
-.detectorItem .el-table__header-wrapper th {
-  background: #f2f5f7;
-}
-.detectorItem .el-table ::before {
-  background: white;
 }
 .detectorItem .el-drawer-footer {
   width: 40%;
