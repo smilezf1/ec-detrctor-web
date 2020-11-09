@@ -75,7 +75,7 @@
           :close-on-press-escape="false"
           ref="addUserDrawer"
           @close="resetForm('addUserForm')"
-          size="30%"
+          size="40%"
           class="addUserDrawer"
         >
           <div class="el-drawer-header">
@@ -167,33 +167,6 @@
                   style="width:60%"
                 ></el-input>
               </el-form-item>
-
-              <!-- <el-form-item prop="isDynamic">
-                <label slot="label">是否动态检测</label>
-                <el-select
-                  v-model="addUserForm.isDynamic"
-                  placeholder="请选择"
-                  size="small"
-                  style="width:60%"
-                >
-                  <el-option label="是" value="1"></el-option>
-                  <el-option label="否" value="0"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="isShelling">
-                <label slot="label"
-                  >是&nbsp;&nbsp;否&nbsp;&nbsp;脱&nbsp;&nbsp;壳</label
-                >
-                <el-select
-                  v-model="addUserForm.isShelling"
-                  placeholder="请选择"
-                  size="small"
-                  style="width:60%"
-                >
-                  <el-option label="是" value="1"></el-option>
-                  <el-option label="否" value="0"></el-option>
-                </el-select>
-              </el-form-item> -->
               <el-form-item prop="status">
                 <label slot="label"
                   >是&nbsp;&nbsp;否&nbsp;&nbsp;有&nbsp;&nbsp;效</label
@@ -275,30 +248,6 @@
               <span v-else>否</span>
             </template>
           </el-table-column>
-
-          <!-- <el-table-column
-            prop="isDynamic"
-            label="是否动态检测"
-            width="100"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.isDynamic == '1'">是</span>
-              <span v-if="scope.row.isDynamic == '0'">否</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="isShelling"
-            label="是否脱壳"
-            width="100"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.isShelling == '1'">是</span>
-              <span v-if="scope.row.isShelling == '0'">否</span>
-            </template>
-          </el-table-column> -->
-
           <el-table-column
             prop="createTime"
             label="创建时间"
@@ -311,7 +260,7 @@
             :show-overflow-tooltip="true"
             width="180"
           ></el-table-column>
-          <el-table-column label="操作" prop="operate" width="262">
+          <el-table-column label="操作" prop="operate">
             <template slot-scope="scope">
               <el-tooltip effect="dark" content="编辑" placement="top-start">
                 <i
@@ -326,7 +275,7 @@
                 :wrapperClosable="false"
                 :close-on-press-escape="false"
                 ref="editDrawer"
-                size="30%"
+                size="40%"
               >
                 <div class="el-drawer-header">
                   <h3>编辑</h3>
@@ -391,32 +340,6 @@
                         style="width:60%"
                       ></el-input>
                     </el-form-item>
-                    <!--  <el-form-item prop="isDynamic">
-                      <label slot="label">是否动态检测</label>
-                      <el-select
-                        v-model="editForm.isDynamic"
-                        placeholder="请选择"
-                        size="small"
-                        style="width:60%"
-                      >
-                        <el-option label="是" value="1"></el-option>
-                        <el-option label="否" value="0"></el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item prop="isShelling">
-                      <label slot="label"
-                        >是&nbsp;&nbsp;否&nbsp;&nbsp;脱&nbsp;&nbsp;壳</label
-                      >
-                      <el-select
-                        v-model="editForm.isShelling"
-                        placeholder="请选择"
-                        size="small"
-                        style="width:60%"
-                      >
-                        <el-option label="是" value="1"></el-option>
-                        <el-option label="否" value="0"></el-option>
-                      </el-select>
-                    </el-form-item> -->
                     <el-form-item prop="status">
                       <label slot="label"
                         >是&nbsp;&nbsp;否&nbsp;&nbsp;有&nbsp;&nbsp;效</label
@@ -1019,29 +942,6 @@ export default {
   color: #517fc3;
   margin-right: 10px;
   cursor: pointer;
-}
-/* Drawer抽屉 */
-.el-drawer-header {
-  height: 50px;
-  padding: 17px 20px;
-  border-bottom: 1px solid #ebebeb;
-}
-.el-drawer-header h3 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
-}
-.el-drawer-content {
-  padding: 20px;
-}
-.el-drawer-footer {
-  width: 30%;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  text-align: right;
-  padding: 10px 20px;
-  border-top: 1px solid #ebebeb;
 }
 .userManagementBase {
   margin-top: 20px;

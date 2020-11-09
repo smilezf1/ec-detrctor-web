@@ -18,7 +18,7 @@
         :with-header="false"
         :wrapperClosable="false"
         :close-on-press-escape="false"
-        size="30%"
+        size="40%"
         ref="addCatalogueDrawer"
         @close="resetForm('addCatalogueForm')"
       >
@@ -36,14 +36,14 @@
                 >11</el-input
               >
             </el-form-item>
-            <el-form-item label="资源类型">
+            <el-form-item label="资源类型" prop="type">
               <el-input
                 v-model="addCatalogueForm.type"
                 :disabled="true"
                 placeholder="目录"
               ></el-input>
             </el-form-item>
-            <el-form-item label="资源图标">
+            <el-form-item label="资源图标" prop="icon">
               <el-input
                 v-model="addCatalogueForm.icon"
                 auto-complete="off"
@@ -121,7 +121,7 @@
                 :wrapperClosable="false"
                 :close-on-press-escape="false"
                 ref="editDrawer"
-                size="30%"
+                size="40%"
               >
                 <div class="el-drawer-header">
                   <h3>编辑目录</h3>
@@ -134,16 +134,16 @@
                         auto-complete="off"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="资源类型">
+                    <el-form-item label="资源类型" prop="type">
                       <el-input v-model="form.type" :disabled="true"></el-input>
                     </el-form-item>
-                    <el-form-item label="资源图标">
+                    <el-form-item label="资源图标" prop="icon">
                       <el-input
                         v-model="form.icon"
                         auto-complete="off"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="资源路径">
+                    <el-form-item label="资源路径" prop="address">
                       <el-input
                         v-model="form.address"
                         auto-complete="off"
@@ -160,12 +160,6 @@
                   <el-button @click="cancelForm" plain>取消</el-button>
                 </div>
               </el-drawer>
-              <!--    <el-tooltip effect="dark" content="新增目录" placement="top-start"
-                ><i
-                  class="el-icon-document-add addCatalogueIcon"
-                  @click="addCatalogue()"
-                ></i
-              ></el-tooltip> -->
               <!-- 只有在资源类型为目录时才能显示新增链接 -->
               <el-tooltip
                 effect="dark"
@@ -185,7 +179,7 @@
                 :wrapperClosable="false"
                 :close-on-press-escape="false"
                 ref="addLinkDrawer"
-                size="30%"
+                size="40%"
               >
                 <div class="el-drawer-header">
                   <h3>新增链接</h3>
@@ -208,12 +202,6 @@
                         :disabled="true"
                       ></el-input>
                     </el-form-item>
-                    <!--   <el-form-item label="资源图标" prop="icon">
-                      <el-input
-                        v-model="addLinkForm.icon"
-                        auto-complete="off"
-                      ></el-input>
-                    </el-form-item> -->
                     <el-form-item label="资源路径" prop="address">
                       <el-input
                         v-model="addLinkForm.address"
@@ -276,6 +264,8 @@ export default {
       },
       rules: {
         name: [{ required: true, message: "请输入资源名称", trigger: "blur" }],
+        type: [{ required: true }],
+        icon: [{ required: true, message: "请输入资源图标", trigger: "blur" }],
         address: [
           { required: true, message: "请输入资源路径", trigger: "blur" }
         ]
@@ -549,30 +539,11 @@ export default {
   margin-right: 10px;
   cursor: pointer;
 }
-.el-drawer-header {
-  height: 50px;
-  padding: 17px 20px;
-  border-bottom: 1px solid #ebebeb;
-}
-.el-drawer-header h3 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
+.menuManagement .el-drawer .el-input {
+  width: 80%;
 }
 .menuManagement .el-form {
   margin-top: 20px;
-}
-.el-drawer-content {
-  padding: 20px;
-}
-.el-drawer-footer {
-  width: 30%;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  text-align: right;
-  padding: 10px 20px;
-  border-top: 1px solid #ebebeb;
 }
 .menuManagementBody {
   margin-top: 15px;

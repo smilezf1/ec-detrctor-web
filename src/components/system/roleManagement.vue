@@ -54,7 +54,7 @@
           :with-header="false"
           :wrapperClosable="false"
           :close-on-press-escape="false"
-          size="30%"
+          size="40%"
           ref="addRoleDrawer"
           @close="resetForm('addRoleForm')"
         >
@@ -92,10 +92,10 @@
           v-loading="loading"
           element-loading-text="加载中"
         >
-          <el-table-column type="index" label="序号" width="150">
-            <!--  <template slot-scope="scope">
-              <span>{{ (curPage - 1) * limit + scope.$index + 1 }}</span>
-            </template> -->
+          <el-table-column type="index" label="序号" width="80">
+            <template slot-scope="scope">
+              <span>{{ (curpage - 1) * limit + scope.$index + 1 }}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="name" label="角色名称" width="300">
             <template slot-scope="scope">{{ scope.row.name }}</template>
@@ -528,9 +528,11 @@ export default {
   margin-bottom: 15px;
   display: flex;
 }
-
 .roleManagement .el-input {
   width: auto;
+}
+.roleManagement .el-drawer .el-input {
+  width: 80%;
 }
 .roleManagement .operateBox {
   display: inline-block;
@@ -545,28 +547,6 @@ export default {
   color: #517fc3;
   margin-right: 10px;
   cursor: pointer;
-}
-.el-drawer-header {
-  height: 50px;
-  padding: 17px 20px;
-  border-bottom: 1px solid #ebebeb;
-}
-.el-drawer-content {
-  padding: 20px;
-}
-.el-drawer-header h3 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
-}
-.el-drawer-footer {
-  width: 30%;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  text-align: right;
-  padding: 10px 20px;
-  border-top: 1px solid #ebebeb;
 }
 .roleManagementBase {
   margin-top: 10px;

@@ -381,24 +381,6 @@ export default {
   line-height: 50px;
   font-size: 14px;
 }
-.detectorItem .el-drawer-header {
-  width: 100%;
-  position: fixed;
-  background: white;
-  z-index: 99;
-  height: 50px;
-  padding: 17px 20px;
-  border-bottom: 1px solid #ebebeb;
-}
-.detectorItem .el-drawer-content {
-  padding: 20px;
-  margin-top: 50px;
-}
-.detectorItem .el-drawer-header h3 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
-}
 .detectorItem .el-form-item__label {
   text-align: left;
 }
@@ -421,17 +403,6 @@ export default {
 }
 .searchBox .el-input {
   width: auto;
-}
-.detectorItem .el-drawer-footer {
-  width: 40%;
-  position: fixed;
-  bottom: 0px;
-  background: white;
-  z-index: 9;
-  padding: 10px 20px;
-  border-top: 1px solid #ebebeb;
-  right: 0;
-  text-align: right;
 }
 .detectorItemBase {
   margin-top: 15px;

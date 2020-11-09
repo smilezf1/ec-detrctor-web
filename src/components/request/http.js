@@ -28,7 +28,6 @@ axios.interceptors.response.use(response => {
     if (response.data.code == '05') {
         localStorage.removeItem("Authorization");
         if (!dialog) {
-            //v.$alert可能会弹出多次
             dialog = v.$alert('会话过期,请重新登录', '系统提示', {
                 confirmButtonText: '确定',
                 type: "warning",

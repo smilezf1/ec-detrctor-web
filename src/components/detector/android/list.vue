@@ -347,14 +347,15 @@
                   <el-form>
                     <el-form-item>
                       <label slot="label">报告模板:</label>
-                      <div style="margin-left:10%">
+                      <div>
+                        <!-- style="margin-left:10%" -->
                         <el-radio v-model="reportParameter" label="0"
                           >全量报告</el-radio
                         >
                         <el-radio v-model="reportParameter" label="2"
                           >整改报告</el-radio
                         >
-                        <el-radio v-model="reportParameter" label="3"
+                        <!--  <el-radio v-model="reportParameter" label="3"
                           >山东网安报告(详细)</el-radio
                         >
                         <el-radio v-model="reportParameter" label="4"
@@ -365,7 +366,7 @@
                         >
                         <el-radio v-model="reportParameter" label="6"
                           >上海网安检测报告(水印)</el-radio
-                        >
+                        > -->
                       </div>
                     </el-form-item>
                     <el-form-item>
@@ -563,6 +564,10 @@ export default {
         }
       });
       api.uploadService.uploadFile(params, config).then(res => {
+        if (res.code == "01" || res.code == "99" || res.code == "500") {
+          _this.addTaskDrawer = false;
+          _this.$refs.uploadTask.clearFiles();
+        }
         if (res.code == "00") {
           this.uploadForm.push({ detectorStrategyId: "" });
           _this.uploadTaskFileItem.push(res.data);
@@ -696,7 +701,6 @@ export default {
       }
       window.location.href = downloadUrl;
       this.downloadReportDrawer = false;
-      /* this.reload(); */
     },
     //取消下载报告
     cancelDownloadReport() {
@@ -806,20 +810,6 @@ export default {
 .android .operateBox {
   margin-left: 15px;
 }
-.android .el-drawer-header {
-  width: 100%;
-  position: fixed;
-  background: white;
-  z-index: 99;
-  height: 50px;
-  padding: 17px 20px;
-  /* border-bottom: 1px solid #ebebeb; */
-}
-.android .el-drawer-header h3 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
-}
 .el-upload {
   width: 100%;
 }
@@ -852,27 +842,6 @@ export default {
   width: 100%;
   height: 230px;
   margin-top: 20px;
-}
-.el-drawer {
-  box-sizing: border-box !important;
-  overflow-y: auto !important;
-}
-.android .el-drawer-content {
-  margin-top: 50px;
-  position: relative;
-  overflow: auto;
-  padding: 0px 20px 40px 20px;
-}
-.android .el-drawer-footer {
-  width: 40%;
-  position: fixed;
-  bottom: 0px;
-  background: white;
-  z-index: 9;
-  padding: 10px 20px;
-  border-top: 1px solid #ebebeb;
-  right: 0;
-  text-align: right;
 }
 .android .searchButton,
 .android .addTaskButton .el-input {

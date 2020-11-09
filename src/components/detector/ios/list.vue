@@ -333,6 +333,11 @@
                         <el-radio :label="2">整改报告</el-radio>
                       </el-radio-group>
                     </el-form-item>
+                    <el-form-item>
+                      <label slot="label">报告类型:</label>
+                      <el-radio v-model="reportType" :label="2">PDF</el-radio>
+                      <el-radio v-model="reportType" :label="1">WORD</el-radio>
+                    </el-form-item>
                   </el-form>
                 </div>
                 <div class="el-drawer-footer">
@@ -365,19 +370,6 @@
                   @click="downloadApk(scope.row.taskId)"
                 ></i>
               </el-tooltip>
-
-              <!-- <el-tooltip effect="dark" content="删除" placement="top-start">
-                <template v-if="scope.row.detectionStatus == 2">
-                  <i
-                    class="el-icon-delete deleteIcon"
-                    @click="deleteTask(scope.row.taskId)"
-                  >
-                  </i>
-                </template>
-                <template v-else>
-                  <i class="el-icon-delete  disabledIcon"></i>
-                </template>
-              </el-tooltip> -->
               <el-tooltip effect="dark" content="删除" placement="top-start">
                 <i
                   class="el-icon-delete deleteIcon"
@@ -462,7 +454,8 @@ export default {
       curpage: 1,
       limit: 10,
       downloadReportDrawer: false,
-      taskId: null
+      taskId: null,
+      reportType: 2
     };
   },
   beforeMount() {
@@ -525,6 +518,10 @@ export default {
         }
       };
       api.uploadService.uploadFile(params, config).then(res => {
+        if (res.code == "01" || res.code == "99" || res.code == "500") {
+          _this.addTaskDrawer = false;
+          _this.$refs.uploadTask.clearFiles();
+        }
         if (res.code == "00") {
           _this.uploadForm.push({ detectorStrategyId: "" });
           _this.uploadTaskFileItem.push(res.data);
@@ -631,17 +628,19 @@ export default {
       const id = this.taskId,
         Authorization = localStorage.getItem("Authorization"),
         isCompliance = this.addDownloadReportForm.isCompliance,
+        reportType = this.reportType,
         downloadUrl =
           this.api.baseUrl +
           "/detector/android/downloadReport?id=" +
           id +
           "&isCompliance=" +
           isCompliance +
+          "&reportType=" +
+          reportType +
           "&Authorization=" +
           Authorization;
       window.location.href = downloadUrl;
       this.downloadReportDrawer = false;
-      /* this.reload(); */
     },
     //取消下载报告
     cancelDownloadReport() {
@@ -693,6 +692,16 @@ export default {
 .ios .operateBox {
   margin-left: 15px;
 }
+.ios .el-radio {
+  width: 36%;
+  margin-bottom: 5px;
+}
+.ios .el-radio-group {
+  width: 90%;
+}
+.ios .el-radio-group .el-radio {
+  width: 40%;
+}
 .disabledIcon {
   font-size: 22px;
   margin-right: 10px;
@@ -709,48 +718,11 @@ export default {
   margin-right: 10px;
   cursor: pointer;
 }
-.ios .el-drawer-header {
-  width: 100%;
-  position: fixed;
-  background: white;
-  z-index: 99;
-  height: 50px;
-  padding: 17px 20px;
-  border-bottom: 1px solid #ebebeb;
-}
-.el-drawer {
-  box-sizing: border-box !important;
-  overflow-y: auto !important;
-}
-.ios .el-drawer-content {
-  margin-top: 50px;
-  position: relative;
-  overflow: auto;
-  padding: 0px 20px 40px 20px;
-}
-.ios .el-drawer-header h3 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
-}
+
 .ios .el-upload-dragger {
   width: 100%;
   height: 230px;
   margin-top: 20px;
-}
-.ios .el-drawer-header {
-  width: 100%;
-  position: fixed;
-  background: white;
-  z-index: 99;
-  height: 50px;
-  padding: 17px 20px;
-  border-bottom: 1px solid #ebebeb;
-}
-.ios .el-drawer-header h3 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
 }
 .applicationInfoCollapse img {
   width: 55%;
@@ -782,16 +754,5 @@ export default {
 }
 .iosBase {
   margin-top: 15px;
-}
-.ios .el-drawer-footer {
-  width: 40%;
-  position: fixed;
-  bottom: 0px;
-  background: white;
-  z-index: 9;
-  padding: 10px 20px;
-  border-top: 1px solid #ebebeb;
-  right: 0;
-  text-align: right;
 }
 </style>

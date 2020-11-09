@@ -188,8 +188,8 @@
                             subItem.code == 'titleCode001'
                         "
                         style="width:45%;margin-bottom:15px;"
-                        >{{ subItem.name }}</el-checkbox
-                      >
+                        >{{ subItem.name }}
+                      </el-checkbox>
                     </el-checkbox-group>
                   </template>
                 </el-collapse-item>
@@ -571,7 +571,7 @@ export default {
       this.allChecked = val;
       this.isIndeterminate = false;
       this.detectorTypeList.forEach(v => {
-        v.isSubCheckedAll = val ? true : false;
+        v.isSubCheckedAll = val;
         if (v.code == "titleCode17" || v.code == "titleCode001") {
           v.isSubCheckedAll = true;
         }
@@ -608,7 +608,12 @@ export default {
     //单独选
     //Android
     AndroidHandleCheckChange(val, index) {
-      const checkedCount = this.detectorTypeList[index].selectedOptions.length,
+      const selectedOptions = this.getSelectedOptions(
+          this.detectorTypeList[index].children,
+          val,
+          index
+        ),
+        checkedCount = this.detectorTypeList[index].selectedOptions.length,
         allOptionsLength = this.countArray(
           this.detectorAndroidItemOptions,
           index
@@ -620,7 +625,12 @@ export default {
     },
     //ios
     iosHandleCheckChange(val, index) {
-      const checkedCount = this.detectorTypeList[index].selectedOptions.length,
+      const selectedOptions = this.getSelectedOptions(
+          this.detectorTypeList[index].children,
+          val,
+          index
+        ),
+        checkedCount = this.detectorTypeList[index].selectedOptions.length,
         allOptionsLength = this.countArray(this.detectorIosItemOptions, index);
       this.detectorTypeList[index].isSubCheckedAll =
         checkedCount == allOptionsLength;
@@ -829,30 +839,6 @@ export default {
 .detectorStrategyBase {
   margin-top: 15px;
 }
-.detectorStrategy .el-drawer-header {
-  width: 100%;
-  position: fixed;
-  background: white;
-  z-index: 99;
-  height: 50px;
-  padding: 17px 20px;
-  border-bottom: 1px solid #ebebeb;
-}
-.detectorStrategy .el-drawer-header h3 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
-}
-.el-drawer {
-  box-sizing: border-box !important;
-  overflow-y: auto !important;
-}
-.detectorStrategy .el-drawer-content {
-  margin: 50px 0 60px 0;
-  position: relative;
-  overflow: auto;
-  padding: 20px;
-}
 .detectorStrategy .el-form-item__label {
   text-align: left;
 }
@@ -861,21 +847,6 @@ export default {
   top: 35px !important;
   left: 0 !important;
   height: 205% !important;
-  overflow-y: auto !important;
-}
-.detectorStrategy .el-drawer-footer {
-  width: 40%;
-  position: fixed;
-  bottom: 0px;
-  background: white;
-  z-index: 9;
-  padding: 10px 20px;
-  border-top: 1px solid #ebebeb;
-  right: 0;
-  text-align: right;
-}
-.el-drawer {
-  box-sizing: border-box !important;
   overflow-y: auto !important;
 }
 </style>
