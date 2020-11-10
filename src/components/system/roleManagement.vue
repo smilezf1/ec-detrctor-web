@@ -22,25 +22,13 @@
         </el-form>
       </div>
       <div class="operateBox">
-        <el-tooltip effect="dark" content="查询" placement="top-start">
-          <el-button
-            type="primary"
-            icon="el-icon-search"
-            size="small"
-            @click="search(ruleForm)"
-            class="searchButton"
-          ></el-button>
-        </el-tooltip>
-        <el-tooltip effect="dark" content="刷新" placement="top-start">
-          <el-button
-            type="primary"
-            icon="el-icon-refresh-right"
-            size="small"
-            @click="refresh()"
-            style="margin-left:10px"
-            class="refreshButton"
-          ></el-button>
-        </el-tooltip>
+        <el-button
+          type="primary"
+          size="small"
+          @click="search(ruleForm)"
+          class="searchButton"
+          >查询</el-button
+        >
         <el-button
           type="primary"
           size="small"
@@ -82,6 +70,14 @@
             <el-button @click="cancelSaveaddRole()" plain>取消</el-button>
           </div>
         </el-drawer>
+        <el-button
+          type="primary"
+          size="small"
+          @click="refresh()"
+          style="margin-left:10px"
+          class="refreshButton"
+          >刷新</el-button
+        >
       </div>
     </div>
     <div class="roleManagementBody">
@@ -399,42 +395,27 @@ export default {
         let data = res.data;
         (data = JSON.parse(JSON.stringify(data).replace(/name/g, "label"))),
           (this.menuTreeData = this.toTreeData(data));
-        for (var j = 0; j < this.menuTreeData.length; j++) {
-          if (this.menuTreeData[j].children) {
-            for (var k = 0; k < this.menuTreeData[j].children.length; k++) {
-              if (this.menuTreeData[j].children[k].id.startsWith("T")) {
-                this.menuTreeData[j].children[k].id = this.menuTreeData[
-                  j
-                ].children[k].id;
-              }
-            }
-          }
-          if (this.menuTreeData[j].id.startsWith("M")) {
-            this.menuTreeData[j].id = this.menuTreeData[j].id;
-          }
-        }
-        this.menuTreeData.forEach((v, i) => {
-          if (v.children) {
-            v.children.forEach((v, i) => {
-              if (v.checked == true) {
-                if (v.pId.startsWith("M")) {
-                  this.setParMentList.push(v.pId);
-                  this.setParMentList = Array.from(
-                    new Set(this.setParMentList)
-                  );
-                }
-                this.setMenuList.push(v.id);
-                this.setMenuList = Array.from(new Set(this.setMenuList));
-              }
-            });
-          } else {
+        this.setMenuList = this.setSelectedList(this.menuTreeData);
+      });
+    },
+    setSelectedList(menuTreeData) {
+      this.setMenuList = [];
+      menuTreeData.forEach((v, i) => {
+        if (v.children) {
+          v.children.forEach((v, i) => {
             if (v.checked == true) {
               this.setMenuList.push(v.id);
               this.setMenuList = Array.from(new Set(this.setMenuList));
             }
+          });
+        } else {
+          if (v.checked == true) {
+            this.setMenuList.push(v.id);
+            this.setMenuList = Array.from(new Set(this.setMenuList));
           }
-        });
+        }
       });
+      return this.setMenuList;
     },
     //刷新
     refresh() {
@@ -446,12 +427,21 @@ export default {
     setMenuSave() {
       let id = this.setMenuId,
         nodes = this.checkedNodes,
-        menuList = this.menuList;
+        menuList = this.menuList,
+        selectedList = this.setMenuList;
       if (nodes && nodes.length != 0) {
         for (var i = 0; i < nodes.length; i++) {
           if (!nodes[i].id.indexOf("T")) {
             nodes[i].id = nodes[i].id.replace("T", "");
             menuList.push(nodes[i].id);
+            menuList = Array.from(new Set(menuList));
+          }
+        }
+      } else {
+        if (selectedList && selectedList.length != 0) {
+          for (let i = 0; i < selectedList.length; i++) {
+            selectedList[i] = selectedList[i].replace("T", "");
+            menuList.push(selectedList[i]);
             menuList = Array.from(new Set(menuList));
           }
         }

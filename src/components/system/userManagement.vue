@@ -41,24 +41,13 @@
         </el-form>
       </div>
       <div class="operateBox">
-        <el-tooltip effect="dark" content="查询" placement="top-start">
-          <el-button
-            type="primary"
-            icon="el-icon-search"
-            size="small"
-            @click="search(ruleForm)"
-            class="searchButton"
-          ></el-button>
-        </el-tooltip>
-        <el-tooltip effect="dark" content="刷新" placement="top-start">
-          <el-button
-            type="primary"
-            icon="el-icon-refresh-right"
-            size="small"
-            @click="refresh()"
-            class="refreshButton"
-          ></el-button>
-        </el-tooltip>
+        <el-button
+          type="primary"
+          size="small"
+          @click="search(ruleForm)"
+          class="searchButton"
+          >查询</el-button
+        >
         <el-button
           type="primary"
           size="small"
@@ -192,6 +181,13 @@
             <el-button @click="canceladdUserForm()" plain>取消</el-button>
           </div>
         </el-drawer>
+        <el-button
+          type="primary"
+          size="small"
+          @click="refresh()"
+          class="refreshButton"
+          >刷新</el-button
+        >
       </div>
     </div>
     <div class="userManagementBody">
@@ -683,7 +679,6 @@ export default {
       this.editDrawer = true;
       this.editId = id;
       api.systemService.userManageDetail(id).then(res => {
-        console.log(res);
         if (res.code == "00") {
           let data = res.data,
             editForm = this.editForm;
