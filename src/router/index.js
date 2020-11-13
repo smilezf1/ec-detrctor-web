@@ -9,6 +9,7 @@ export default new Router({
     {
       path: "/home", name: 'home', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/page/home"), children: [
         { path: 'index', name: 'index', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/page/index.vue") },
+        { path: '/404', name: 'notFound', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/error/404.vue") },
         { path: "detector/android/list", name: 'androidList', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/android/list.vue") },
         { path: "detector/android/detail", name: 'androidDetail', meta: { requireAuth: true, KeepAlive: false }, component: () => import('../components/detector/android/detail.vue') },
         { path: "detector/ios/list", name: 'iosList', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/ios/list.vue") }
@@ -21,7 +22,13 @@ export default new Router({
         { path: 'system/authorize/list', meta: { requireAuth: true, KeepAlive: false }, name: 'authorize', component: () => import("../components/system/authorizeManagement.vue") },
         { path: 'system/manage/about', meta: { requireAuth: true, KeepAlive: false }, name: 'about', component: () => import('../components/system/recommend.vue') },
         { path: "configuration/detectorItem/list", name: 'detectorItemList', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/configuration/detectorItem/list.vue") },
-        { path: "configuration/detectorStrategy/list", name: "detectorStrategyList", meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/configuration/detectorStrategy/list.vue") }
+        { path: "configuration/detectorStrategy/list", name: "detectorStrategyList", meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/configuration/detectorStrategy/list.vue") },
+        {
+          path: "*",
+          redirect: '/404',
+          name: 'notFound',
+          hidden: true
+        }
         /* import("../components/configuration/detectorStrategy/list.vue") */
       ]
     },

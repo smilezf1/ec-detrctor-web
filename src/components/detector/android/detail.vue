@@ -375,7 +375,6 @@
             </el-tab-pane>
 
             <el-tab-pane label="应用代码安全评测">
-              <!-- detailListItem.titleCode06.activeNames -->
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode06"
