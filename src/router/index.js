@@ -21,6 +21,7 @@ export default new Router({
         { path: 'system/menu/list', meta: { requireAuth: true, KeepAlive: false }, name: 'menu', component: () => import('../components/system/menuManageMent.vue') },
         { path: 'system/authorize/list', meta: { requireAuth: true, KeepAlive: false }, name: 'authorize', component: () => import("../components/system/authorizeManagement.vue") },
         { path: 'system/manage/about', meta: { requireAuth: true, KeepAlive: false }, name: 'about', component: () => import('../components/system/recommend.vue') },
+        { path: 'system/reportConfigure/list', name: 'reportConfigure', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/system/reportConfigureManagement.vue") },
         { path: "configuration/detectorItem/list", name: 'detectorItemList', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/configuration/detectorItem/list.vue") },
         { path: "configuration/detectorStrategy/list", name: "detectorStrategyList", meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/configuration/detectorStrategy/list.vue") },
         {

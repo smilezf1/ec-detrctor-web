@@ -199,5 +199,19 @@ let systemService = {
         return fetchGet("/user/active?id=" + params).then(res => res.data)
     },
     //用户管理结束--
+    /* 报告模板设置开始 */
+    //得到报告策略列表
+    getReportStrategyList(params) {
+        return fetchPost("/api/detection/report/findReportStrategyPage", params).then(res => res.data)
+    },
+    //新增或修改报告策略
+    saveOrUpdateReportStrategy(params) {
+        return fetchPost("/api/detection/report/saveOrUpdateReportStrategy", params).then(res => res.data)
+    },
+    //查询报告策略详情
+    getReportStrategyDetail(params) {
+        return fetchGet("/api/detection/report/findReportStrategyDetailById", params).then(res => res.data)
+    }
+    /* 报告模板设置结束 */
 }
 export default { baseUrl, userService, detrctorTaskService, detectorItemService, detectorStrategyService, detectorAndroidService, uploadService, systemService, authorizeService }

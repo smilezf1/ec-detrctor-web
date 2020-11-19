@@ -26,12 +26,12 @@ axios.interceptors.request.use(config => {
 let dialog = null;
 axios.interceptors.response.use(response => {
     if (response.data.code == '05') {
-        localStorage.removeItem("Authorization");
         if (!dialog) {
             dialog = v.$alert('会话过期,请重新登录', '系统提示', {
                 confirmButtonText: '确定',
                 type: "warning",
                 callback: action => {
+                    localStorage.removeItem("Authorization");
                     router.push({ path: '/' });
                 }
             })
@@ -42,12 +42,12 @@ axios.interceptors.response.use(response => {
     }
     return response;
 }, error => {
-    localStorage.removeItem('Authorization');
     if (!dialog) {
         dialog = v.$alert('请求超时', '系统提示', {
             confirmButtonText: "确定",
             type: 'warning',
             callback: action => {
+                localStorage.removeItem('Authorization');
                 router.push({ path: '/' })
             }
         })
