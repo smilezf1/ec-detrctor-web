@@ -342,15 +342,18 @@
                 <div class="el-drawer-content">
                   <el-form>
                     <el-form-item>
-                      <label slot="label">报告模板:</label>
+                      <label slot="label">数据类型:</label>
                       <div>
-                        <!-- style="margin-left:10%" -->
-                        <el-radio v-model="reportParameter" label="0"
+                        <el-radio-group v-model="reportParameter">
+                          <el-radio label="0">全量报告</el-radio>
+                          <el-radio label="2">整改报告</el-radio>
+                        </el-radio-group>
+                        <!--   <el-radio v-model="reportParameter" label="0"
                           >全量报告</el-radio
                         >
                         <el-radio v-model="reportParameter" label="2"
                           >整改报告</el-radio
-                        >
+                        > -->
                         <!--  <el-radio v-model="reportParameter" label="3"
                           >山东网安报告(详细)</el-radio
                         >
@@ -364,6 +367,17 @@
                           >上海网安检测报告(水印)</el-radio
                         > -->
                       </div>
+                    </el-form-item>
+                    <el-form-item>
+                      <label slot="label">报告模板:</label>
+                      <el-radio-group v-model="templateType">
+                        <el-radio
+                          v-for="item in reportTemplateList"
+                          :key="item.id"
+                          :label="item.id"
+                          >{{ item.reportName }}</el-radio
+                        >
+                      </el-radio-group>
                     </el-form-item>
                     <el-form-item>
                       <label slot="label">报告类型:</label>
@@ -437,6 +451,7 @@ export default {
     return {
       reportParameter: "0",
       reportType: 2,
+      templateType: 2,
       pickOptionsStart: {
         disabledDate: time => {
           return (
@@ -493,7 +508,8 @@ export default {
       limit: 10,
       taskId: null,
       uploadTaskNum: null,
-      loadingNum: null
+      loadingNum: null,
+      reportTemplateList: []
     };
   },
   beforeMount() {
@@ -660,6 +676,7 @@ export default {
     downloadReport(id) {
       this.taskId = id;
       this.downloadReportDrawer = true;
+      this.getReportTemplate();
     },
     //保存下载报告
     saveDownloadReport(reportParameter) {
@@ -668,9 +685,23 @@ export default {
         Authorization = localStorage.getItem("Authorization"),
         isCompliance = parameter.isCompliance,
         reportDesignId = parameter.reportDesignId,
-        reportType = this.reportType;
+        reportType = this.reportType,
+        reportStrategyId = this.templateType;
+      console.log(id, reportStrategyId, reportType, isCompliance);
       let downloadUrl = null;
-      if (reportDesignId) {
+      downloadUrl =
+        this.api.baseUrl +
+        "/detector/android/downloadReport?taskId=" +
+        id +
+        "&isCompliance=" +
+        isCompliance +
+        "&reportStrategyId=" +
+        reportStrategyId +
+        "&reportType=" +
+        reportType +
+        "&Authorization=" +
+        Authorization;
+      /* if (reportDesignId) {
         downloadUrl =
           this.api.baseUrl +
           "/detector/android/downloadReport?id=" +
@@ -694,9 +725,19 @@ export default {
           reportType +
           "&Authorization=" +
           Authorization;
-      }
+      } */
       window.location.href = downloadUrl;
       this.downloadReportDrawer = false;
+    },
+    //得到报告模板
+    getReportTemplate() {
+      const params = { templateType: 1 };
+      api.systemService.findReportStrategyList(params).then(res => {
+        if (res.code == "00") {
+          this.reportTemplateList = res.data;
+          console.log(this.reportTemplateList);
+        }
+      });
     },
     //取消下载报告
     cancelDownloadReport() {

@@ -39,14 +39,26 @@
               :rules="rules"
               ref="reportStrategyForm"
             >
-              <el-form-item>
+              <el-form-item prop="templateType">
                 <label slot="label">模板类型:</label>
                 <el-radio-group
                   v-model="reportStrategyForm.templateType"
                   @change="handleRadioChange"
                 >
-                  <el-radio label="1">Android</el-radio>
-                  <el-radio label="2">iOS</el-radio>
+                  <el-radio :label="1">Android</el-radio>
+                  <el-radio :label="2">iOS</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item prop="templateId">
+                <label slot="label">报告模板:</label>
+                <el-radio-group v-model="reportStrategyForm.templateId">
+                  <el-radio
+                    style="margin-bottom:20px"
+                    v-for="item in reportTemplateList"
+                    :key="item.id"
+                    :label="item.id"
+                    >{{ item.templateName }}</el-radio
+                  >
                 </el-radio-group>
               </el-form-item>
               <el-form-item prop="reportCorporateName">
@@ -75,6 +87,14 @@
                 <el-upload
                   drag
                   action="/"
+                  :http-request="
+                    templateType =>
+                      uploadTaskFile(templateType, 'reportHeaderLogo')
+                  "
+                  :limit="1"
+                  list-type="picture"
+                  :on-exceed="handleExceed"
+                  v-if="!reportStrategyForm.reportHeaderLogo"
                   accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
                 >
                   <i class="el-icon-upload"></i>
@@ -82,51 +102,171 @@
                     建议分辨率221*55 <em>点击上传</em>
                   </div>
                 </el-upload>
+                <template v-else>
+                  <img
+                    :src="
+                      this.api.baseUrl +
+                        `/api/common/viewFile/${reportStrategyForm.reportHeaderLogo}?Authorization=${getAuthorization}`
+                    "
+                    style="width:50%"
+                  />
+                  <el-upload
+                    action="/"
+                    :http-request="
+                      templateType =>
+                        uploadTaskFile(templateType, 'reportHeaderLogo')
+                    "
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                    :limit="1"
+                    list-type="picture"
+                    :on-exceed="handleExceed"
+                  >
+                    <div class="amendUploadImageBtn">
+                      <span>修改</span>
+                    </div>
+                  </el-upload>
+                </template>
               </el-form-item>
-              <el-form-item prop="reportFooterLog">
+              <el-form-item prop="reportFooterLogo">
                 <label slot="label">报告页脚:</label>
                 <el-upload
                   drag
                   action="/"
+                  :http-request="
+                    templateType =>
+                      uploadTaskFile(templateType, 'reportFooterLogo')
+                  "
                   accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                  :limit="1"
+                  list-type="picture"
+                  :on-exceed="handleExceed"
+                  v-if="!reportStrategyForm.reportFooterLogo"
                 >
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">
                     建议分辨率267*26 <em>点击上传</em>
                   </div>
                 </el-upload>
+                <template v-else>
+                  <img
+                    :src="
+                      this.api.baseUrl +
+                        `/api/common/viewFile/${reportStrategyForm.reportFooterLogo}?Authorization=${getAuthorization}`
+                    "
+                    style="width:50%"
+                  />
+                  <el-upload
+                    action="/"
+                    :http-request="
+                      templateType =>
+                        uploadTaskFile(templateType, 'reportFooterLogo')
+                    "
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                    :limit="1"
+                    list-type="picture"
+                    :on-exceed="handleExceed"
+                  >
+                    <div class="amendUploadImageBtn">
+                      <span>修改</span>
+                    </div>
+                  </el-upload>
+                </template>
               </el-form-item>
               <el-form-item prop="reportCoverLogo">
                 <label slot="label">首页logo:</label>
                 <el-upload
                   drag
                   action="/"
+                  :http-request="
+                    templateType =>
+                      uploadTaskFile(templateType, 'reportCoverLogo')
+                  "
+                  list-type="picture"
+                  :limit="1"
                   accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                  v-if="!reportStrategyForm.reportCoverLogo"
                 >
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">
                     建议分辨率321*210 <em>点击上传</em>
                   </div>
                 </el-upload>
+                <template v-else>
+                  <img
+                    :src="
+                      this.api.baseUrl +
+                        `/api/common/viewFile/${reportStrategyForm.reportCoverLogo}?Authorization=${getAuthorization}`
+                    "
+                    style="width:50%"
+                  />
+                  <el-upload
+                    action="/"
+                    :http-request="
+                      templateType =>
+                        uploadTaskFile(templateType, 'reportCoverLogo')
+                    "
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                    :limit="1"
+                    list-type="picture"
+                    :on-exceed="handleExceed"
+                  >
+                    <div class="amendUploadImageBtn">
+                      <span>修改</span>
+                    </div>
+                  </el-upload>
+                </template>
               </el-form-item>
               <el-form-item prop="reportWatermarkLogo">
                 <label slot="label">报告水印:</label>
                 <el-upload
                   drag
                   action="/"
+                  :http-request="
+                    templateType =>
+                      uploadTaskFile(templateType, 'reportWatermarkLogo')
+                  "
+                  list-type="picture"
+                  :limit="1"
                   accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                  v-if="!reportStrategyForm.reportWatermarkLogo"
                 >
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">
                     建议分辨率800*600 <em>点击上传</em>
                   </div>
                 </el-upload>
+                <template v-else>
+                  <img
+                    :src="
+                      this.api.baseUrl +
+                        `/api/common/viewFile/${reportStrategyForm.reportWatermarkLogo}?Authorization=${getAuthorization}`
+                    "
+                    style="width:50%"
+                  />
+                  <el-upload
+                    action="/"
+                    :http-request="
+                      templateType =>
+                        uploadTaskFile(templateType, 'reportWatermarkLogoo')
+                    "
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                    :limit="1"
+                    list-type="picture"
+                    :on-exceed="handleExceed"
+                  >
+                    <div class="amendUploadImageBtn">
+                      <span>修改</span>
+                    </div>
+                  </el-upload>
+                </template>
               </el-form-item>
             </el-form>
           </div>
           <div class="el-drawer-footer">
             <div class="buttonBox" style="display:inline-block">
-              <el-button type="primary" @click="saveAddReportStrategy()"
+              <el-button
+                type="primary"
+                @click="saveAddReportStrategy('reportStrategyForm')"
                 >保存</el-button
               >
               <el-button @click="cancelAddReportStrategy()" plain
@@ -184,11 +324,287 @@
                   @click="editReportStrategy(scope.row.id)"
                 ></i>
               </el-tooltip>
+              <!-- 报告策略编辑Drawer开始 -->
+              <el-drawer
+                title="编辑报告策略"
+                :visible.sync="editReportStrategyDrawer"
+                :with-header="false"
+                :wrapperClosable="false"
+                :close-on-press-escape="false"
+                :destroy-on-close="true"
+                size="40%"
+                class="editReportStrategyDrawer"
+              >
+                <div class="el-drawer-header">
+                  <h3>编辑报告策略</h3>
+                </div>
+                <div class="el-drawer-content">
+                  <template v-if="reportStrategyDetailList">
+                    <el-form :model="reportStrategyDetailList" :rules="rules">
+                      <el-form-item prop="templateType">
+                        <label slot="label">模板类型</label>
+                        <el-radio-group
+                          v-model="reportStrategyDetailList.templateType"
+                          @change="handleRadioChange"
+                        >
+                          <el-radio :label="1">Android</el-radio>
+                          <el-radio :label="2"> iOS</el-radio>
+                        </el-radio-group>
+                      </el-form-item>
+                      <el-form-item prop="templateId">
+                        <label slot="label">报告模板:</label>
+                        <el-radio-group
+                          v-model="reportStrategyDetailList.templateId"
+                        >
+                          <el-radio
+                            style="margin-bottom:20px"
+                            v-for="item in reportTemplateList"
+                            :key="item.id"
+                            :label="item.id"
+                            >{{ item.templateName }}</el-radio
+                          >
+                        </el-radio-group>
+                      </el-form-item>
+                      <el-form-item prop="reportCorporateName">
+                        <label slot="label">公司名称:</label>
+                        <el-input
+                          size="small"
+                          v-model="reportStrategyDetailList.reportCorporateName"
+                        ></el-input>
+                      </el-form-item>
+                      <el-form-item prop="reportName">
+                        <label slot="label">报告名称:</label>
+                        <el-input
+                          size="small"
+                          v-model="reportStrategyDetailList.reportName"
+                        ></el-input>
+                      </el-form-item>
+                      <el-form-item prop="reportTitle">
+                        <label slot="label">报告标题:</label>
+                        <el-input
+                          size="small"
+                          v-model="reportStrategyDetailList.reportTitle"
+                        ></el-input>
+                      </el-form-item>
+                      <el-form-item prop="reportHeaderLogo">
+                        <label slot="label">报告页眉:</label>
+                        <el-upload
+                          drag
+                          action="/"
+                          :http-request="
+                            templateType =>
+                              uploadTaskFile(templateType, 'reportHeaderLogo')
+                          "
+                          :limit="1"
+                          list-type="picture"
+                          :on-exceed="handleExceed"
+                          v-if="!reportStrategyDetailList.reportHeaderLogo"
+                          accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                        >
+                          <i class="el-icon-upload"></i>
+                          <div class="el-upload__text">
+                            建议分辨率221*55 <em>点击上传</em>
+                          </div>
+                        </el-upload>
+                        <template v-else>
+                          <img
+                            :src="
+                              api.baseUrl +
+                                `/api/common/viewFile/${reportStrategyDetailList.reportHeaderLogo}?Authorization=${getAuthorization}`
+                            "
+                            style="width:50%"
+                          />
+                          <el-upload
+                            action="/"
+                            :http-request="
+                              templateType =>
+                                uploadTaskFile(templateType, 'reportHeaderLogo')
+                            "
+                            accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                            :limit="1"
+                            list-type="picture"
+                            :on-exceed="handleExceed"
+                          >
+                            <div class="amendUploadImageBtn">
+                              <span>修改</span>
+                            </div>
+                          </el-upload>
+                        </template>
+                      </el-form-item>
+                      <el-form-item prop="reportFooterLogo">
+                        <label slot="label">报告页脚:</label>
+                        <el-upload
+                          drag
+                          action="/"
+                          :http-request="
+                            templateType =>
+                              uploadTaskFile(templateType, 'reportFooterLogo')
+                          "
+                          accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                          :limit="1"
+                          list-type="picture"
+                          :on-exceed="handleExceed"
+                          v-if="!reportStrategyDetailList.reportFooterLogo"
+                        >
+                          <i class="el-icon-upload"></i>
+                          <div class="el-upload__text">
+                            建议分辨率267*26 <em>点击上传</em>
+                          </div>
+                        </el-upload>
+                        <template v-else>
+                          <img
+                            :src="
+                              api.baseUrl +
+                                `/api/common/viewFile/${reportStrategyDetailList.reportFooterLogo}?Authorization=${getAuthorization}`
+                            "
+                            style="width:50%"
+                          />
+                          <el-upload
+                            action="/"
+                            :http-request="
+                              templateType =>
+                                uploadTaskFile(templateType, 'reportFooterLogo')
+                            "
+                            accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                            :limit="1"
+                            list-type="picture"
+                            :on-exceed="handleExceed"
+                          >
+                            <div class="amendUploadImageBtn">
+                              <span>修改</span>
+                            </div>
+                          </el-upload>
+                        </template>
+                      </el-form-item>
+                    </el-form>
+                  </template>
+                </div>
+                <div class="el-drawer-footer">
+                  <el-button type="primary" @click="saveEditReportStrategy()"
+                    >保存</el-button
+                  >
+                  <el-button plain @click="cancelEditReportStrategy()"
+                    >取消</el-button
+                  >
+                </div>
+              </el-drawer>
+
+              <!-- 报告策略编辑Drawer结束 -->
               <el-tooltip effect="dark" content="详情" placement="top-start">
                 <i
                   class="el-icon-tickets detailIcon"
-                  @click="reportDetailDetail(scope.row.id)"
+                  @click="reportDetail(scope.row.id)"
                 ></i>
+              </el-tooltip>
+              <!-- 报告策略详情Drawer开始 -->
+              <el-drawer
+                title="报告策略详情"
+                :visible.sync="reportStrategyDetailDrawer"
+                :with-header="false"
+                :wrapperClosable="false"
+                :close-on-press-escape="false"
+                :destroy-on-close="true"
+                size="35%"
+                class="reportStrategyDetailDrawer"
+              >
+                <div class="el-drawer-header">
+                  <h3>报告策略详情</h3>
+                </div>
+                <div class="el-drawer-content">
+                  <template v-if="reportStrategyDetailList">
+                    <el-form :model="reportStrategyDetailList">
+                      <el-form-item prop="templateType">
+                        <label slot="label"
+                          >模板类型:<span v-if="templateType == 1"
+                            >Android</span
+                          >
+                          <span v-if="templateType == 2">iOS</span>
+                        </label>
+                      </el-form-item>
+                      <el-form-item prop="templateName">
+                        <label slot="label"
+                          >报告模板:{{
+                            reportStrategyDetailList.templateName
+                          }}</label
+                        >
+                      </el-form-item>
+                      <el-form-item prop="reportCorporateName">
+                        <label slot="label"
+                          >公司名称:{{
+                            reportStrategyDetailList.reportCorporateName
+                          }}</label
+                        >
+                      </el-form-item>
+                      <el-form-item prop="reportName">
+                        <label slot="label"
+                          >报告名称:{{
+                            reportStrategyDetailList.reportName
+                          }}</label
+                        >
+                      </el-form-item>
+                      <el-form-item prop="reportTitle">
+                        <label slot="label"
+                          >报告标题:{{
+                            reportStrategyDetailList.reportTitle
+                          }}</label
+                        >
+                      </el-form-item>
+                      <el-form-item prop="reportHeaderLogo">
+                        <label slot="label">报告页眉:</label>
+                        <img
+                          style="width:30%"
+                          :src="
+                            api.baseUrl +
+                              `/api/common/viewFile/${reportStrategyDetailList.reportHeaderLogo}?Authorization=${getAuthorization}`
+                          "
+                        />
+                      </el-form-item>
+                      <el-form-item prop="reportFooterLogo">
+                        <label slot="label">报告页脚:</label>
+                        <img
+                          style="width:30%"
+                          :src="
+                            api.baseUrl +
+                              `/api/common/viewFile/${reportStrategyDetailList.reportFooterLogo}?Authorization=${getAuthorization}`
+                          "
+                        />
+                      </el-form-item>
+                      <el-form-item prop="reportCoverLogo">
+                        <label slot="label">首页logo:</label>
+                        <img
+                          style="width:30%"
+                          :src="
+                            api.baseUrl +
+                              `/api/common/viewFile/${reportStrategyDetailList.reportCoverLogo}?Authorization=${getAuthorization}`
+                          "
+                        />
+                      </el-form-item>
+                      <el-form-item prop="reportWatermarkLogo">
+                        <label slot="label">报告水印:</label>
+                        <img
+                          style="width:30%"
+                          :src="
+                            api.baseUrl +
+                              `/api/common/viewFile/${reportStrategyDetailList.reportWatermarkLogo}?Authorization=${getAuthorization}`
+                          "
+                        />
+                      </el-form-item>
+                    </el-form>
+                  </template>
+                </div>
+                <div class="el-drawer-footer">
+                  <el-button plain @click="cancelReportDetail()"
+                    >取消</el-button
+                  >
+                </div>
+              </el-drawer>
+              <!--报告策略详情Drawer结束 -->
+              <el-tooltip effect="dark" content="删除" placement="top-start">
+                <i
+                  class="el-icon-delete deleteIcon"
+                  @click="deleteReport(scope.row.id)"
+                >
+                </i>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -216,17 +632,31 @@ export default {
         reportTitle: ""
       },
       addReportStrategyDrawer: false,
+      reportStrategyDetailDrawer: false,
+      editReportStrategyDrawer: false,
+      reportStrategyDetailList: null,
       reportStrategyForm: {
-        templateType: "1",
+        templateType: 1,
         reportCorporateName: "",
         reportName: "",
         reportTitle: "",
         reportHeaderLogo: "",
-        reportFooterLog: "",
+        reportFooterLogo: "",
         reportCoverLogo: "",
-        reportWatermarkLogo: ""
+        reportWatermarkLogo: "",
+        templateId: 1
       },
       rules: {
+        templateType: {
+          required: true,
+          message: "请选择模板类型",
+          trigger: "blur"
+        },
+        templateId: {
+          required: true,
+          message: "请选择报告模板类型",
+          trigger: "blur"
+        },
         reportCorporateName: {
           required: true,
           message: "请输入公司名称",
@@ -241,8 +671,8 @@ export default {
           required: true,
           message: "请输入报告标题",
           trigger: "blur"
-        },
-        reportHeaderLogo: {
+        }
+        /* reportHeaderLogo: {
           required: true,
           message: "请上传报告页眉",
           trigger: "blur"
@@ -261,13 +691,20 @@ export default {
           required: true,
           message: "请上传报告水印",
           trigger: "blur"
-        }
+        } */
       },
       loading: false,
       listItem: [],
       curpage: 1,
-      limit: 10
+      limit: 10,
+      reportTemplateList: [],
+      templateType: 1
     };
+  },
+  computed: {
+    getAuthorization() {
+      return localStorage.getItem("Authorization");
+    }
   },
   created() {
     this.getData();
@@ -289,6 +726,30 @@ export default {
         this.onGotPageData({ totalElements: count, size, number });
       });
     },
+    //得到不同的报告模板
+    getReportTemplateList(params) {
+      api.systemService.getReportTemplateList(params).then(res => {
+        this.reportTemplateList = res.data;
+      });
+    },
+    //上传页眉页脚水印
+    uploadTaskFile(file, type) {
+      const params = new FormData(),
+        _this = this;
+      params.append("file", file.file);
+      api.uploadService.uploadReportConfigurationFile(params).then(res => {
+        _this.setFileKey(type, res.data.fileKey);
+      });
+    },
+    //设置fileKey
+    setFileKey(type, data) {
+      this.$set(this.reportStrategyForm, type, data);
+      console.log(this.reportStrategyForm);
+    },
+    //限制文件上传的数量
+    handleExceed(file, fileList) {
+      this.$message.warning("最多只能上传一个文件!");
+    },
     search() {
       console.log("查询");
     },
@@ -297,19 +758,77 @@ export default {
     },
     addReportStrategy() {
       this.addReportStrategyDrawer = true;
+      const params = { templateType: this.templateType };
+      this.getReportTemplateList(params);
     },
-    handleRadioChange() {},
-    editReportStrategy(id) {
-      console.log("编辑");
+    handleRadioChange(label) {
+      const params = { templateType: label };
+      this.getReportTemplateList(params);
     },
-    saveAddReportStrategy() {
-      console.log("保存新增的报告策略");
+    saveAddReportStrategy(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          const params = this.reportStrategyForm;
+          api.systemService.saveOrUpdateReportStrategy(params).then(res => {
+            if (res.code == "00") {
+              this.addReportStrategyDrawer = false;
+              this.$notify({
+                message: "新增报告策略成功!",
+                type: "success",
+                duration: 1000
+              });
+              this.reload();
+            }
+          });
+        } else {
+          console.log("没通过");
+        }
+      });
     },
     cancelAddReportStrategy() {
       this.addReportStrategyDrawer = false;
     },
-    reportDetailDetail(id) {
-      console.log("详情");
+    getReportDetail(id) {
+      api.systemService.getReportStrategyDetail(id).then(res => {
+        if (res.code == "00") {
+          this.reportStrategyDetailList = res.data;
+          console.log(this.reportStrategyDetailList);
+        }
+      });
+    },
+    reportDetail(id) {
+      this.reportStrategyDetailDrawer = true;
+      this.getReportDetail(id);
+    },
+    deleteReport(id) {
+      new this.$messageTips(({ confirm }) => {
+        confirm({ content: "确定要删除该报告策略?" });
+      }).then(res => {
+        api.systemService.deleteReportTemplate(id).then(res => {
+          if (res.code == "00") {
+            this.$message({ type: "success", message: "删除成功" });
+            this.reload();
+          }
+        });
+      });
+    },
+    cancelReportDetail() {
+      this.reportStrategyDetailDrawer = false;
+    },
+    //编辑报告策略
+    editReportStrategy(id) {
+      const params = { templateType: this.templateType };
+      this.editReportStrategyDrawer = true;
+      this.getReportDetail(id);
+      this.getReportTemplateList(params);
+    },
+    //保存编辑的报告策略
+    saveEditReportStrategy() {
+      console.log("保存编辑的报告策略");
+    },
+    //取消编辑的报告策略
+    cancelEditReportStrategy() {
+      this.editReportStrategyDrawer = false;
     }
   }
 };
@@ -328,7 +847,8 @@ export default {
   box-sizing: border-box;
   margin: 0px 0px 15px 10px;
 }
-.reportConfigureManagement .el-input {
+.reportConfigureManagement .addReportStrategyDrawer .el-input,
+.reportConfigureManagement .editReportStrategyDrawer .el-input {
   width: 70%;
 }
 .reportConfigureManagementBase {
@@ -338,7 +858,9 @@ export default {
   margin-right: 10px;
 }
 .reportConfigureManagement .addReportStrategyDrawer .el-input__inner,
-.reportConfigureManagement .addReportStrategyDrawer .el-upload-dragger {
+.reportConfigureManagement .addReportStrategyDrawer .el-upload-dragger,
+.reportConfigureManagement .editReportStrategyDrawer .el-input__inner,
+.reportConfigureManagement .editReportStrategyDrawer .el-upload-dragger {
   border-radius: 0px;
 }
 .reportConfigureManagement .el-upload {
@@ -347,11 +869,30 @@ export default {
 .reportConfigureManagement .el-upload-dragger {
   width: 100%;
 }
-.reportConfigureManagement .editIcon,
-.detailIcon {
+.editIcon,
+.detailIcon,
+.deleteIcon {
   font-size: 22px;
   color: #517fc3;
   margin-right: 10px;
   cursor: pointer;
+}
+.reportConfigureManagement .el-upload-list--picture {
+  width: 50%;
+  margin-left: 12%;
+}
+.reportConfigureManagement .el-radio-group {
+  width: 70%;
+}
+.reportConfigureManagement .el-radio-group .el-radio {
+  width: 40%;
+}
+.reportConfigureManagement .amendUploadImageBtn {
+  text-align: left;
+  margin-left: 12%;
+  color: #409eff;
+}
+.reportStrategyDetailDrawer .el-drawer-footer {
+  width: 35%;
 }
 </style>

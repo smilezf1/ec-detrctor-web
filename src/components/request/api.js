@@ -26,6 +26,10 @@ let uploadService = {
     //上传授权文件
     uploadAuthorizeFile(params, config) {
         return uploadFile("/api/system/auth/uploadAuthFile", params, config).then(res => res.data)
+    },
+    //上传报告水印等
+    uploadReportConfigurationFile(params, config) {
+        return uploadFile("/api/common/uploadFile", params, config).then(res => res.data)
     }
 }
 //授权管理
@@ -204,13 +208,25 @@ let systemService = {
     getReportStrategyList(params) {
         return fetchPost("/api/detection/report/findReportStrategyPage", params).then(res => res.data)
     },
+    //查询报告策略列表不分页
+    findReportStrategyList(params) {
+        return fetchPost("/api/detection/report/findReportStrategyList", params).then(res => res.data)
+    },
     //新增或修改报告策略
     saveOrUpdateReportStrategy(params) {
         return fetchPost("/api/detection/report/saveOrUpdateReportStrategy", params).then(res => res.data)
     },
     //查询报告策略详情
     getReportStrategyDetail(params) {
-        return fetchGet("/api/detection/report/findReportStrategyDetailById", params).then(res => res.data)
+        return fetchGet("/api/detection/report/findReportStrategyDetailById?reportId=" + params).then(res => res.data)
+    },
+    //得到报告模板列表
+    getReportTemplateList(params) {
+        return fetchPost("/api/detection/template/findTemplateDesignList", params).then(res => res.data)
+    },
+    //删除报告策略
+    deleteReportTemplate(params) {
+        return fetchGet("/api/detection/report/deleteReportStrategyById/" + params).then(res => res.data)
     }
     /* 报告模板设置结束 */
 }

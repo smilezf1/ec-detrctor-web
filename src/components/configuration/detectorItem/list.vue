@@ -205,7 +205,6 @@
                     :with-header="false"
                     size="40%"
                     :direction="direction"
-                    :before-close="handleClose"
                     :show-close="false"
                   >
                     <div class="el-drawer-header">
