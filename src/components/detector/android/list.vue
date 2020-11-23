@@ -344,7 +344,10 @@
                     <el-form-item>
                       <label slot="label">数据类型:</label>
                       <div>
-                        <el-radio-group v-model="reportParameter">
+                        <el-radio-group
+                          v-model="reportParameter"
+                          style="margin-top:12px"
+                        >
                           <el-radio label="0">全量报告</el-radio>
                           <el-radio label="2">整改报告</el-radio>
                         </el-radio-group>
