@@ -1077,7 +1077,7 @@ export default {
 .reportConfigureManagementBase {
   margin-top: 10px;
 }
-.el-button + .el-button {
+.reportConfigureManagement .el-button + .el-button {
   margin-right: 10px;
 }
 .reportConfigureManagement .addReportStrategyDrawer .el-input__inner,

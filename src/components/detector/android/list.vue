@@ -200,11 +200,6 @@
               <span>{{ (curpage - 1) * limit + scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <!--  <el-table-column
-            width="60"
-            prop="taskId"
-            label="id"
-          ></el-table-column> -->
           <el-table-column
             width="200"
             prop="appName"
@@ -340,40 +335,16 @@
                   <h3>下载报告</h3>
                 </div>
                 <div class="el-drawer-content">
-                  <el-form>
-                    <el-form-item>
-                      <label slot="label">数据类型:</label>
-                      <div>
-                        <el-radio-group
-                          v-model="reportParameter"
-                          style="margin-top:12px"
-                        >
-                          <el-radio label="0">全量报告</el-radio>
-                          <el-radio label="2">整改报告</el-radio>
-                        </el-radio-group>
-                        <!--   <el-radio v-model="reportParameter" label="0"
-                          >全量报告</el-radio
-                        >
-                        <el-radio v-model="reportParameter" label="2"
-                          >整改报告</el-radio
-                        > -->
-                        <!--  <el-radio v-model="reportParameter" label="3"
-                          >山东网安报告(详细)</el-radio
-                        >
-                        <el-radio v-model="reportParameter" label="4"
-                          >山东网安报告(简版)</el-radio
-                        >
-                        <el-radio v-model="reportParameter" label="5"
-                          >上海网安检测报告</el-radio
-                        >
-                        <el-radio v-model="reportParameter" label="6"
-                          >上海网安检测报告(水印)</el-radio
-                        > -->
-                      </div>
-                    </el-form-item>
-                    <el-form-item>
+                  <el-form
+                    :model="reportConfigureForm"
+                    :rules="reportConfigureFormRules"
+                    ref="reportConfigureForm"
+                  >
+                    <el-form-item prop="templateType">
                       <label slot="label">报告模板:</label>
-                      <el-radio-group v-model="templateType">
+                      <el-radio-group
+                        v-model="reportConfigureForm.templateType"
+                      >
                         <el-radio
                           v-for="item in reportTemplateList"
                           :key="item.id"
@@ -382,10 +353,22 @@
                         >
                       </el-radio-group>
                     </el-form-item>
-                    <el-form-item>
+                    <el-form-item prop="reportParameter">
+                      <label slot="label">数据类型:</label>
+                      <el-radio-group
+                        v-model="reportConfigureForm.reportParameter"
+                        style="margin-top:12px"
+                      >
+                        <el-radio label="0">全量报告</el-radio>
+                        <el-radio label="2">整改报告</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                    <el-form-item prop="reportType">
                       <label slot="label">报告类型:</label>
-                      <el-radio v-model="reportType" :label="2">PDF </el-radio>
-                      <el-radio v-model="reportType" :label="1">WORD</el-radio>
+                      <el-radio-group v-model="reportConfigureForm.reportType">
+                        <el-radio :label="2">PDF </el-radio>
+                        <el-radio :label="1">WORD</el-radio>
+                      </el-radio-group>
                     </el-form-item>
                   </el-form>
                 </div>
@@ -393,7 +376,9 @@
                   <div class="buttonBox" style="display:inline-block">
                     <el-button
                       type="primary"
-                      @click="saveDownloadReport(reportParameter)"
+                      @click="
+                        saveDownloadReport(reportConfigureForm.reportParameter)
+                      "
                       >保存</el-button
                     >
                     <el-button @click="cancelDownloadReport()" plain
@@ -435,7 +420,6 @@
         </el-table>
       </template>
     </div>
-
     <div class="androidBase">
       <pagination @pageChanged="onPageChanged"></pagination>
     </div>
@@ -452,9 +436,6 @@ export default {
   inject: ["reload"],
   data() {
     return {
-      reportParameter: "0",
-      reportType: 2,
-      templateType: 2,
       pickOptionsStart: {
         disabledDate: time => {
           return (
@@ -473,6 +454,28 @@ export default {
           );
         }
       },
+      reportConfigureForm: {
+        templateType: "",
+        reportType: 2,
+        reportParameter: "0"
+      },
+      reportConfigureFormRules: {
+        templateType: {
+          required: true,
+          message: "请选择报告模板",
+          trigger: "blur"
+        },
+        reportType: {
+          required: true,
+          message: "请选择报告类型",
+          trigger: "blur"
+        },
+        reportParameter: {
+          required: true,
+          message: "请选择数据类型",
+          trigger: "blur"
+        }
+      },
       ruleForm: {
         appName: "",
         appVersion: "",
@@ -480,7 +483,6 @@ export default {
         minDetectionTime: "",
         maxDetectionTime: ""
       },
-
       rules: {
         detectorStrategyId: [
           {
@@ -522,8 +524,8 @@ export default {
     getLoadingNum: function() {
       return (this.loadingNum =
         this.uploadTaskNum - this.uploadTaskFileItem.length);
-    },
-    getParameter() {
+    }
+    /*  getParameter() {
       return reportParameter => {
         if (reportParameter <= 2) {
           return { isCompliance: reportParameter };
@@ -531,7 +533,7 @@ export default {
           return { isCompliance: 2, reportDesignId: reportParameter };
         }
       };
-    }
+    } */
   },
   methods: {
     async getData() {
@@ -683,14 +685,11 @@ export default {
     },
     //保存下载报告
     saveDownloadReport(reportParameter) {
-      const parameter = this.getParameter(reportParameter),
-        id = this.taskId,
+      const id = this.taskId,
         Authorization = localStorage.getItem("Authorization"),
-        isCompliance = parameter.isCompliance,
-        reportDesignId = parameter.reportDesignId,
-        reportType = this.reportType,
-        reportStrategyId = this.templateType;
-      console.log(id, reportStrategyId, reportType, isCompliance);
+        reportType = this.reportConfigureForm.reportType,
+        reportStrategyId = this.reportConfigureForm.templateType,
+        isCompliance = this.reportConfigureForm.reportParameter;
       let downloadUrl = null;
       downloadUrl =
         this.api.baseUrl +
@@ -704,33 +703,14 @@ export default {
         reportType +
         "&Authorization=" +
         Authorization;
-      /* if (reportDesignId) {
-        downloadUrl =
-          this.api.baseUrl +
-          "/detector/android/downloadReport?id=" +
-          id +
-          "&isCompliance=" +
-          isCompliance +
-          "&reportDesignId=" +
-          reportDesignId +
-          "&reportType=" +
-          reportType +
-          "&Authorization=" +
-          Authorization;
-      } else {
-        downloadUrl =
-          this.api.baseUrl +
-          "/detector/android/downloadReport?id=" +
-          id +
-          "&isCompliance=" +
-          isCompliance +
-          "&reportType=" +
-          reportType +
-          "&Authorization=" +
-          Authorization;
-      } */
-      window.location.href = downloadUrl;
-      this.downloadReportDrawer = false;
+      this.$refs["reportConfigureForm"].validate(valid => {
+        if (valid) {
+          window.location.href = downloadUrl;
+          this.downloadReportDrawer = false;
+        } else {
+          return false;
+        }
+      });
     },
     //得到报告模板
     getReportTemplate() {
@@ -738,7 +718,6 @@ export default {
       api.systemService.findReportStrategyList(params).then(res => {
         if (res.code == "00") {
           this.reportTemplateList = res.data;
-          console.log(this.reportTemplateList);
         }
       });
     },
@@ -811,6 +790,10 @@ export default {
 .android .el-radio {
   width: 40%;
   margin-bottom: 20px;
+}
+.android .el-radio-group {
+  width: 85%;
+  margin-top: 10px;
 }
 .dowmloadApplicationIcon,
 .detailIcon,

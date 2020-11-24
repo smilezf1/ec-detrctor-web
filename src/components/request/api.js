@@ -208,9 +208,9 @@ let systemService = {
     getReportStrategyList(params) {
         return fetchPost("/api/detection/report/findReportStrategyPage", params).then(res => res.data)
     },
-    //查询报告策略列表分页
+    //查询报告策略列表不分页
     findReportStrategyList(params) {
-        return fetchPost("/api/detection/report/findReportStrategyPage", params).then(res => res.data)
+        return fetchPost("/api/detection/report/findReportStrategyList", params).then(res => res.data)
     },
     //新增或修改报告策略
     saveOrUpdateReportStrategy(params) {
