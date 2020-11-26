@@ -1,7 +1,8 @@
 //http://192.168.3.58:9980/ec_detector
 // 58 9980
 // 100 8080
-const baseUrl = "http://192.168.3.58:9980/ec_detector";
+const baseUrl = "http://192.168.3.58:9980/ec_detector",
+    websocketUrl = "http://192.168.3.58:9980/ec_detector/websocket";
 import { configure } from 'nprogress';
 import { fetchGet, fetchPost, uploadFile } from './http'
 //登录
@@ -230,4 +231,4 @@ let systemService = {
     }
     /* 报告模板设置结束 */
 }
-export default { baseUrl, userService, detrctorTaskService, detectorItemService, detectorStrategyService, detectorAndroidService, uploadService, systemService, authorizeService }
+export default { baseUrl, websocketUrl, userService, detrctorTaskService, detectorItemService, detectorStrategyService, detectorAndroidService, uploadService, systemService, authorizeService }

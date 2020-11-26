@@ -565,7 +565,7 @@ export default {
     initWebsocket() {
       const _this = this,
         userId = localStorage.getItem("id"),
-        url = "http://192.168.3.58:9980/ec_detector/websocket",
+        url = api.websocketUrl,
         socket = new SockJsClient(url);
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(
