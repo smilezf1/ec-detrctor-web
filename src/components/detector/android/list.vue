@@ -429,6 +429,9 @@
 import api from "../../request/api";
 import pagination from "../../common/pagination";
 import pageMixins from "../../../utils/pageMixins";
+//websocket
+import SockJsClient from "sockjs-client";
+import Stomp from "stompjs";
 export default {
   name: "android",
   components: { pagination },
@@ -514,7 +517,8 @@ export default {
       taskId: null,
       uploadTaskNum: null,
       loadingNum: null,
-      reportTemplateList: []
+      reportTemplateList: [],
+      stompClient: null
     };
   },
   beforeMount() {
@@ -535,6 +539,9 @@ export default {
       };
     } */
   },
+  created() {
+    this.initWebsocket();
+  },
   methods: {
     async getData() {
       const params = {};
@@ -554,6 +561,54 @@ export default {
         }
       });
       return params;
+    },
+    initWebsocket() {
+      const _this = this,
+        userId = localStorage.getItem("id"),
+        url = "http://192.168.3.58:9980/ec_detector/websocket",
+        socket = new SockJsClient(url);
+      this.stompClient = Stomp.over(socket);
+      this.stompClient.connect(
+        {},
+        frame => {
+          //订阅用户socket推送解析APK信息
+          _this.stompClient.subscribe(
+            "/user/" + userId + "/detection",
+            function(message) {
+              if (
+                typeof message != "undefined" &&
+                typeof message.body != "undefined"
+              ) {
+                _this.getWebSocketResult(message);
+              }
+            }
+          );
+        },
+        err => {
+          //断开重连,尝试发送消息,捕获异常时重连
+          setTimeout(() => {
+            _this.initWebsocket();
+          }, 5000);
+        }
+      );
+    },
+    //解析APK推送信息
+    getWebSocketResult(msg) {
+      const data = JSON.parse(msg.body);
+      this.listItem.map((item, index) => {
+        if (item.taskId == data.data.id && data.title == "检测") {
+          this.$set(
+            this.listItem[index],
+            "detectionStatus",
+            data.data.detectionStatus
+          );
+        }
+      });
+    },
+    destroyWebsocket() {
+      if (this.stompClient != null) {
+        this.stompClient.disconnect();
+      }
     },
     //限制文件上传的数量
     handleExceed(file, fileList) {
@@ -750,6 +805,9 @@ export default {
       });
     }
   },
+  destroyed() {
+    this.destroyWebsocket();
+  },
   beforeRouteLeave(to, from, next) {
     if (to.name == "androidDetail") {
       this.$store.commit("getCacheComponents", ["android"]);
@@ -765,7 +823,7 @@ export default {
   position: absolute !important;
   left: 0px !important;
   top: 35px !important;
-  height: 150%;
+  height: 215%;
   overflow-y: auto !important;
 }
 .android .uploadForm .el-select {

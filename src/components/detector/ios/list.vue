@@ -387,6 +387,9 @@
 import api from "../../request/api";
 import pagination from "../../common/pagination";
 import pageMixins from "../../../utils/pageMixins";
+//Websocket
+import SockJsClient from "sockjs-client";
+import Stomp from "stompjs";
 export default {
   name: "ios",
   components: { pagination },
@@ -451,11 +454,15 @@ export default {
       limit: 10,
       downloadReportDrawer: false,
       taskId: null,
-      reportType: 2
+      reportType: 2,
+      stompClient: null
     };
   },
   beforeMount() {
     this.getData();
+  },
+  created() {
+    this.initWebsocket();
   },
   methods: {
     async getData() {
@@ -475,6 +482,54 @@ export default {
           this.onGotPageData({ totalElements: count, size, number });
         }
       });
+    },
+    initWebsocket() {
+      const _this = this,
+        userId = localStorage.getItem("id"),
+        url = "http://192.168.3.58:9980/ec_detector/websocket",
+        socket = new SockJsClient(url);
+      this.stompClient = Stomp.over(socket);
+      this.stompClient.connect(
+        {},
+        frame => {
+          //订阅用户socket推送解析APK信息
+          _this.stompClient.subscribe(
+            "/user/" + userId + "/detection",
+            message => {
+              if (
+                typeof message != "undefined" &&
+                typeof message.body != "undefined"
+              ) {
+                _this.getWebsocketResult(message);
+              }
+            }
+          );
+        },
+        err => {
+          //断开重连,尝试发送消息,捕获异常时重连
+          setTimeout(() => {
+            _this.initWebsocket();
+          }, 5000);
+        }
+      );
+    },
+    //解析APK推送消息
+    getWebsocketResult(message) {
+      const data = JSON.parse(message.body);
+      this.listItem.map((item, index) => {
+        if (item.taskId == data.data.id && data.title == "检测") {
+          this.$set(
+            this.listItem[index],
+            "detectionStatus",
+            data.data.detectionStatus
+          );
+        }
+      });
+    },
+    destroyWebsocket() {
+      if (this.stompClient != null) {
+        this.stompClient.disconnect();
+      }
     },
     search(ruleForm) {
       const params = {};
@@ -642,6 +697,9 @@ export default {
     cancelDownloadReport() {
       this.downloadReportDrawer = false;
     }
+  },
+  destroyed() {
+    this.destroyWebsocket();
   },
   beforeRouteLeave(to, from, next) {
     if (to.name == "iosDetail") {
