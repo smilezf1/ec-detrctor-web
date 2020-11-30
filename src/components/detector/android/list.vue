@@ -340,7 +340,10 @@
                     :rules="reportConfigureFormRules"
                     ref="reportConfigureForm"
                   >
-                    <el-form-item prop="templateType">
+                    <el-form-item
+                      prop="templateType"
+                      v-if="reportTemplateList.length > 0"
+                    >
                       <label slot="label">报告模板:</label>
                       <el-radio-group
                         v-model="reportConfigureForm.templateType"
@@ -379,6 +382,7 @@
                       @click="
                         saveDownloadReport(reportConfigureForm.reportParameter)
                       "
+                      :disabled="reportTemplateList.length == 0"
                       >保存</el-button
                     >
                     <el-button @click="cancelDownloadReport()" plain
@@ -773,6 +777,15 @@ export default {
       api.systemService.findReportStrategyList(params).then(res => {
         if (res.code == "00") {
           this.reportTemplateList = res.data;
+          const reportTemListLength = this.reportTemplateList.length;
+          if (reportTemListLength == 0) {
+            this.$message({
+              type: "warning",
+              message:
+                "报告模板未配置！请联系管理员配置报告模板:系统管理->报告模板配置",
+              duration: 6000
+            });
+          }
         }
       });
     },
@@ -851,7 +864,7 @@ export default {
 }
 .android .el-radio-group {
   width: 85%;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 .dowmloadApplicationIcon,
 .detailIcon,

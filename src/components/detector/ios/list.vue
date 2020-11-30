@@ -319,9 +319,29 @@
                   <h3>下载报告</h3>
                 </div>
                 <div class="el-drawer-content">
-                  <el-form :model="addDownloadReportForm">
-                    <el-form-item prop="isCompliance">
+                  <el-form
+                    :model="addDownloadReportForm"
+                    ref="addDownloadReportForm"
+                    :rules="addDownloadReportFormRules"
+                  >
+                    <el-form-item
+                      prop="templateType"
+                      v-if="reportTemplateList.length > 0"
+                    >
                       <label slot="label">报告模板:</label>
+                      <el-radio-group
+                        v-model="addDownloadReportForm.templateType"
+                      >
+                        <el-radio
+                          v-for="item in reportTemplateList"
+                          :key="item.id"
+                          :label="item.id"
+                          >{{ item.reportName }}</el-radio
+                        >
+                      </el-radio-group>
+                    </el-form-item>
+                    <el-form-item prop="isCompliance">
+                      <label slot="label">数据类型:</label>
                       <el-radio-group
                         v-model="addDownloadReportForm.isCompliance"
                       >
@@ -329,16 +349,23 @@
                         <el-radio :label="2">整改报告</el-radio>
                       </el-radio-group>
                     </el-form-item>
-                    <el-form-item>
+                    <el-form-item prop="reportType">
                       <label slot="label">报告类型:</label>
-                      <el-radio v-model="reportType" :label="2">PDF</el-radio>
-                      <el-radio v-model="reportType" :label="1">WORD</el-radio>
+                      <el-radio-group
+                        v-model="addDownloadReportForm.reportType"
+                      >
+                        <el-radio :label="2">PDF</el-radio>
+                        <el-radio :label="1">WORD</el-radio>
+                      </el-radio-group>
                     </el-form-item>
                   </el-form>
                 </div>
                 <div class="el-drawer-footer">
                   <div class="buttonBox" style="display:inline-block">
-                    <el-button type="primary" @click="saveDownloadReport()"
+                    <el-button
+                      type="primary"
+                      @click="saveDownloadReport()"
+                      :disabled="reportTemplateList.length == 0"
                       >保存</el-button
                     >
                     <el-button @click="cancelDownloadReport()">取消</el-button>
@@ -423,6 +450,8 @@ export default {
         maxDetectionTime: ""
       },
       addDownloadReportForm: {
+        templateType: "",
+        reportType: 2,
         isCompliance: 0
       },
       addTaskDrawer: false,
@@ -448,14 +477,31 @@ export default {
         { value: "1", label: "检测中" },
         { value: "2", label: "已完成" }
       ],
+      addDownloadReportFormRules: {
+        templateType: {
+          required: true,
+          message: "请选择报告模板",
+          trigger: "blur"
+        },
+        reportType: {
+          required: true,
+          message: "请选择报告类型",
+          trigger: "blur"
+        },
+        isCompliance: {
+          required: true,
+          message: "请选择数据类型",
+          trigger: "blur"
+        }
+      },
       loading: false,
       listItem: [],
       curpage: 1,
       limit: 10,
       downloadReportDrawer: false,
       taskId: null,
-      reportType: 2,
-      stompClient: null
+      stompClient: null,
+      reportTemplateList: []
     };
   },
   beforeMount() {
@@ -669,9 +715,28 @@ export default {
           Authorization;
       window.location.href = downloadUrl;
     },
+    //得到报告模板
+    getReportTemplate() {
+      const params = { templateType: 2 };
+      api.systemService.findReportStrategyList(params).then(res => {
+        if (res.code == "00") {
+          this.reportTemplateList = res.data;
+          const reportTemListLength = this.reportTemplateList.length;
+          if (reportTemListLength == 0) {
+            this.$message({
+              type: "warning",
+              message:
+                "报告模板未配置！请联系管理员配置报告模板:系统管理->报告模板配置",
+              duration: 6000
+            });
+          }
+        }
+      });
+    },
     //下载报告
     downloadReport(id) {
       this.taskId = id;
+      this.getReportTemplate();
       this.downloadReportDrawer = true;
     },
     //保存下载报告
@@ -679,19 +744,28 @@ export default {
       const id = this.taskId,
         Authorization = localStorage.getItem("Authorization"),
         isCompliance = this.addDownloadReportForm.isCompliance,
-        reportType = this.reportType,
+        reportStrategyId = this.addDownloadReportForm.templateType,
+        reportType = this.addDownloadReportForm.reportType,
         downloadUrl =
           this.api.baseUrl +
-          "/detector/android/downloadReport?id=" +
+          "/detector/android/downloadReport?taskId=" +
           id +
           "&isCompliance=" +
           isCompliance +
+          "&reportStrategyId=" +
+          reportStrategyId +
           "&reportType=" +
           reportType +
           "&Authorization=" +
           Authorization;
-      window.location.href = downloadUrl;
-      this.downloadReportDrawer = false;
+      this.$refs["addDownloadReportForm"].validate(valid => {
+        if (valid) {
+          window.location.href = downloadUrl;
+          this.downloadReportDrawer = false;
+        } else {
+          return false;
+        }
+      });
     },
     //取消下载报告
     cancelDownloadReport() {
@@ -746,11 +820,12 @@ export default {
   margin-left: 15px;
 }
 .ios .el-radio {
-  width: 36%;
-  margin-bottom: 5px;
+  width: 40%;
+  margin-bottom: 20px;
 }
 .ios .el-radio-group {
-  width: 90%;
+  width: 85%;
+  margin-top: 12px;
 }
 .ios .el-radio-group .el-radio {
   width: 40%;

@@ -378,7 +378,7 @@
                 :wrapperClosable="false"
                 :close-on-press-escape="false"
                 ref="resetPasswordDrawer"
-                size="30%"
+                size="40%"
               >
                 <div class="el-drawer-header">
                   <h3>重置密码</h3>

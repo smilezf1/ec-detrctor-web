@@ -328,8 +328,8 @@
           ></el-table-column>
           <el-table-column prop="template_id" label="策略模板类型" width="250">
             <template slot-scope="scope">
-              <span v-if="scope.row.template_id == '1'">Android</span>
-              <span v-if="scope.row.template_id == '2'">iOS</span>
+              <span v-if="scope.row.template_type == '1'">Android</span>
+              <span v-if="scope.row.template_type == '2'">iOS</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -782,7 +782,6 @@
 import api from "../request/api";
 import pagination from "../common/pagination";
 import pageMixins from "../../utils/pageMixins";
-import Pagination from "../../../../../securityManagementPlatform/src/components/common/pagination.vue";
 export default {
   name: "reportConfigureManagement",
   inject: ["reload"],
@@ -1101,8 +1100,8 @@ export default {
   cursor: pointer;
 }
 .reportConfigureManagement .el-upload-list--picture {
-  width: 50%;
-  margin-left: 12%;
+  width: 69%;
+  margin-left: 11%;
 }
 .reportConfigureManagement .el-radio-group {
   width: 70%;
