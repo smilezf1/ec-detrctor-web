@@ -12,7 +12,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            width="240"
+            width="200"
             prop="appName"
             label="应用名称"
             :show-overflow-tooltip="true"
@@ -53,7 +53,12 @@
               <span v-else>iOS</span>
             </template>
           </el-table-column>
-          <el-table-column widt="200" prop="detectionFormwork" label="检测策略">
+          <el-table-column
+            widt="200"
+            prop="detectionFormwork"
+            label="检测策略"
+            :show-overflow-tooltip="true"
+          >
             <template slot-scope="scope">{{
               scope.row.detectionFormwork
             }}</template>

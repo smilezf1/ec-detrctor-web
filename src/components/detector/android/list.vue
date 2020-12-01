@@ -236,13 +236,12 @@
               </div>
             </template>
           </el-table-column>
-          <!--   <el-table-column width="120" prop="terminalType" label="适用系统">
-            <template slot-scope="scope">
-              <span v-if="scope.row.terminalType == 1">Android</span>
-              <span v-else>iOS</span>
-            </template>
-          </el-table-column> -->
-          <el-table-column widt="150" prop="detectionFormwork" label="检测策略">
+          <el-table-column
+            widt="200"
+            prop="detectionFormwork"
+            label="检测策略"
+            :show-overflow-tooltip="true"
+          >
             <template slot-scope="scope">{{
               scope.row.detectionFormwork
             }}</template>
@@ -302,7 +301,7 @@
           <el-table-column prop="userName" label="上传人" width="130">
             <template slot-scope="scope">{{ scope.row.userName }}</template>
           </el-table-column>
-          <el-table-column label="操作" width="290" prop="operate">
+          <el-table-column label="操作" width="200" prop="operate">
             <template slot-scope="scope">
               <el-tooltip
                 effect="dark"
@@ -606,6 +605,16 @@ export default {
             "detectionStatus",
             data.data.detectionStatus
           );
+          this.$set(
+            this.listItem[index],
+            "detectionNumber",
+            data.data.detectionNumber
+          );
+          this.$set(
+            this.listItem[index],
+            "detectionTime",
+            data.data.detectionTime
+          );
         }
       });
     },
@@ -865,6 +874,19 @@ export default {
 .android .el-radio-group {
   width: 85%;
   margin-top: 12px;
+}
+.android .searchBox {
+  width: 80%;
+}
+.android .operateBox {
+  width: 20%;
+}
+.android .searchBox .el-input {
+  margin-bottom: 15px;
+  width: 19%;
+}
+.android .searchBox .el-select .el-input {
+  width: 100%;
 }
 .dowmloadApplicationIcon,
 .detailIcon,

@@ -569,6 +569,16 @@ export default {
             "detectionStatus",
             data.data.detectionStatus
           );
+          this.$set(
+            this.listItem[index],
+            "detectionNumber",
+            data.data.detectionNumber
+          );
+          this.$set(
+            this.listItem[index],
+            "detectionTime",
+            data.data.detectionTime
+          );
         }
       });
     },
@@ -816,8 +826,19 @@ export default {
 .ios .searchForm {
   display: flex;
 }
+.ios .searchBox {
+  width: 80%;
+}
 .ios .operateBox {
+  width: 20%;
   margin-left: 15px;
+}
+.ios .searchBox .el-input {
+  margin-bottom: 15px;
+  width: 19%;
+}
+.ios .searchBox .el-select .el-input {
+  width: 100%;
 }
 .ios .el-radio {
   width: 40%;

@@ -3,7 +3,7 @@
     <div class="userManagementHeader">
       <p>当前位置: 用户管理</p>
     </div>
-    <div class="searchForm">
+    <header>
       <div class="searchBox">
         <el-form
           :model="ruleForm"
@@ -189,7 +189,7 @@
           >刷新</el-button
         >
       </div>
-    </div>
+    </header>
     <div class="userManagementBody">
       <template>
         <el-table
@@ -248,15 +248,15 @@
             prop="createTime"
             label="创建时间"
             :show-overflow-tooltip="true"
-            width="180"
+            width="200"
           ></el-table-column>
           <el-table-column
             prop="updateTime"
             label="更新时间"
             :show-overflow-tooltip="true"
-            width="180"
+            width="200"
           ></el-table-column>
-          <el-table-column label="操作" prop="operate">
+          <el-table-column label="操作" prop="operate" width="400">
             <template slot-scope="scope">
               <el-tooltip effect="dark" content="编辑" placement="top-start">
                 <i
@@ -917,17 +917,30 @@ export default {
 .searchBox .el-input {
   margin: 0px 5px 5px 0px;
 }
+.userManagement header {
+  box-sizing: border-box;
+  display: flex;
+}
 .userManagement .el-input {
   width: auto;
 }
 .userManagement .searchBox {
+  width: 75%;
   margin-bottom: 15px;
   display: inline-block;
 }
 .userManagement .operateBox {
+  width: 20%;
   display: inline-block;
   box-sizing: border-box;
   margin: 0px 0px 15px 10px;
+}
+.userManagement .searchBox .el-input {
+  margin-bottom: 15px;
+  width: 17%;
+}
+.userManagement .searchBox .el-select .el-input {
+  width: 100%;
 }
 .editIcon,
 .resetIcon,
