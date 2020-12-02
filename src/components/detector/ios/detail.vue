@@ -18,14 +18,16 @@
             </div>
             <div class="applicationMessageHeaderRight">
               <span
-                ><i class="el-icon-menu"></i>&nbsp;检测模板:&nbsp;&nbsp;&nbsp;
+                ><i class="el-icon-menu"></i
+                ><b>&nbsp;检测模板:&nbsp;&nbsp;&nbsp;</b>
                 <span style="color:#333">{{
                   listItem.taskInfo.detectionFormwork
                 }}</span></span
               >
               <span
                 ><i class="el-icon-date"></i
-                >&nbsp;检测时间:&nbsp;&nbsp;&nbsp;<span style="color:#333">{{
+                ><b>&nbsp;检测时间:&nbsp;&nbsp;&nbsp;</b
+                ><span style="color:#333">{{
                   listItem.taskInfo.detectionTime
                 }}</span></span
               >
@@ -33,65 +35,38 @@
           </div>
           <div class="applicationMessageBody">
             <el-row :span="24">
-              <el-col :span="4">
+              <el-col :span="8">
                 <div class="app-box">
+                  <div class="appInfoText">
+                    <p style="margin-top:-5px">
+                      应用:{{ listItem.appInfo.appName }}
+                    </p>
+                    <p>大小:{{ listItem.appInfo.appMbyte }}MB</p>
+                    <p>版本:{{ listItem.appInfo.appVersion }}</p>
+                  </div>
                   <img
                     class="appInfoImg"
                     :src="'data:image/jpg;base64,' + listItem.appInfo.appIcon"
                   />
-                  <p>应用:{{ listItem.appInfo.appName }}</p>
-                  <p>大小:{{ listItem.appInfo.appMbyte }}MB</p>
-                  <p>版本:{{ listItem.appInfo.appVersion }}</p>
                 </div>
               </el-col>
-              <el-col :span="5">
-                <div class="imgBox">
-                  <img src="../../../assets/tested.png" />
-                  <cite style="color:#11C2D6">
-                    <span v-if="listItem.countDto">
-                      {{ listItem.countDto.score }}
-                    </span>
-                    <span v-else>N/A</span>
-                  </cite>
-                </div>
-                <p>检测分数</p>
+              <el-col :span="8">
+                <p style="color:#545454">检测分数</p>
+                <Gauage
+                  :data="gaugeData"
+                  height="300px"
+                  :settings="chartSettings"
+                  style="height:250px;top:20px"
+                >
+                </Gauage>
               </el-col>
-              <el-col :span="5">
-                <div class="imgBox">
-                  <img src="../../../assets/danger.png" />
-                  <cite style="color:red">
-                    <span v-if="listItem.countDto">
-                      {{ listItem.countDto.nx }}</span
-                    >
-                    <span v-else>N/A</span>
-                  </cite>
-                </div>
-                <p>高危(未通过)</p>
-              </el-col>
-              <el-col :span="5">
-                <div class="imgBox">
-                  <img src="../../../assets/mDanger.png" />
-                  <cite style="color:#ed7d31">
-                    <span v-if="listItem.countDto">{{
-                      listItem.countDto.ny
-                    }}</span>
-                    <span v-else>N/A</span>
-                  </cite>
-                </div>
-                <p>中危(未通过)</p>
-              </el-col>
-              <el-col :span="5">
-                <div class="imgBox">
-                  <img src="../../../assets/lDanger.png" />
-
-                  <cite style="color:#ffbc93">
-                    <span v-if="listItem.countDto">
-                      {{ listItem.countDto.nz }}</span
-                    >
-                    <span v-else>N/A</span>
-                  </cite>
-                </div>
-                <p>低危(未通过)</p>
+              <el-col :span="8">
+                <vePie
+                  :data="chartData"
+                  :colors="userColor"
+                  height="300px"
+                  style="height:250px;top:-20px"
+                ></vePie>
               </el-col>
             </el-row>
           </div>
@@ -902,9 +877,27 @@
 </template>
 <script>
 import api from "../../request/api";
+import vePie from "v-charts/lib/pie.common.js";
+import Gauage from "v-charts/lib/gauge.common.js";
 export default {
   name: "iOSDetail",
+  components: { vePie, Gauage },
   data() {
+    this.chartSettings = {
+      seriesMap: {
+        分数: {
+          axisLine: {
+            lineStyle: {
+              color: [
+                [0.2, "#FA6E86"],
+                [0.8, "#5AB1EF"],
+                [1, "#19D4AE"]
+              ]
+            }
+          }
+        }
+      }
+    };
     return {
       listItem: null,
       detailListItem: null,
@@ -920,7 +913,16 @@ export default {
       ],
       timeout: "",
       loading: false,
-      permissionListTableData: []
+      permissionListTableData: [],
+      chartData: {
+        columns: ["riskGrade", "num"],
+        rows: []
+      },
+      gaugeData: {
+        columns: ["type", "value"],
+        rows: [{ type: "type", value: 80 }]
+      },
+      userColor: ["#FA6E86", "#5AB1EF", "#c4b4e4"]
     };
   },
   created() {
@@ -937,6 +939,29 @@ export default {
     api.detectorAndroidService.detailAndroidListById(id).then(res => {
       if (res.code == "00") {
         this.listItem = res.data;
+        const data = this.listItem.countDto,
+          chartDataRow = this.setChartData(
+            { riskGrade: `高危${data.nx}` },
+            { num: data.nx || "N/A" }
+          )
+            .concat(
+              this.setChartData(
+                { riskGrade: `中危${data.ny}` },
+                { num: data.ny || "N/A" }
+              )
+            )
+            .concat(
+              this.setChartData(
+                { riskGrade: `低危${data.nz}` },
+                { num: data.nz || "N/A" }
+              )
+            ),
+          gaugeDataRow = this.setChartData(
+            { type: "分数" },
+            { value: data.score || "N/A" }
+          );
+        this.chartData.rows = chartDataRow;
+        this.gaugeData.rows = gaugeDataRow;
       }
     });
     this.getDetailItem(params);
@@ -944,6 +969,13 @@ export default {
   methods: {
     back() {
       this.$router.back();
+    },
+    //设置Chart数据
+    setChartData(type, value) {
+      const data = [],
+        item = { ...type, ...value };
+      data.push(item);
+      return data;
     },
     querySearchAsync(queryString, cb) {
       let detectorItemList = this.detectorItemList,
@@ -1124,6 +1156,7 @@ pre {
 .applicationMessageHeaderLeft .title {
   color: #353535;
   font-weight: 550;
+  font-size: 14px;
 }
 .applicationMessageHeaderRight {
   float: right;
@@ -1156,10 +1189,6 @@ pre {
   display: flex;
   align-items: center;
 }
-.applicationMessageBody .appInfoImg {
-  width: 60px;
-  height: 60px;
-}
 .applicationMessageBody .appBox {
   display: inline-block;
 }
@@ -1171,7 +1200,7 @@ pre {
 }
 .applicationMessageBody p {
   font-size: 13px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .detectorMessage {
   margin-top: 15px;

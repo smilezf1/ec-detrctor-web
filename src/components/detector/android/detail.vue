@@ -33,65 +33,41 @@
           </div>
           <div class="applicationMessageBody">
             <el-row :span="24">
-              <el-col :span="4">
+              <el-col :span="8">
                 <div class="app-box">
-                  <img
-                    class="appInfoImg"
-                    :src="'data:image/jpg;base64,' + listItem.appInfo.appIcon"
-                  />
-                  <p>应用:{{ listItem.appInfo.appName }}</p>
-                  <p>大小:{{ listItem.appInfo.appMbyte }}MB</p>
-                  <p>版本:{{ listItem.appInfo.appVersion }}</p>
+                  <div class="appInfoText">
+                    <p>应用:{{ listItem.appInfo.appName }}</p>
+                    <p>大小:{{ listItem.appInfo.appMbyte }}MB</p>
+                    <p>版本:{{ listItem.appInfo.appVersion }}</p>
+                    <img
+                      class="appInfoImg"
+                      :src="'data:image/jpg;base64,' + listItem.appInfo.appIcon"
+                    />
+                  </div>
                 </div>
               </el-col>
-              <el-col :span="5">
-                <div class="imgBox">
-                  <img src="../../../assets/tested.png" />
-                  <cite style="color:#11C2D6">
-                    <span v-if="listItem.countDto">
-                      {{ listItem.countDto.score }}
-                    </span>
-                    <span v-else>N/A</span>
-                  </cite>
-                </div>
-                <p>检测分数</p>
+              <el-col :span="8">
+                <p style="color:#545454">检测分数</p>
+                <!--  <Gauage
+                  :data="gaugeData"
+                  height="300px"
+                  :settings="chartSettings"
+                  style="height:250px;top:20px"
+                ></Gauage> -->
+                <Gauage
+                  :data="gaugeData"
+                  height="300px"
+                  :settings="chartSettings"
+                  style="height:250px;top:20px"
+                ></Gauage>
               </el-col>
-              <el-col :span="5">
-                <div class="imgBox">
-                  <img src="../../../assets/danger.png" />
-                  <cite style="color:red">
-                    <span v-if="listItem.countDto">
-                      {{ listItem.countDto.nx }}</span
-                    >
-                    <span v-else>N/A</span>
-                  </cite>
-                </div>
-                <p>高危(未通过)</p>
-              </el-col>
-              <el-col :span="5">
-                <div class="imgBox">
-                  <img src="../../../assets/mDanger.png" />
-                  <cite style="color:#ed7d31">
-                    <span v-if="listItem.countDto">{{
-                      listItem.countDto.ny
-                    }}</span>
-                    <span v-else>N/A</span>
-                  </cite>
-                </div>
-                <p>中危(未通过)</p>
-              </el-col>
-              <el-col :span="5">
-                <div class="imgBox">
-                  <img src="../../../assets/lDanger.png" />
-
-                  <cite style="color:#ffbc93">
-                    <span v-if="listItem.countDto">
-                      {{ listItem.countDto.nz }}</span
-                    >
-                    <span v-else>N/A</span>
-                  </cite>
-                </div>
-                <p>低危(未通过)</p>
+              <el-col :span="8">
+                <vePie
+                  :data="chartData"
+                  :colors="userColor"
+                  height="300px"
+                  style="height:250px;top:-20px"
+                ></vePie>
               </el-col>
             </el-row>
           </div>
@@ -1166,10 +1142,37 @@
 </template>
 <script>
 import api from "../../request/api";
+import vePie from "v-charts/lib/pie.common.js";
+import Gauage from "v-charts/lib/gauge.common.js";
 export default {
   name: "androidDetail",
+  components: { vePie, Gauage },
   data() {
+    this.chartSettings = {
+      seriesMap: {
+        分数: {
+          axisLine: {
+            lineStyle: {
+              color: [
+                [0.2, "#FA6E86"],
+                [0.8, "#5AB1EF"],
+                [1, "#19D4AE"]
+              ]
+            }
+          }
+        }
+      }
+    };
     return {
+      chartData: {
+        columns: ["riskGrade", "num"],
+        rows: []
+      },
+      gaugeData: {
+        columns: ["type", "value"],
+        rows: []
+      },
+      userColor: ["#FA6E86", "#5AB1EF", "#c4b4e4"],
       listItem: null,
       detailListItem: null,
       searchForm: {
@@ -1202,11 +1205,41 @@ export default {
     api.detectorAndroidService.detailAndroidListById(id).then(res => {
       if (res.code == "00") {
         this.listItem = res.data;
+        const data = this.listItem.countDto,
+          chartDataRow = this.setChartData(
+            { riskGrade: `高危${data.nx}` },
+            { num: data.nx || "N/A" }
+          )
+            .concat(
+              this.setChartData(
+                { riskGrade: `中危${data.ny}` },
+                { num: data.ny || "N/A" }
+              )
+            )
+            .concat(
+              this.setChartData(
+                { riskGrade: `低危${data.nz}` },
+                { num: data.nz || "N/A" }
+              )
+            ),
+          gaugeDataRow = this.setChartData(
+            { type: "分数" },
+            { value: data.score || "N/A" }
+          );
+        this.chartData.rows = chartDataRow;
+        this.gaugeData.rows = gaugeDataRow;
       }
     });
     this.getDetailItem(params);
   },
   methods: {
+    //设置 chart数据
+    setChartData(type, value) {
+      const data = [],
+        item = { ...type, ...value };
+      data.push(item);
+      return data;
+    },
     back() {
       this.$router.back();
     },
@@ -1378,7 +1411,13 @@ pre {
 .applicationMessage {
   border: 1px solid #e3e5e5;
   background: #f9fafa;
-  padding: 20px;
+  padding: 20px 0px 20px 20px;
+}
+.applicationMessage .app-box .appInfoText {
+  width: 200px;
+  margin: 0 auto;
+  position: relative;
+  top: 20px;
 }
 .applicationMessageHeader:after {
   content: "";
@@ -1391,6 +1430,7 @@ pre {
 .applicationMessageHeaderLeft .title {
   color: #353535;
   font-weight: 550;
+  font-size: 14px;
 }
 .applicationMessageHeaderRight {
   float: right;
@@ -1423,10 +1463,6 @@ pre {
   display: flex;
   align-items: center;
 }
-.applicationMessageBody .appInfoImg {
-  width: 60px;
-  height: 60px;
-}
 .applicationMessageBody .appBox {
   display: inline-block;
 }
@@ -1438,7 +1474,11 @@ pre {
 }
 .applicationMessageBody p {
   font-size: 13px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+.applicationMessageBody .appInfoImg {
+  width: 200px;
+  margin-top: 30px;
 }
 .detectorMessage {
   margin-top: 15px;
@@ -1494,18 +1534,19 @@ pre {
   background: #f2f5f7;
   font-size: 12px;
   padding-left: 10px;
+  color: #545454;
 }
 .androidBody .dangerInfoItem .el-collapse-item__header {
-  background: #fbc6c6;
+  background: #fa6e86;
 }
 .androidBody .mediumInfoItem .el-collapse-item__header {
-  background: rgb(237, 125, 49);
+  background: #5ab1ef;
 }
 .androidBody .lowInfoItem .el-collapse-item__header {
-  background: rgb(255, 188, 147);
+  background: #c4b4e4;
 }
 .androidBody .none .el-collapse-item__header {
-  background: rgb(0, 212, 235);
+  background: #19d4ae;
 }
 .androidBody .el-collapse-item__wrap {
   border: 1px solid rgb(230, 230, 230);
