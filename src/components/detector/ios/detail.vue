@@ -140,6 +140,12 @@
                 >
               </el-row>
               <el-row type="flex">
+                <el-col :span="1"><span>文件名称</span></el-col>
+                <el-col :span="21"
+                  ><span>{{ listItem.appInfo.appFileName }}</span></el-col
+                >
+              </el-row>
+              <el-row type="flex">
                 <el-col :span="1"><span>包名</span></el-col>
                 <el-col :span="21"
                   ><span>{{ listItem.appInfo.appPackage }}</span></el-col
@@ -257,8 +263,10 @@
                 <el-table-column label="描述" prop="sdkDesc"></el-table-column>
               </el-table>
             </el-tab-pane>
-            <el-tab-pane label="应用代码安全评测">
-              <!-- v-model="detailListItem.titleCode005.activeNames" -->
+            <el-tab-pane
+              label="应用代码安全评测"
+              v-if="detailListItem.titleCode005.length > 0"
+            >
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode005"
@@ -325,8 +333,10 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="应用调试安全评测">
-              <!-- v-model="detailListItem.titleCode006.activeNames" -->
+            <el-tab-pane
+              label="应用调试安全评测"
+              v-if="detailListItem.titleCode006.length > 0"
+            >
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode006"
@@ -393,7 +403,10 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="应用运行环境评测">
+            <el-tab-pane
+              label="应用运行环境评测"
+              v-if="detailListItem.titleCode007.length > 0"
+            >
               <!-- v-model="detailListItem.titleCode007.activeNames" -->
               <el-collapse>
                 <el-collapse-item
@@ -461,8 +474,10 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="数据存储安全评测">
-              <!-- v-model="detailListItem.titleCode008.activeNames" -->
+            <el-tab-pane
+              label="数据存储安全评测"
+              v-if="detailListItem.titleCode008.length > 0"
+            >
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode008"
@@ -529,8 +544,10 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="加密算法安全评测">
-              <!-- v-model="detailListItem.titleCode009.activeNames" -->
+            <el-tab-pane
+              label="加密算法安全评测"
+              v-if="detailListItem.titleCode009.length > 0"
+            >
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode009"
@@ -597,8 +614,10 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="WebView组件风险">
-              <!-- v-model="detailListItem.titleCode0010.activeNames" -->
+            <el-tab-pane
+              label="WebView组件风险"
+              v-if="detailListItem.titleCode0012.length > 0"
+            >
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode0012"
@@ -665,8 +684,10 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="数据输入/输出安全评测">
-              <!-- v-model="detailListItem.titleCode0011.activeNames" -->
+            <el-tab-pane
+              label="数据输入/输出安全评测"
+              v-if="detailListItem.titleCode0011.length > 0"
+            >
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode0011"
@@ -733,8 +754,10 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="通讯传输安全评测">
-              <!-- v-model="detailListItem.titleCode0012.activeNames" -->
+            <el-tab-pane
+              label="通讯传输安全评测"
+              v-if="detailListItem.titleCode0012.length > 0"
+            >
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode0012"
@@ -801,8 +824,10 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="安全漏洞评测">
-              <!-- v-model="detailListItem.titleCode0013.activeNames" -->
+            <el-tab-pane
+              label="安全漏洞评测"
+              v-if="detailListItem.titleCode0013.length > 0"
+            >
               <el-collapse>
                 <el-collapse-item
                   v-for="(item, index) in detailListItem.titleCode0013"
