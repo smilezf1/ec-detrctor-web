@@ -104,13 +104,6 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item>
-                <!-- <label slot="label"
-                  >检测项目({{
-                    terminalType == 1
-                      ? xx.length + defaultdetectorAndroidItemList.length
-                      : xx.length + defaultdetectorIosItemList.length
-                  }}/{{ detectorTypeDetailList.length }}项)</label
-                > -->
                 <label slot="label"
                   >&nbsp;&nbsp;检&nbsp;&nbsp;测&nbsp;&nbsp;项&nbsp;&nbsp;目:</label
                 >
@@ -195,7 +188,6 @@
           type="primary"
           size="small"
           @click="refresh()"
-          style="margin-left:10px"
           class="refreshButton"
           >刷新</el-button
         >
@@ -268,14 +260,12 @@
           ></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-tooltip effect="dark" content="详情" placement="top-start">
-                <i
-                  class="el-icon-tickets detailIcon"
-                  @click="
-                    detail(scope.row.strategy_id, scope.row.strategy_type)
-                  "
-                ></i>
-              </el-tooltip>
+              <el-button
+                size="small"
+                type="primary"
+                @click="detail(scope.row.strategy_id, scope.row.strategy_type)"
+                >详情</el-button
+              >
               <!-- 检测策略详情 -->
               <el-drawer
                 title="检测策略详情"

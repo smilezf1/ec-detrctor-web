@@ -180,7 +180,6 @@
           type="primary"
           size="small"
           @click="refresh()"
-          style="margin-left:10px"
           class="refreshButton"
           >刷新</el-button
         >
@@ -228,7 +227,7 @@
           >
             <template slot-scope="scope">{{ scope.row.appFileName }}</template>
           </el-table-column>
-          <el-table-column width="150" prop="appVersion" label="版本">
+          <el-table-column width="110" prop="appVersion" label="版本">
             <template slot-scope="scope">
               <div class="version">
                 <img src="../../../assets/version.png" style="width:28px" />
@@ -237,7 +236,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            widt="200"
+            width="170"
             prop="detectionFormwork"
             label="检测策略"
             :show-overflow-tooltip="true"
@@ -246,7 +245,7 @@
               scope.row.detectionFormwork
             }}</template>
           </el-table-column>
-          <el-table-column width="100" prop="detectionNumber" label="检测分数">
+          <el-table-column width="80" prop="detectionNumber" label="检测分数">
             <template slot-scope="scope">
               <span v-if="scope.row.detectionNumber">{{
                 scope.row.detectionNumber
@@ -254,12 +253,12 @@
               <span v-else>N/A</span>
             </template>
           </el-table-column>
-          <el-table-column prop="detectionTime" label="检测时间" width="200">
+          <el-table-column prop="detectionTime" label="检测时间" width="180">
             <template slot-scope="scope">{{
               scope.row.detectionTime
             }}</template>
           </el-table-column>
-          <el-table-column prop="detectionStatus" label="检测状态" width="130">
+          <el-table-column prop="detectionStatus" label="检测状态" width="100">
             <template slot-scope="scope">
               <span v-if="scope.row.detectionStatus == 0">
                 <img
@@ -298,26 +297,23 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column prop="userName" label="上传人" width="130">
+          <el-table-column
+            prop="userName"
+            label="上传人"
+            width="120"
+            :show-overflow-tooltip="true"
+          >
             <template slot-scope="scope">{{ scope.row.userName }}</template>
           </el-table-column>
-          <el-table-column label="操作" width="200" prop="operate">
+          <el-table-column label="操作" width="400" prop="operate">
             <template slot-scope="scope">
-              <el-tooltip
-                effect="dark"
-                content="下载报告"
-                placement="top-start"
+              <el-button
+                size="small"
+                type="success"
+                :disabled="scope.row.detectionStatus != 2"
+                @click="downloadReport(scope.row.taskId)"
+                >报告</el-button
               >
-                <template v-if="scope.row.detectionStatus == 2">
-                  <i
-                    class="el-icon-download  downloadReportIcon"
-                    @click="downloadReport(scope.row.taskId)"
-                  ></i>
-                </template>
-                <template v-else>
-                  <i class="el-icon-download disabledIcon "></i>
-                </template>
-              </el-tooltip>
               <!-- 下载报告 -->
               <el-drawer
                 title="下载报告"
@@ -390,34 +386,27 @@
                   </div>
                 </div>
               </el-drawer>
-              <el-tooltip effect="dark" content="详情" placement="top-start">
-                <template v-if="scope.row.detectionStatus == 2">
-                  <i
-                    class="el-icon-tickets detailIcon"
-                    @click="detailTask(scope.row.taskId)"
-                  ></i>
-                </template>
-                <template v-else>
-                  <i class="el-icon-tickets disabledIcon"></i>
-                </template>
-              </el-tooltip>
-              <el-tooltip
-                effect="dark"
-                content="下载应用"
-                placement="top-start"
+              <el-button
+                size="small"
+                type="primary"
+                @click="detailTask(scope.row.taskId)"
+                :disabled="scope.row.detectionStatus != 2"
+                >详情</el-button
               >
-                <i
-                  class="el-icon-sold-out  dowmloadApplicationIcon"
-                  @click="downloadApk(scope.row.taskId)"
-                ></i>
-              </el-tooltip>
-              <el-tooltip effect="dark" content="删除" placement="top-start">
-                <i
-                  class="el-icon-delete deleteIcon"
-                  @click="deleteTask(scope.row.taskId)"
-                >
-                </i>
-              </el-tooltip>
+
+              <el-button
+                size="small"
+                type="warning"
+                @click="downloadApk(scope.row.taskId)"
+                >应用</el-button
+              >
+
+              <el-button
+                size="small"
+                type="danger"
+                @click="deleteTask(scope.row.taskId)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -860,9 +849,6 @@ export default {
   line-height: 50px;
   font-size: 14px;
 }
-.androidBody {
-  margin-top: 20px;
-}
 .androidBody .version {
   display: flex;
   align-items: center;
@@ -912,8 +898,8 @@ export default {
   vertical-align: middle;
 }
 .androidBody .detectionStatusimg {
-  width: 25px;
-  height: 25px;
+  width: 23px;
+  height: 23px;
   border-radius: 3px;
   vertical-align: middle;
 }

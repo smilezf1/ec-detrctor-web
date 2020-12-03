@@ -26,4 +26,13 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+.icon,
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+</style>

@@ -339,12 +339,12 @@
           ></el-table-column>
           <el-table-column prop="operate" label="操作" width="400">
             <template slot-scope="scope">
-              <el-tooltip effect="dark" content="编辑" placement="top-start">
-                <i
-                  class="el-icon-edit-outline editIcon"
-                  @click="editReportStrategy(scope.row.id)"
-                ></i>
-              </el-tooltip>
+              <el-button
+                size="small"
+                type="primary"
+                @click="editReportStrategy(scope.row.id)"
+                >编辑</el-button
+              >
               <!-- 报告策略编辑Drawer开始 -->
               <el-drawer
                 title="编辑报告策略"
@@ -638,12 +638,12 @@
               </el-drawer>
 
               <!-- 报告策略编辑Drawer结束 -->
-              <el-tooltip effect="dark" content="详情" placement="top-start">
-                <i
-                  class="el-icon-tickets detailIcon"
-                  @click="reportDetail(scope.row.id)"
-                ></i>
-              </el-tooltip>
+              <el-button
+                size="small"
+                type="success"
+                @click="reportDetail(scope.row.id)"
+                >详情</el-button
+              >
               <!-- 报告策略详情Drawer开始 -->
               <el-drawer
                 title="报告策略详情"
@@ -761,13 +761,12 @@
                 </div>
               </el-drawer>
               <!--报告策略详情Drawer结束 -->
-              <el-tooltip effect="dark" content="删除" placement="top-start">
-                <i
-                  class="el-icon-delete deleteIcon"
-                  @click="deleteReport(scope.row.id)"
-                >
-                </i>
-              </el-tooltip>
+              <el-button
+                size="small"
+                type="danger"
+                @click="deleteReport(scope.row.id)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>

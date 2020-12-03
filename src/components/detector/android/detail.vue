@@ -3,11 +3,6 @@
     <div class="androidDetailHeader">
       <p>当前位置:Android检测详细</p>
     </div>
-    <div class="operateBox">
-      <el-button type="primary" size="small" class="back" @click="back()"
-        >返回</el-button
-      >
-    </div>
     <div class="androidBody">
       <template v-if="listItem">
         <div class="applicationMessage">
@@ -18,14 +13,16 @@
             </div>
             <div class="applicationMessageHeaderRight">
               <span
-                ><i class="el-icon-menu"></i>&nbsp;检测模板:&nbsp;&nbsp;&nbsp;
+                ><i class="el-icon-menu"></i
+                ><b>&nbsp;检测模板:&nbsp;&nbsp;&nbsp;</b>
                 <span style="color:#333">{{
                   listItem.taskInfo.detectionFormwork
                 }}</span></span
               >
               <span
                 ><i class="el-icon-date"></i
-                >&nbsp;检测时间:&nbsp;&nbsp;&nbsp;<span style="color:#333">{{
+                ><b>&nbsp;检测时间:&nbsp;&nbsp;&nbsp;</b
+                ><span style="color:#333">{{
                   listItem.taskInfo.detectionTime
                 }}</span></span
               >
@@ -48,12 +45,6 @@
               </el-col>
               <el-col :span="8">
                 <p style="color:#545454">检测分数</p>
-                <!--  <Gauage
-                  :data="gaugeData"
-                  height="300px"
-                  :settings="chartSettings"
-                  style="height:250px;top:20px"
-                ></Gauage> -->
                 <Gauage
                   :data="gaugeData"
                   height="300px"
@@ -1137,6 +1128,7 @@
           </el-tabs>
         </div>
       </template>
+      <back></back>
     </div>
   </div>
 </template>
@@ -1144,9 +1136,10 @@
 import api from "../../request/api";
 import vePie from "v-charts/lib/pie.common.js";
 import Gauage from "v-charts/lib/gauge.common.js";
+import back from "../../common/back";
 export default {
   name: "androidDetail",
-  components: { vePie, Gauage },
+  components: { vePie, Gauage, back },
   data() {
     this.chartSettings = {
       seriesMap: {
@@ -1239,9 +1232,6 @@ export default {
         item = { ...type, ...value };
       data.push(item);
       return data;
-    },
-    back() {
-      this.$router.back();
     },
     querySearchAsync(queryString, cb) {
       const detectorItemList = this.detectorItemList,
@@ -1368,8 +1358,9 @@ pre {
   line-height: 50px;
   font-size: 14px;
 }
-.androidBody {
+.androidDetail .androidBody {
   margin-top: 15px;
+  width: 90%;
 }
 .androidBody .el-icon-arrow-left,
 .androidBody .el-icon-arrow-right {

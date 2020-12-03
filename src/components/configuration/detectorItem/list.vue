@@ -27,7 +27,6 @@
               type="primary"
               size="small"
               @click="refresh()"
-              style="margin-left:10px"
               class="refreshButton"
               >刷新</el-button
             >
@@ -65,25 +64,21 @@
               ></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
-                  <el-tooltip
-                    effect="dark"
-                    content="详情"
-                    placement="top-start"
+                  <el-button
+                    size="small"
+                    type="primary"
+                    @click="
+                      detailDetectorItem(
+                        scope.row.id,
+                        scope.row.name,
+                        scope.row.riskGroup,
+                        scope.row.itemTypeName,
+                        scope.row.riskDesc,
+                        'Android'
+                      )
+                    "
+                    >详情</el-button
                   >
-                    <i
-                      class="el-icon-tickets detailIcon"
-                      @click="
-                        detailDetectorItem(
-                          scope.row.id,
-                          scope.row.name,
-                          scope.row.riskGroup,
-                          scope.row.itemTypeName,
-                          scope.row.riskDesc,
-                          'Android'
-                        )
-                      "
-                    ></i>
-                  </el-tooltip>
 
                   <el-drawer
                     title="检测项详情"
@@ -92,7 +87,7 @@
                     :wrapperClosable="false"
                     :close-on-press-esape="false"
                     :destroy-on-close="true"
-                    size="40%"
+                    size="30%"
                   >
                     <div class="el-drawer-header">
                       <h3>检测项详情</h3>
@@ -180,30 +175,26 @@
               ></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
-                  <el-tooltip
-                    effect="dark"
-                    content="详情"
-                    placement="top-start"
+                  <el-button
+                    type="primary"
+                    size="small"
+                    @click="
+                      detailDetectorItem(
+                        scope.row.id,
+                        scope.row.name,
+                        scope.row.riskGroup,
+                        scope.row.itemTypeName,
+                        scope.row.riskDesc,
+                        'iOS'
+                      )
+                    "
+                    >详情</el-button
                   >
-                    <i
-                      class="el-icon-tickets detailIcon"
-                      @click="
-                        detailDetectorItem(
-                          scope.row.id,
-                          scope.row.name,
-                          scope.row.riskGroup,
-                          scope.row.itemTypeName,
-                          scope.row.riskDesc,
-                          'iOS'
-                        )
-                      "
-                    ></i>
-                  </el-tooltip>
                   <el-drawer
                     title="检测项详情"
                     :visible.sync="detailDetectorIosItemDrawer"
                     :with-header="false"
-                    size="40%"
+                    size="30%"
                     :direction="direction"
                     :show-close="false"
                   >
@@ -384,6 +375,9 @@ export default {
 }
 .detectorItem .operateBox {
   margin-left: 15px;
+}
+.detectorItem .el-drawer-footer {
+  width: 30%;
 }
 .refreshButton,
 .searchButton {

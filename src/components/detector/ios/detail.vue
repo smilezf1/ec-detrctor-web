@@ -3,11 +3,6 @@
     <div class="iOSDetailHeader">
       <p>当前位置:iOS检测详细</p>
     </div>
-    <div class="operateBox">
-      <el-button type="primary" size="small" class="back" @click="back()"
-        >返回</el-button
-      >
-    </div>
     <div class="iOSBody">
       <!-- 应用信息 -->
       <template v-if="listItem">
@@ -18,15 +13,13 @@
             </div>
             <div class="applicationMessageHeaderRight">
               <span
-                ><i class="el-icon-menu"></i
-                ><b>&nbsp;检测模板:&nbsp;&nbsp;&nbsp;</b>
+                ><i class="el-icon-menu"></i><b>&nbsp;检测模板:&nbsp;&nbsp;</b>
                 <span style="color:#333">{{
                   listItem.taskInfo.detectionFormwork
                 }}</span></span
               >
               <span
-                ><i class="el-icon-date"></i
-                ><b>&nbsp;检测时间:&nbsp;&nbsp;&nbsp;</b
+                ><i class="el-icon-date"></i><b>&nbsp;检测时间:&nbsp;&nbsp;</b
                 ><span style="color:#333">{{
                   listItem.taskInfo.detectionTime
                 }}</span></span
@@ -872,6 +865,7 @@
           </el-tabs>
         </div>
       </template>
+      <back></back>
     </div>
   </div>
 </template>
@@ -879,9 +873,10 @@
 import api from "../../request/api";
 import vePie from "v-charts/lib/pie.common.js";
 import Gauage from "v-charts/lib/gauge.common.js";
+import back from "../../common/back";
 export default {
   name: "iOSDetail",
-  components: { vePie, Gauage },
+  components: { vePie, Gauage, back },
   data() {
     this.chartSettings = {
       seriesMap: {
@@ -967,9 +962,6 @@ export default {
     this.getDetailItem(params);
   },
   methods: {
-    back() {
-      this.$router.back();
-    },
     //设置Chart数据
     setChartData(type, value) {
       const data = [],
@@ -1101,7 +1093,7 @@ pre {
   font-size: 14px;
 }
 .iOSBody {
-  margin-top: 15px;
+  width: 90%;
 }
 .iOSBody .el-icon-arrow-left,
 .iOSBody .el-icon-arrow-right {
@@ -1258,15 +1250,15 @@ pre {
   padding-left: 10px;
 }
 .iOSBody .dangerInfoItem .el-collapse-item__header {
-  background: #fbc6c6;
+  background: #fa6e86;
 }
 .iOSBody .mediumInfoItem .el-collapse-item__header {
-  background: rgb(237, 125, 49);
+  background: #5ab1ef;
 }
 .iOSBody .lowInfoItem .el-collapse-item__header {
-  background: rgb(255, 188, 147);
+  background: #c4b4e4;
 }
 .iOSBody .none .el-collapse-item__header {
-  background: rgb(0, 212, 235);
+  background: #19d4ae;
 }
 </style>

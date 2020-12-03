@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
-    "echarts": "^5.0.0",
+    "echarts": "^4.9.0",
     "element-ui": "^2.13.2",
     "js-md5": "^0.7.3",
     "nprogress": "^0.2.0",

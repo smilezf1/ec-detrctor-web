@@ -64,7 +64,7 @@
           :close-on-press-escape="false"
           ref="addUserDrawer"
           @close="resetForm('addUserForm')"
-          size="40%"
+          size="30%"
           class="addUserDrawer"
         >
           <div class="el-drawer-header">
@@ -72,99 +72,67 @@
           </div>
           <div class="el-drawer-content">
             <el-form :model="addUserForm" ref="addUserForm" :rules="editRules">
-              <el-form-item prop="trueName">
-                <label slot="label">
-                  用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label
-                >
+              <el-form-item prop="trueName" label="用户名">
                 <el-input
                   size="small"
                   v-model="addUserForm.trueName"
                   autocomplete="off"
-                  style="width:60%"
                   maxlength="10"
                 ></el-input>
               </el-form-item>
-              <el-form-item prop="userName">
-                <label slot="label"
-                  >登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label
-                >
+              <el-form-item prop="userName" label="登录名">
                 <el-input
                   size="small"
                   v-model="addUserForm.userName"
                   autocomplete="off"
-                  style="width:60%"
                   maxlength="10"
                 ></el-input>
               </el-form-item>
-              <el-form-item prop="pass">
-                <label slot="label"
-                  >用&nbsp;&nbsp;户&nbsp;&nbsp;密&nbsp;&nbsp;码</label
-                >
+              <el-form-item prop="pass" label="用户密码">
                 <el-input
                   size="small"
                   show-password
                   v-model="addUserForm.pass"
                   auto-complete="off"
-                  style="width:60%"
                 ></el-input>
               </el-form-item>
-              <el-form-item prop="checkPass">
-                <label slot="label"
-                  >确&nbsp;&nbsp;认&nbsp;&nbsp;密&nbsp;&nbsp;码</label
-                >
+              <el-form-item prop="checkPass" label="确认密码">
                 <el-input
                   size="small"
                   show-password
                   v-model="addUserForm.checkPass"
                   auto-complete="off"
-                  style="width:60%"
                 ></el-input>
               </el-form-item>
-              <el-form-item prop="sex">
-                <label slot="label"
-                  >性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label
-                >
+              <el-form-item prop="sex" label="性别">
                 <el-select
                   v-model="addUserForm.sex"
                   size="small"
-                  style="width:60%"
                   placeholder="请选择性别"
                 >
                   <el-option label="男" value="1"></el-option>
                   <el-option label="女" value="0"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item prop="mobile">
-                <label slot="label"
-                  >手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label
-                >
+              <el-form-item prop="mobile" label="手机号">
                 <el-input
                   size="small"
                   v-model="addUserForm.mobile"
                   autocomplete="off"
-                  style="width:60%"
                 ></el-input>
               </el-form-item>
-              <el-form-item prop="email">
-                <label slot="label"
-                  >电&nbsp;&nbsp;子&nbsp;&nbsp;邮&nbsp;&nbsp;箱</label
-                >
+              <el-form-item prop="email" label="电子邮箱">
                 <el-input
                   size="small"
                   v-model="addUserForm.email"
                   autocomplete="off"
-                  style="width:60%"
                 ></el-input>
               </el-form-item>
-              <el-form-item prop="status">
-                <label slot="label"
-                  >是&nbsp;&nbsp;否&nbsp;&nbsp;有&nbsp;&nbsp;效</label
-                >
+              <el-form-item prop="status" label="是否有效">
                 <el-select
                   v-model="addUserForm.status"
                   placeholder="请选择"
                   size="small"
-                  style="width:60%"
                 >
                   <el-option label="是" value="1"></el-option>
                   <el-option label="否" value="0"></el-option>
@@ -258,12 +226,9 @@
           ></el-table-column>
           <el-table-column label="操作" prop="operate" width="400">
             <template slot-scope="scope">
-              <el-tooltip effect="dark" content="编辑" placement="top-start">
-                <i
-                  class="el-icon-edit-outline editIcon"
-                  @click="edit(scope.row.id)"
-                ></i>
-              </el-tooltip>
+              <el-button size="small" type="primary" @click="edit(scope.row.id)"
+                >编辑</el-button
+              >
               <el-drawer
                 title="编辑"
                 :visible.sync="editDrawer"
@@ -271,7 +236,7 @@
                 :wrapperClosable="false"
                 :close-on-press-escape="false"
                 ref="editDrawer"
-                size="40%"
+                size="30%"
               >
                 <div class="el-drawer-header">
                   <h3>编辑</h3>
@@ -283,67 +248,45 @@
                     :rules="editRules"
                     :label-position="labelPosition"
                   >
-                    <el-form-item prop="trueName">
-                      <label slot="label"
-                        >用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label
-                      >
+                    <el-form-item prop="trueName" label="用户名">
                       <el-input
                         v-model="editForm.trueName"
                         autocomplete="off"
                         size="small"
-                        style="width:60%"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item prop="userName">
-                      <label slot="label"
-                        >登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label
-                      >
+                    <el-form-item prop="userName" label="登录名">
                       <el-input
                         v-model="editForm.userName"
                         :disabled="editForm.userName == getLocalStorageUserName"
                         size="small"
-                        style="width:60%"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item prop="sex">
-                      <label slot="label"
-                        >性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label
-                      >
-                      <el-select v-model="editForm.sex" style="width:60%">
+                    <el-form-item prop="sex" label="性别">
+                      <el-select v-model="editForm.sex" size="small">
                         <el-option label="男" value="1"></el-option>
                         <el-option label="女" value="0"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item prop="mobile">
-                      <label slot="label"
-                        >手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label
-                      >
+                    <el-form-item prop="mobile" label="手机号">
                       <el-input
                         size="small"
                         v-model="editForm.mobile"
                         autocomplete="off"
-                        style="width:60%"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item prop="email">
-                      <label slot="label"
-                        >电&nbsp;&nbsp;子&nbsp;&nbsp;邮&nbsp;&nbsp;箱</label
-                      >
+                    <el-form-item prop="email" label="电子邮箱">
                       <el-input
                         v-model="editForm.email"
                         autocomplete="off"
                         size="small"
-                        style="width:60%"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item prop="status">
-                      <label slot="label"
-                        >是&nbsp;&nbsp;否&nbsp;&nbsp;有&nbsp;&nbsp;效</label
-                      >
+                    <el-form-item prop="status" label="是否有效">
                       <el-select
                         v-model="editForm.status"
-                        style="width:60%"
                         :disabled="editForm.userName == getLocalStorageUserName"
+                        size="small"
                       >
                         <el-option label="是" value="1"></el-option>
                         <el-option label="否" value="0"></el-option>
@@ -361,16 +304,12 @@
                   <el-button plain @click="editFormCancel">取消</el-button>
                 </div>
               </el-drawer>
-              <el-tooltip
-                effect="dark"
-                content="重置密码"
-                placement="top-start"
+              <el-button
+                size="small"
+                type="warning"
+                @click="resetPassword(scope.row.id)"
+                >重置密码</el-button
               >
-                <i
-                  class="el-icon-unlock resetIcon"
-                  @click="resetPassword(scope.row.id)"
-                ></i>
-              </el-tooltip>
               <el-drawer
                 title="重置密码"
                 :visible.sync="resetPasswordDrawer"
@@ -378,11 +317,11 @@
                 :wrapperClosable="false"
                 :close-on-press-escape="false"
                 ref="resetPasswordDrawer"
-                size="40%"
+                size="30%"
               >
                 <div class="el-drawer-header">
                   <h3>重置密码</h3>
-                </div>
+                </div>mimia
                 <div class="el-drawer-content">
                   <el-form
                     :model="resetPasswordForm"
@@ -395,7 +334,6 @@
                         size="small"
                         show-password
                         v-model="resetPasswordForm.pass"
-                        style="width:60%"
                         auto-complete="off"
                       ></el-input>
                     </el-form-item>
@@ -405,7 +343,6 @@
                         show-password
                         v-model="resetPasswordForm.checkPass"
                         auto-complete="off"
-                        style="width:60%"
                       ></el-input>
                     </el-form-item>
                   </el-form>
@@ -423,17 +360,13 @@
                   >
                 </div>
               </el-drawer>
-              <el-tooltip
-                effect="dark"
-                content="设置角色"
-                placement="top-start"
+              <el-button
+                size="small"
+                type="success"
                 v-if="scope.row.status == 1"
+                @click="setRole(scope.row.id)"
+                >设置角色</el-button
               >
-                <i
-                  class="el-icon-setting settingIcon"
-                  @click="setRole(scope.row.id)"
-                ></i>
-              </el-tooltip>
               <el-dialog
                 title="角色列表"
                 :visible.sync="dialogVisible"
@@ -452,31 +385,23 @@
                   >
                 </div>
               </el-dialog>
-              <el-tooltip
-                effect="dark"
-                content="停用"
-                placement="top-start"
+              <el-button
+                size="small"
+                type="danger"
                 v-if="
                   !(scope.row.userName == getLocalStorageUserName) &&
                     scope.row.status == 1
                 "
+                @click="blockUp(scope.row.id)"
+                >停用</el-button
               >
-                <i
-                  class="el-icon-close closeIcon"
-                  @click="blockUp(scope.row.id)"
-                ></i>
-              </el-tooltip>
-              <el-tooltip
-                effect="dark"
-                content="启用"
-                placement="top-start"
+              <el-button
+                type="danger"
+                size="small"
                 v-if="scope.row.status == 0"
+                @click="launch(scope.row.id)"
+                >启用</el-button
               >
-                <i
-                  class="el-icon-check closeIcon"
-                  @click="launch(scope.row.id)"
-                ></i>
-              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -498,44 +423,44 @@ export default {
   mixins: [pageMixins],
   inject: ["reload"],
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        if (this.resetPasswordForm.checkPass !== "") {
-          this.$refs.resetPasswordForm.validateField("checkPass");
+    const validatePass = (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("请输入密码"));
+        } else {
+          if (this.resetPasswordForm.checkPass !== "") {
+            this.$refs.resetPasswordForm.validateField("checkPass");
+          }
+          callback();
         }
-        callback();
-      }
-    };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.resetPasswordForm.pass) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
-    var validatePass3 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        if (this.addUserForm.checkPass !== "") {
-          this.$refs.addUserForm.validateField("checkPass");
+      },
+      validatePass2 = (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("请再次输入密码"));
+        } else if (value !== this.resetPasswordForm.pass) {
+          callback(new Error("两次输入密码不一致!"));
+        } else {
+          callback();
         }
-        callback();
-      }
-    };
-    var validatePass4 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.addUserForm.pass) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
+      },
+      validatePass3 = (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("请输入密码"));
+        } else {
+          if (this.addUserForm.checkPass !== "") {
+            this.$refs.addUserForm.validateField("checkPass");
+          }
+          callback();
+        }
+      },
+      validatePass4 = (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("请再次输入密码"));
+        } else if (value !== this.addUserForm.pass) {
+          callback(new Error("两次输入密码不一致!"));
+        } else {
+          callback();
+        }
+      };
     return {
       loading: false,
       ruleForm: {
@@ -680,48 +605,17 @@ export default {
       this.editId = id;
       api.systemService.userManageDetail(id).then(res => {
         if (res.code == "00") {
-          let data = res.data,
-            editForm = this.editForm;
-          editForm.trueName = data.trueName;
-          editForm.userName = data.userName;
-          editForm.sex = data.sex;
-          if (data.sex === "1") {
-            editForm.sex = "男";
-          } else if (data.sex === "0") {
-            editForm.sex = "女";
-          }
-          editForm.mobile = data.mobile;
-          editForm.email = data.email;
-          if (data.status === "1") {
-            editForm.status = "是";
-          } else if (data.status === "0") {
-            editForm.status = "否";
-          }
+          this.editForm = res.data;
         }
       });
     },
     //编辑保存
     editFormSave(formName, form) {
-      let id = this.editId,
-        trueName = form.trueName,
-        userName = form.userName,
-        email = form.email,
-        mobile = form.mobile,
-        status = form.status,
-        sex = form.sex;
-      if (form.sex === "男") {
-        sex = "1";
-      } else if (form.sex === "女") {
-        sex = "0";
-      }
-      if (form.status === "是") {
-        status = "1";
-      } else if (form.status === "否") {
-        status = "0";
-      }
+      const id = this.editId,
+        { trueName, userName, email, mobile, status, sex } = form;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let params = { id, trueName, userName, email, mobile, status, sex };
+          const params = { id, trueName, userName, email, mobile, status, sex };
           api.systemService.userManageSave(params).then(res => {
             if (res.code == "00") {
               this.editDrawer = false;
@@ -748,7 +642,7 @@ export default {
     },
     //保存存置密码
     saveresetPassword(formName, form) {
-      let id = this.resetPasswordId,
+      const id = this.resetPasswordId,
         password = md5(form.pass),
         checkPass = md5(form.checkPass),
         params = { id, password, checkPass };
@@ -821,9 +715,9 @@ export default {
       });
     },
     setRoleSave() {
-      let id = this.setRoleId,
-        nodes = this.checkedNodes,
-        roleList = this.roleList;
+      const id = this.setRoleId,
+        nodes = this.checkedNodes;
+      let roleList = this.roleList;
       if (nodes && nodes.length != 0) {
         for (var i = 0; i < nodes.length; i++) {
           if (!nodes[i].parent) {
@@ -835,7 +729,7 @@ export default {
       new this.$messageTips(({ confirm }) => {
         confirm({ content: "确定要更新用户角色吗?" });
       }).then(res => {
-        let params = { roleList, userId: id };
+        const params = { roleList, userId: id };
         api.systemService.userManageSaveUserRole(params).then(res => {
           if (res.code == "00") {
             this.$notify({
@@ -856,7 +750,7 @@ export default {
     },
     //保存新增的用户
     saveaddUserForm(formName, form) {
-      let trueName = form.trueName,
+      const trueName = form.trueName,
         userName = form.userName,
         password = md5(form.pass),
         mobile = form.mobile,
@@ -865,7 +759,7 @@ export default {
         status = form.status;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let params = {
+          const params = {
             trueName,
             userName,
             password,
@@ -914,15 +808,13 @@ export default {
 .userManagementBody {
   width: 99%;
 }
-.searchBox .el-input {
+.userManagement .searchBox .el-input {
   margin: 0px 5px 5px 0px;
+  width: auto;
 }
 .userManagement header {
   box-sizing: border-box;
   display: flex;
-}
-.userManagement .el-input {
-  width: auto;
 }
 .userManagement .searchBox {
   width: 75%;
@@ -935,13 +827,17 @@ export default {
   box-sizing: border-box;
   margin: 0px 0px 15px 10px;
 }
-.userManagement .searchBox .el-input {
-  margin-bottom: 15px;
-  width: 17%;
-}
-.userManagement .searchBox .el-select .el-input {
+.userManagementBody .el-input,
+.userManagement .el-select {
   width: 100%;
 }
+.userManagement .searchBox .el-select {
+  width: auto;
+}
+.userManagement .el-drawer-footer {
+  width: 30%;
+}
+
 .editIcon,
 .resetIcon,
 .settingIcon,

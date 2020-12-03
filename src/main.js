@@ -4,6 +4,7 @@ import App from './App'
 import router from './router'
 import ElementUI, { Form, TabPane } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import './assets/fonts/iconfont.css';
 import api from './components/request/api'
 import guid from '../src/utils/guid'
 import axios from 'axios'
