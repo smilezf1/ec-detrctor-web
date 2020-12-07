@@ -77,7 +77,7 @@
                   size="small"
                   v-model="addUserForm.trueName"
                   autocomplete="off"
-                  maxlength="10"
+                  maxlength="20"
                 ></el-input>
               </el-form-item>
               <el-form-item prop="userName" label="登录名">
@@ -85,7 +85,7 @@
                   size="small"
                   v-model="addUserForm.userName"
                   autocomplete="off"
-                  maxlength="10"
+                  maxlength="20"
                 ></el-input>
               </el-form-item>
               <el-form-item prop="pass" label="用户密码">

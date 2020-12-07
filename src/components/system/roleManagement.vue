@@ -73,7 +73,6 @@
           type="primary"
           size="small"
           @click="refresh()"
-          style="margin-left:10px"
           class="refreshButton"
           >刷新</el-button
         >

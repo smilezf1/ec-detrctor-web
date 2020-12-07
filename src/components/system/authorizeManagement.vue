@@ -38,13 +38,11 @@
           :close-on-press-escape="false"
           :destroy-on-close="true"
           ref="uploadAuthorizeFileDrawer"
-          size="40%"
+          size="35%"
         >
-          <!-- 上传授权文件Drawer头部 -->
           <div class="el-drawer-header">
             <h3>上传授权文件</h3>
           </div>
-          <!-- 上传授权文件Drawer主体 -->
           <div class="el-drawer-content">
             <el-upload
               class="upload"
@@ -175,6 +173,9 @@ export default {
 }
 .authorizeBody .el-upload {
   width: 100%;
+}
+.authorizeBody .el-drawer-footer {
+  width: 35%;
 }
 .authorizeBody .el-upload-dragger {
   width: 100%;

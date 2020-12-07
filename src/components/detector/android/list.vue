@@ -70,7 +70,7 @@
           :wrapperClosable="false"
           :close-on-press-esape="false"
           :destroy-on-close="true"
-          size="40%"
+          size="35%"
         >
           <div class="el-drawer-header">
             <h3>新增任务</h3>
@@ -323,7 +323,7 @@
                 :close-on-press-escape="false"
                 :destroy-on-close="true"
                 ref="downloadReportDrawer"
-                size="40%"
+                size="35%"
                 class="downloadReportDrawer"
               >
                 <div class="el-drawer-header">
@@ -558,7 +558,7 @@ export default {
       const _this = this,
         userId = localStorage.getItem("id"),
         url = api.websocketUrl,
-        socket = new SockJsClient(url);
+        socket = new SockJsClient(url, null, { timeout: 15000 });
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(
         {},
@@ -944,6 +944,9 @@ export default {
   width: 100%;
   height: 230px;
   margin-top: 20px;
+}
+.android .el-drawer-footer {
+  width: 35%;
 }
 .android .searchButton,
 .android .addTaskButton .el-input {

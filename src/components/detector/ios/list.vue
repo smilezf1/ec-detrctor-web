@@ -298,7 +298,7 @@
                 :close-on-press-escape="false"
                 :destroy-on-close="true"
                 ref="downloadReportDrawer"
-                size="40%"
+                size="35%"
                 class="downloadReportDrawer"
               >
                 <div class="el-drawer-header">
@@ -510,7 +510,7 @@ export default {
       const _this = this,
         userId = localStorage.getItem("id"),
         url = api.websocketUrl,
-        socket = new SockJsClient(url);
+        socket = new SockJsClient(url, null, { timeout: 15000 });
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(
         {},
@@ -841,7 +841,9 @@ export default {
   margin-right: 10px;
   cursor: pointer;
 }
-
+.ios .el-drawer-footer {
+  width: 35%;
+}
 .ios .el-upload-dragger {
   width: 100%;
   height: 230px;
