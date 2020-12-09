@@ -266,7 +266,6 @@ export default {
       menuList: [],
       setMenuList: [],
       setParMentList: [],
-      checkedNodes: [], //菜单选中的列表数据
       curpage: 1,
       limit: 10
     };
@@ -388,7 +387,12 @@ export default {
     //设置菜单开始
     handleCheck(checkedNodes, checkedKeys) {
       this.checkedNodes = checkedKeys.checkedNodes;
-      this.checkedNodes.forEach(v => {});
+      this.setMenuList = [];
+      checkedKeys.checkedNodes.forEach(v => {
+        if (v.id.indexOf("T") != -1) {
+          this.setMenuList.push(v.id);
+        }
+      });
     },
     //设置菜单
     setting(id) {
@@ -428,27 +432,12 @@ export default {
       this.editDrawer = false;
     },
     setMenuSave() {
-      let id = this.setMenuId,
-        nodes = this.checkedNodes,
-        menuList = this.menuList,
-        selectedList = this.setMenuList;
-      if (nodes && nodes.length != 0) {
-        for (var i = 0; i < nodes.length; i++) {
-          if (!nodes[i].id.indexOf("T")) {
-            nodes[i].id = nodes[i].id.replace("T", "");
-            menuList.push(nodes[i].id);
-            menuList = Array.from(new Set(menuList));
-          }
-        }
-      } else {
-        if (selectedList && selectedList.length != 0) {
-          for (let i = 0; i < selectedList.length; i++) {
-            selectedList[i] = selectedList[i].replace("T", "");
-            menuList.push(selectedList[i]);
-            menuList = Array.from(new Set(menuList));
-          }
-        }
-      }
+      const menuList = [],
+        id = this.setMenuId;
+      this.setMenuList.forEach(v => {
+        v = v.replace("T", "");
+        menuList.push(v);
+      });
       new this.$messageTips(({ confirm }) => {
         confirm({ content: "确定要更新菜单列表吗?" });
       }).then(res => {

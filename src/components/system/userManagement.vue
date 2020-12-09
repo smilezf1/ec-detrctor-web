@@ -321,7 +321,7 @@
               >
                 <div class="el-drawer-header">
                   <h3>重置密码</h3>
-                </div>mimia
+                </div>
                 <div class="el-drawer-content">
                   <el-form
                     :model="resetPasswordForm"
@@ -498,7 +498,6 @@ export default {
       },
       roleList: [],
       setRoleList: [],
-      checkedNodes: [], //角色列表选中的数据
       listItem: [],
       roleTreeData: [],
       loading: false,
@@ -594,7 +593,11 @@ export default {
       this.reload();
     },
     handleCheck(checkedNodes, checkedKeys) {
-      this.checkedNodes = checkedKeys.checkedNodes;
+      /* this.checkedNodes = checkedKeys.checkedNodes; */
+      this.setRoleList = [];
+      checkedKeys.checkedNodes.forEach(v => {
+        this.setRoleList.push(v.id);
+      });
     },
     editFormCancel() {
       this.editDrawer = false;
@@ -703,29 +706,22 @@ export default {
       this.setRoleId = id;
       this.dialogVisible = true;
       api.systemService.userManageSetRole(id).then(res => {
-        let data = res.data;
-        data = JSON.parse(JSON.stringify(data).replace(/name/g, "label"));
-        this.roleTreeData = data;
-        this.roleTreeData.forEach((v, i) => {
-          if (v.checked == true) {
-            this.setRoleList.push(v.id);
-            this.setRoleList = Array.from(new Set(this.setRoleList));
-          }
-        });
+        if (res.code == "00") {
+          let data = res.data;
+          data = JSON.parse(JSON.stringify(data).replace(/name/g, "label"));
+          this.roleTreeData = data;
+          this.roleTreeData.forEach((v, i) => {
+            if (v.checked == true) {
+              this.setRoleList.push(v.id);
+              this.setRoleList = Array.from(new Set(this.setRoleList));
+            }
+          });
+        }
       });
     },
     setRoleSave() {
       const id = this.setRoleId,
-        nodes = this.checkedNodes;
-      let roleList = this.roleList;
-      if (nodes && nodes.length != 0) {
-        for (var i = 0; i < nodes.length; i++) {
-          if (!nodes[i].parent) {
-            roleList.push(nodes[i].id);
-            roleList = Array.from(new Set(roleList));
-          }
-        }
-      }
+        roleList = this.setRoleList;
       new this.$messageTips(({ confirm }) => {
         confirm({ content: "确定要更新用户角色吗?" });
       }).then(res => {
