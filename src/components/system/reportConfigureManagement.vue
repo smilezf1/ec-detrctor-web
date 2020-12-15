@@ -309,24 +309,31 @@
           <el-table-column
             type="index"
             label="序号"
-            width="80"
+            min-width="10%"
           ></el-table-column>
           <el-table-column
             prop="report_name"
             label="报告名称"
-            width="250"
+            min-width="20%"
+            :show-overflow-tooltip="true"
           ></el-table-column>
           <el-table-column
             prop="report_corporate_name"
             label="公司名称"
-            width="250"
+            min-width="20%"
+            :show-overflow-tooltip="true"
           ></el-table-column>
           <el-table-column
             prop="report_title"
             label="报告标题"
-            width="250"
+            min-width="20%"
+            :show-overflow-tooltip="true"
           ></el-table-column>
-          <el-table-column prop="template_id" label="策略模板类型" width="250">
+          <el-table-column
+            prop="template_id"
+            label="策略模板类型"
+            min-width="20%"
+          >
             <template slot-scope="scope">
               <span v-if="scope.row.template_type == '1'">Android</span>
               <span v-if="scope.row.template_type == '2'">iOS</span>
@@ -335,9 +342,9 @@
           <el-table-column
             prop="create_time"
             label="创建时间"
-            width="250"
+            min-width="20%"
           ></el-table-column>
-          <el-table-column prop="operate" label="操作" width="400">
+          <el-table-column prop="operate" label="操作" min-width="40%">
             <template slot-scope="scope">
               <el-button
                 size="small"

@@ -201,23 +201,23 @@
           v-loading="loading"
           element-loading-text="加载中"
         >
-          <el-table-column type="index" label="序号" width="100">
+          <el-table-column type="index" label="序号" min-width="10%">
             <template slot-scope="scope">
               <span>{{ (curPage - 1) * limit + scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <!--  <el-table-column
-            v-show="true"
-            prop="strategy_id"
-            width="100"
-            label="ID"
-          ></el-table-column> -->
           <el-table-column
             prop="strategy_name"
             label="策略名称"
-            width="250"
+            min-width="20%"
+            :show-overflow-tooltip="true"
           ></el-table-column>
-          <el-table-column prop="strategy_type" label="适用系统" width="200">
+          <el-table-column
+            prop="strategy_type"
+            label="适用系统"
+            min-width="20%"
+            :show-overflow-tooltip="true"
+          >
             <template slot-scope="scope">
               <span v-if="scope.row.strategy_type == '1'">Android</span>
               <span v-if="scope.row.strategy_type == '2'">iOS</span>
@@ -226,12 +226,12 @@
           <el-table-column
             prop="strategy_count"
             label="检测项数量"
-            width="180"
+            min-width="20%"
           ></el-table-column>
           <el-table-column
             prop="strategy_is_dynamic"
             label="是否动态检测"
-            width="180"
+            min-width="20%"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.strategy_is_dynamic == '1'">是</span>
@@ -241,7 +241,7 @@
           <el-table-column
             prop="strategy_is_shelling"
             label="是否脱壳"
-            width="140"
+            min-width="20%"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.strategy_is_shelling == '1'">是</span>
@@ -251,14 +251,16 @@
           <el-table-column
             prop="user_name"
             label="创建者"
-            width="150"
+            min-width="20%"
+            :show-overflow-tooltip="true"
           ></el-table-column>
           <el-table-column
             prop="create_time"
             label="创建时间"
-            width="180"
+            min-width="20%"
+            :show-overflow-tooltip="true"
           ></el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作" min-width="40%">
             <template slot-scope="scope">
               <el-button
                 size="small"

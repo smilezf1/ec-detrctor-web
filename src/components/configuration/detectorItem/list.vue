@@ -35,34 +35,35 @@
         <el-tabs @tab-click="handleClick">
           <el-tab-pane label="Android">
             <el-table ref="listItem" :data="listItem">
-              <el-table-column type="index" label="序号" width="60">
+              <el-table-column type="index" label="序号" min-width="10%">
                 <template slot-scope="scope">
                   <span>{{ (curPage - 1) * limit + scope.$index + 1 }}</span>
                 </template>
               </el-table-column>
               <el-table-column
-                width="250"
+                min-width="20%"
                 prop="name"
                 label="检测项名称"
                 :show-overflow-tooltip="true"
               ></el-table-column>
               <el-table-column
-                width="180"
+                min-width="15%"
                 prop="riskGroup"
                 label="风险等级"
               ></el-table-column>
               <el-table-column
-                width="200"
+                min-width="20%"
                 prop="itemTypeName"
                 label="检测项分类"
+                :show-overflow-tooltip="true"
               ></el-table-column>
               <el-table-column
-                width="800"
+                min-width="60%"
                 prop="riskDesc"
                 label="检测项描述"
                 :show-overflow-tooltip="true"
               ></el-table-column>
-              <el-table-column label="操作">
+              <el-table-column label="操作" min-width="20%">
                 <template slot-scope="scope">
                   <el-button
                     size="small"
@@ -146,34 +147,34 @@
           </el-tab-pane>
           <el-tab-pane label="iOS">
             <el-table ref="listItem" :data="listItem">
-              <el-table-column type="index" label="序号" width="60">
+              <el-table-column type="index" label="序号" min-width="10%">
                 <template slot-scope="scope">
                   <span>{{ (curPage - 1) * limit + scope.$index + 1 }}</span>
                 </template>
               </el-table-column>
               <el-table-column
-                width="250"
+                min-width="20%"
                 prop="name"
                 label="检测项名称"
                 :show-overflow-tooltip="true"
               ></el-table-column>
               <el-table-column
-                width="180"
+                min-width="15%"
                 prop="riskGroup"
                 label="风险等级"
               ></el-table-column>
               <el-table-column
-                width="200"
+                min-width="20%"
                 prop="itemTypeName"
                 label="检测项分类"
               ></el-table-column>
               <el-table-column
-                width="800"
+                min-width="60%"
                 prop="riskDesc"
                 label="检测项描述"
                 :show-overflow-tooltip="true"
               ></el-table-column>
-              <el-table-column label="操作">
+              <el-table-column label="操作"  min-width="20%">
                 <template slot-scope="scope">
                   <el-button
                     type="primary"

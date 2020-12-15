@@ -35,11 +35,14 @@ export default {
   position: absolute;
   padding-left: 280px;
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow: auto;
 }
 .home .content {
+  min-width: 1200px;
   padding: 10px 10px 40px 20px;
-  overflow-y: auto;
+  overflow: auto;
+  box-sizing: border-box;
   margin-top: 60px;
+  overflow: auto;
 }
 </style>

@@ -194,15 +194,15 @@
           v-loading="loading"
           element-loading-text="加载中"
         >
-          <el-table-column type="index" label="序号" width="60">
+          <el-table-column type="index" label="序号" min-width="10%">
             <template slot-scope="scope">
               <span>{{ (curpage - 1) * limit + scope.$index + 1 }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            width="200"
             prop="appName"
             label="应用名称"
+            min-width="20%"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -220,23 +220,31 @@
             </template>
           </el-table-column>
           <el-table-column
-            width="240"
             prop="appFileName"
             label="文件名称"
+            min-width="20%"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">{{ scope.row.appFileName }}</template>
           </el-table-column>
-          <el-table-column width="110" prop="appVersion" label="版本">
-            <template slot-scope="scope">
-              <div class="version">
-                <img src="../../../assets/version.png" style="width:28px" />
-                <span>{{ scope.row.appVersion }}</span>
-              </div>
-            </template>
+          <el-table-column
+            prop="appVersion"
+            label="版本"
+            min-width="15%"
+            :show-overflow-tooltip="true"
+          >
+            <template slot-scope="scope"
+              ><span class="version">
+                <img
+                  src="../../../assets/version.png"
+                  style="width:28px;vertical-align:middle"
+                />
+                {{ scope.row.appVersion }}
+              </span></template
+            >
           </el-table-column>
           <el-table-column
-            width="170"
+            min-width="15%"
             prop="detectionFormwork"
             label="检测策略"
             :show-overflow-tooltip="true"
@@ -245,7 +253,11 @@
               scope.row.detectionFormwork
             }}</template>
           </el-table-column>
-          <el-table-column width="80" prop="detectionNumber" label="检测分数">
+          <el-table-column
+            min-width="12%"
+            prop="detectionNumber"
+            label="检测分数"
+          >
             <template slot-scope="scope">
               <span v-if="scope.row.detectionNumber">{{
                 scope.row.detectionNumber
@@ -253,12 +265,21 @@
               <span v-else>N/A</span>
             </template>
           </el-table-column>
-          <el-table-column prop="detectionTime" label="检测时间" width="180">
+          <el-table-column
+            prop="detectionTime"
+            label="检测时间"
+            min-width="20%"
+            :show-overflow-tooltip="true"
+          >
             <template slot-scope="scope">{{
               scope.row.detectionTime
             }}</template>
           </el-table-column>
-          <el-table-column prop="detectionStatus" label="检测状态" width="100">
+          <el-table-column
+            prop="detectionStatus"
+            label="检测状态"
+            min-width="18%"
+          >
             <template slot-scope="scope">
               <span v-if="scope.row.detectionStatus == 0">
                 <img
@@ -300,12 +321,12 @@
           <el-table-column
             prop="userName"
             label="上传人"
-            width="120"
+            min-width="13%"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">{{ scope.row.userName }}</template>
           </el-table-column>
-          <el-table-column label="操作" width="400" prop="operate">
+          <el-table-column label="操作" min-width="50%" prop="operate">
             <template slot-scope="scope">
               <el-button
                 size="small"
@@ -849,9 +870,8 @@ export default {
   line-height: 50px;
   font-size: 14px;
 }
-.androidBody .version {
-  display: flex;
-  align-items: center;
+.androidBody {
+  margin-top: 15px;
 }
 .android .el-radio {
   width: 40%;
@@ -862,17 +882,17 @@ export default {
   margin-top: 12px;
 }
 .android .searchBox {
-  width: 80%;
+  width: 75%;
 }
-.android .operateBox {
-  width: 20%;
-}
-.android .searchBox .el-input {
-  margin-bottom: 15px;
-  width: 19%;
+.android .searchBox .el-input,
+.android .searchBox .el-select {
+  width: 18%;
 }
 .android .searchBox .el-select .el-input {
   width: 100%;
+}
+.android .operateBox {
+  width: 20%;
 }
 .dowmloadApplicationIcon,
 .detailIcon,

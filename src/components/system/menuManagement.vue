@@ -66,7 +66,7 @@
     <div class="menuManagementBody">
       <template>
         <el-table ref="menusTable" :row-style="showRow" :data="menusItem">
-          <el-table-column prop="name" label="资源名称">
+          <el-table-column prop="name" label="资源名称" min-width="30%">
             <template slot-scope="scope">
               <span :class="['type' + scope.row.type]">
                 <i
@@ -88,7 +88,7 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column prop="address" label="资源路径">
+          <el-table-column prop="address" label="资源路径" min-width="30%">
             <template slot-scope="scope">
               {{ scope.row.address }}
             </template>
@@ -97,18 +97,19 @@
             prop="icon"
             label="资源图标"
             :show-overflow-tooltip="true"
+            min-width="30%"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.icon }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="type" label="资源类型">
+          <el-table-column prop="type" label="资源类型" min-width="30%">
             <template slot-scope="scope">
               <span v-if="scope.row.type === 'M'">目录</span>
               <span v-if="scope.row.type === 'T'">链接</span>
             </template>
           </el-table-column>
-          <el-table-column prop="operation" label="操作">
+          <el-table-column prop="operation" label="操作" min-width="40%">
             <template slot-scope="scope">
               <el-button size="small" type="primary" @click="edit(scope.row.id)"
                 >编辑</el-button

@@ -166,7 +166,7 @@
           v-loading="loading"
           element-loading-text="加载中"
         >
-          <el-table-column type="index" label="序号" width="80">
+          <el-table-column type="index" label="序号" min-width="10%">
             <template slot-scope="scope">
               <span>{{ (curpage - 1) * limit + scope.$index + 1 }}</span>
             </template>
@@ -174,17 +174,17 @@
           <el-table-column
             prop="trueName"
             label="用户名"
-            width="120"
+            min-width="10%"
             :show-overflow-tooltip="true"
           >
           </el-table-column>
           <el-table-column
             prop="userName"
             label="登录名"
-            width="120"
+            min-width="15%"
             :show-overflow-tooltip="true"
           ></el-table-column>
-          <el-table-column prop="sex" label="性别" width="80">
+          <el-table-column prop="sex" label="性别" min-width="8%">
             <template slot-scope="scope">
               <span v-if="scope.row.sex == '1'">男</span>
               <span v-else>女</span>
@@ -193,20 +193,16 @@
           <el-table-column
             prop="mobile"
             label="手机号"
-            width="150"
+            min-width="15%"
+            :show-overflow-tooltip="true"
           ></el-table-column>
           <el-table-column
             prop="email"
             label="电子邮箱"
-            width="170"
+            min-width="15%"
             :show-overflow-tooltip="true"
           ></el-table-column>
-          <el-table-column
-            prop="status"
-            label="是否有效"
-            width="100"
-            align="center"
-          >
+          <el-table-column prop="status" label="是否有效" min-width="10%">
             <template slot-scope="scope">
               <span v-if="scope.row.status == '1'">是</span>
               <span v-else>否</span>
@@ -216,15 +212,15 @@
             prop="createTime"
             label="创建时间"
             :show-overflow-tooltip="true"
-            width="200"
+            min-width="15%"
           ></el-table-column>
           <el-table-column
             prop="updateTime"
             label="更新时间"
             :show-overflow-tooltip="true"
-            width="200"
+            min-width="15%"
           ></el-table-column>
-          <el-table-column label="操作" prop="operate" width="400">
+          <el-table-column label="操作" prop="operate" min-width="50%">
             <template slot-scope="scope">
               <el-button size="small" type="primary" @click="edit(scope.row.id)"
                 >编辑</el-button
@@ -803,6 +799,7 @@ export default {
 }
 .userManagementBody {
   width: 99%;
+  margin-top: 15px;
 }
 .userManagement .searchBox .el-input {
   margin: 0px 5px 5px 0px;
@@ -814,21 +811,16 @@ export default {
 }
 .userManagement .searchBox {
   width: 75%;
-  margin-bottom: 15px;
-  display: inline-block;
+}
+.userManagement .searchBox .el-input,
+.userManagement .searchBox .el-select {
+  width: 18%;
+}
+.userManagement .searchBox .el-select .el-input {
+  width: 100%;
 }
 .userManagement .operateBox {
   width: 20%;
-  display: inline-block;
-  box-sizing: border-box;
-  margin: 0px 0px 15px 10px;
-}
-.userManagementBody .el-input,
-.userManagement .el-select {
-  width: 100%;
-}
-.userManagement .searchBox .el-select {
-  width: auto;
 }
 .userManagement .el-drawer-footer {
   width: 30%;
