@@ -39,7 +39,9 @@
                 <img src="../../assets/code.png" class="icon" />
                 <img
                   :src="
-                    this.api.baseUrl + '/captcha/getCaptchaCode?guid=' + Guid
+                    this.api.baseUrl +
+                      '/captcha/getCaptchaCode?guid=' +
+                      initialGuid
                   "
                   @click="getVerifyCode()"
                   class="verifyCode"
@@ -83,14 +85,14 @@ export default {
         verCode: [{ required: true, message: "请输入验证码", trigger: "blur" }]
       },
       verifyCode: "",
-      Guid: this.guid.getGuid()
+      initialGuid: this.guid.getGuid()
     };
   },
   methods: {
     ...mapMutations(["changeLogin"]),
     submitForm(formName) {
       let data = this.ruleForm,
-        guid = this.Guid,
+        guid = this.initialGuid,
         userName = data.userName,
         password = md5(data.password),
         verCode = data.verCode,
@@ -121,24 +123,21 @@ export default {
                 });
               } else if (res.code == "03") {
                 _this.$message.error(res.message);
-                _this.Guid = this.guid.getGuid();
+                _this.initialGuid = this.guid.getGuid();
               } else {
-                _this.Guid = this.guid.getGuid();
+                _this.initialGuid = this.guid.getGuid();
               }
             })
             .catch(() => {});
         } else {
           _this.$message.error("必填项不能为空");
-          _this.Guid = this.guid.getGuid();
+          _this.initialGuid = this.guid.getGuid();
           return false;
         }
       });
     },
     getVerifyCode(event) {
-      this.$refs.captcha.src =
-        this.api.baseUrl +
-        "/captcha/getCaptchaCode?guid=" +
-        this.guid.getGuid();
+      this.initialGuid = this.guid.getGuid();
     }
   },
   created() {

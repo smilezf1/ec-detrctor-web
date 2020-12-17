@@ -434,7 +434,6 @@ export default {
     },
     //保存新增的链接
     saveAddLink(formName, addLinkForm) {
-      console.log(addLinkForm);
       const { name, address, type } = addLinkForm,
         pId = this.linkID;
       this.$refs[formName].validate(valid => {

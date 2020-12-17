@@ -563,11 +563,7 @@ export default {
             "detectionStatus",
             data.data.detectionStatus
           );
-          this.$set(
-            this.listItem[index],
-            "detectionNumber",
-            data.data.detectionNumber
-          );
+          this.$set(this.listItem[index], "detectionNumber", data.content);
           this.$set(
             this.listItem[index],
             "detectionTime",
