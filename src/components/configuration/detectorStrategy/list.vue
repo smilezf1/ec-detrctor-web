@@ -402,7 +402,6 @@ export default {
       isIndeterminate: true,
       activeNames: [],
       terminalType: 1,
-      allChecked: false,
       selectedOptions: []
     };
   },
@@ -556,22 +555,22 @@ export default {
     //检测项目全选
     handleCheckAllChange(val) {
       const terminalType = this.terminalType;
-      this.allChecked = val;
-      this.isIndeterminate = false;
-      this.detectorTypeList.forEach(v => {
+      this.isIndeterminate = val;
+      this.detectorTypeList.forEach((v, i) => {
         v.isSubCheckedAll = val;
         if (v.code == "titleCode17" || v.code == "titleCode001") {
           v.isSubCheckedAll = true;
         }
         if (terminalType == 1) {
-          v.selectedOptions = val
+          this.selectedOptions = val
             ? this.detectorAndroidItemOptions
             : this.defaultdetectorAndroidItemList;
         } else {
-          v.selectedOptions = val
+          this.selectedOptions = val
             ? this.detectorIosItemOptions
             : this.defaultdetectorIosItemList;
         }
+        this.subHandleCheckAllChange(val, i);
       });
     },
     //全选 子项目subHandleCheckAllChange
@@ -582,16 +581,8 @@ export default {
           val,
           index
         );
-      if (terminalType == 1) {
-        this.detectorTypeList[index].selectedOptions = val
-          ? selectedOptions
-          : this.defaultdetectorAndroidItemList;
-      } else {
-        this.detectorTypeList[index].selectedOptions = val
-          ? selectedOptions
-          : this.defaultdetectorIosItemList;
-      }
-      this.isIndeterminate = true;
+      this.detectorTypeList[index].selectedOptions = selectedOptions;
+      this.isIndeterminate = val;
     },
     //单独选
     //Android
@@ -626,13 +617,16 @@ export default {
         checkedCount > 0 && checkedCount < allOptionsLength;
     },
     getSelectedOptions(array, checked, index) {
-      const terminalType = this.terminalType;
       this.selectedOptions = [];
       array.forEach((v, i) => {
-        if (checked) {
+        if (index == 0) {
           this.selectedOptions.push(v.key);
         } else {
-          this.selectedOptions = this.selectedOptions.splice(0, v.key);
+          if (checked) {
+            this.selectedOptions.push(v.key);
+          } else {
+            this.selectedOptions = this.selectedOptions.splice(0, v.key);
+          }
         }
       });
       return this.selectedOptions;
@@ -650,16 +644,6 @@ export default {
         return count;
       }
     },
-    //求数组中长度最大的值
-    /* findMax(array) {
-      let max = array[0].selectedOptions;
-      for (let i = 1; i < array.length; i++) {
-        if (array[i].selectedOptions.length > max.length) {
-          max = array[i].selectedOptions;
-        }
-      }
-      return this.removeWhipptree(max);
-    }, */
     //将数组中选中的值进行合并
     mergeArray(array) {
       let combinedArray = [];
@@ -708,14 +692,14 @@ export default {
           ).concat(this.removeWhipptree(this.defaultdetectorIosItemList));
           this.detectionItemList = Array.from(new Set(this.detectionItemList));
         }
+        const strategyItemDto = {
+          detectionItemList: this.detectionItemList,
+          strategyIsDynamic: taskList.strategyIsDynamic,
+          strategyIsShelling: taskList.strategyIsShelling,
+          strategyName: taskList.strategyName,
+          strategyType: taskList.strategyType
+        };
         if (allValid) {
-          const strategyItemDto = {
-            detectionItemList: this.detectionItemList,
-            strategyIsDynamic: taskList.strategyIsDynamic,
-            strategyIsShelling: taskList.strategyIsShelling,
-            strategyName: taskList.strategyName,
-            strategyType: taskList.strategyType
-          };
           api.detectorStrategyService
             .saveOrUpdateStrategy(strategyItemDto)
             .then(res => {

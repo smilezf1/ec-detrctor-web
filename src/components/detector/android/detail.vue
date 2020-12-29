@@ -1147,7 +1147,7 @@ export default {
           axisLine: {
             lineStyle: {
               color: [
-                [0.2, "#FA6E86"],
+                [0.6, "#FA6E86"],
                 [0.8, "#5AB1EF"],
                 [1, "#19D4AE"]
               ]

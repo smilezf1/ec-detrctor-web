@@ -819,6 +819,9 @@ export default {
 .userManagement .searchBox .el-select .el-input {
   width: 100%;
 }
+.userManagement .el-drawer-content .el-select {
+  width: 100%;
+}
 .userManagement .operateBox {
   width: 20%;
 }
