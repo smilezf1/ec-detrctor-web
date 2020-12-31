@@ -186,7 +186,9 @@
                 :visible.sync="menuDialog"
                 width="20%"
               >
+                <!--  check-strictly -->
                 <el-tree
+                  ref="tree"
                   :data="menuTreeData"
                   node-key="id"
                   show-checkbox
@@ -265,9 +267,10 @@ export default {
       menuTreeData: [],
       menuList: [],
       setMenuList: [],
-      setParMentList: [],
+      setBtnList: [],
       curpage: 1,
-      limit: 10
+      limit: 10,
+      xx: []
     };
   },
   beforeMount() {
@@ -385,15 +388,46 @@ export default {
       });
     },
     //设置菜单开始
-    handleCheck(checkedNodes, checkedKeys) {
-      this.checkedNodes = checkedKeys.checkedNodes;
+    handleCheck(checkedNodes, treeStatus) {
+      this.checkedNodes = treeStatus.checkedNodes;
+
+      /*  const selected = treeStatus.checkedKeys.indexOf(checkedNodes.id);
+      if (selected !== -1) {
+        this.selectedParent(checkedNodes);
+        this.uniteChildSame(checkedNodes, true);
+      } else {
+        if (checkedNodes.children !== undefined) {
+          if (checkedNodes.children.length !== 0) {
+            this.uniteChildSame(checkedNodes, false);
+          }
+        }
+      } */
+
       this.setMenuList = [];
-      checkedKeys.checkedNodes.forEach(v => {
+      this.setBtnList = [];
+      treeStatus.checkedNodes.forEach(v => {
         if (v.id.indexOf("T") != -1) {
           this.setMenuList.push(v.id);
+        } else if (v.id.indexOf("B") != -1) {
+          this.setBtnList.push(v.id);
         }
       });
     },
+    /* uniteChildSame(treeList, isSelected) {
+      this.$refs.tree.setChecked(treeList.id, isSelected);
+      if (treeList.children) {
+        for (let i = 0; i < treeList.children.length; i++) {
+          this.uniteChildSame(treeList.children[i], isSelected);
+        }
+      }
+    },
+    selectedParent(checkedNodes) {
+      let currentNode = this.$refs.tree.getNode(checkedNodes);
+      if (currentNode.parent.key) {
+        this.$refs.tree.setChecked(currentNode.parent, true);
+        this.selectedParent(currentNode.parent);
+      }
+    }, */
     //设置菜单
     setting(id) {
       this.menuDialog = true;
@@ -402,27 +436,31 @@ export default {
         let data = res.data;
         (data = JSON.parse(JSON.stringify(data).replace(/name/g, "label"))),
           (this.menuTreeData = this.toTreeData(data));
-        this.setMenuList = this.setSelectedList(this.menuTreeData);
+        this.setSelectedList(this.menuTreeData);
       });
     },
     setSelectedList(menuTreeData) {
-      this.setMenuList = [];
-      menuTreeData.forEach((v, i) => {
-        if (v.children) {
-          v.children.forEach((v, i) => {
-            if (v.checked == true) {
-              this.setMenuList.push(v.id);
-              this.setMenuList = Array.from(new Set(this.setMenuList));
-            }
-          });
-        } else {
-          if (v.checked == true) {
-            this.setMenuList.push(v.id);
-            this.setMenuList = Array.from(new Set(this.setMenuList));
+      for (let item of menuTreeData) {
+        if (item.checked == true) {
+          if (item.id.indexOf("T") != -1) {
+            this.setMenuList.push(item.id);
+          } else if (item.id.indexOf("B") != -1) {
+            this.setBtnList.push(item.id);
           }
         }
-      });
-      return this.setMenuList;
+        if (item.children) {
+          this.setSelectedList(item.children);
+        }
+      }
+      this.setMenuList = Array.from(new Set(this.setMenuList));
+      this.setBtnList = Array.from(new Set(this.setBtnList));
+    },
+    removeInitial(list) {
+      let array = [];
+      for (let item of list) {
+        array.push(item.slice(1));
+      }
+      return array;
     },
     //刷新
     refresh() {
@@ -434,14 +472,16 @@ export default {
     setMenuSave() {
       const menuList = [],
         id = this.setMenuId;
-      this.setMenuList.forEach(v => {
-        v = v.replace("T", "");
-        menuList.push(v);
-      });
+      this.setMenuList = this.removeInitial(this.setMenuList);
+      this.setBtnList = this.removeInitial(this.setBtnList);
       new this.$messageTips(({ confirm }) => {
         confirm({ content: "确定要更新菜单列表吗?" });
       }).then(res => {
-        const params = { btnList: [], itemList: menuList, roleId: id };
+        const params = {
+          btnList: this.setBtnList,
+          itemList: this.setMenuList,
+          roleId: id
+        };
         api.systemService.roleManageSettingMenuSave(params).then(res => {
           if (res.code == "00") {
             this.$notify({

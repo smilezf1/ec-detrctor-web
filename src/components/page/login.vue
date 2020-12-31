@@ -99,7 +99,7 @@ export default {
         _this = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let params = {
+          const params = {
             userName: userName,
             password: password,
             verCode: verCode,
@@ -138,16 +138,30 @@ export default {
     },
     getVerifyCode(event) {
       this.initialGuid = this.guid.getGuid();
+    },
+    //得到菜单按钮全部数据
+    getMenuBtnList(treeData) {
+      let menuBtnList = [];
+      for (let item of treeData) {
+        if (item.type == "B") {
+          menuBtnList.push({ name: item.name, id: item.id });
+        } else if (item.children && item.children.length > 0) {
+          this.getMenuBtnList(item.children);
+        }
+      }
+      return menuBtnList;
+    },
+    pressEnterToSubForm() {
+      document.onkeydown = e => {
+        e = window.event || e;
+        if (e.code == "NumpadEnter" || e.code == "Enter" || e.code == "enter") {
+          this.submitForm("ruleForm");
+        }
+      };
     }
   },
   created() {
-    let _this = this;
-    document.onkeydown = function(e) {
-      e = window.event || e;
-      if (e.code == "NumpadEnter" || e.code == "Enter" || e.code == "enter") {
-        _this.submitForm("ruleForm");
-      }
-    };
+    this.pressEnterToSubForm();
   }
 };
 </script>

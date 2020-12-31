@@ -41,7 +41,6 @@
             <el-form-item label="资源类型" prop="type">
               <el-select v-model="addCatalogueForm.type" size="small">
                 <el-option label="目录" value="M"></el-option>
-                <el-option label="链接" value="T" :disabled="true"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="资源图标" prop="icon">
@@ -103,10 +102,16 @@
               <span>{{ scope.row.icon }}</span>
             </template>
           </el-table-column>
+          <el-table-column
+            prop="permCode"
+            label="权限标识"
+            min-width="30%"
+          ></el-table-column>
           <el-table-column prop="type" label="资源类型" min-width="30%">
             <template slot-scope="scope">
               <span v-if="scope.row.type === 'M'">目录</span>
-              <span v-if="scope.row.type === 'T'">链接</span>
+              <span v-if="scope.row.type === 'T'">菜单</span>
+              <span v-if="scope.row.type == 'B'">按钮</span>
             </template>
           </el-table-column>
           <el-table-column prop="operation" label="操作" min-width="40%">
@@ -142,7 +147,7 @@
                         :disabled="true"
                       >
                         <el-option label="目录" value="M"></el-option>
-                        <el-option label="链接" value="T"></el-option>
+                        <el-option label="菜单" value="T"></el-option>
                       </el-select>
                     </el-form-item>
                     <el-form-item
@@ -167,6 +172,7 @@
                         size="small"
                       ></el-input>
                     </el-form-item>
+                    <el-form-item label="权限标识"></el-form-item>
                   </el-form>
                 </div>
                 <div class="el-drawer-footer">
@@ -178,52 +184,47 @@
                   <el-button @click="cancelForm" plain>取消</el-button>
                 </div>
               </el-drawer>
-              <!-- 只有在资源类型为目录时才能显示新增链接 -->
+              <!-- 只有在资源类型为目录时才能显示新增菜单 -->
               <el-button
                 size="small"
                 type="success"
-                @click="addLink(scope.row.id)"
+                @click="addMenu(scope.row.id)"
                 v-if="scope.row.type === 'M'"
-                >新增链接</el-button
+                >新增菜单</el-button
               >
               <el-drawer
-                title="新增链接"
-                :visible.sync="addLinkDrawer"
+                title="新增菜单"
+                :visible.sync="addMenuDrawer"
                 :with-header="false"
                 :wrapperClosable="false"
                 :close-on-press-escape="false"
-                ref="addLinkDrawer"
+                ref="addMenuDrawer"
                 size="30%"
               >
                 <div class="el-drawer-header">
-                  <h3>新增链接</h3>
+                  <h3>新增菜单</h3>
                 </div>
                 <div class="el-drawer-content">
                   <el-form
-                    :model="addLinkForm"
-                    :rules="addLinkFormRules"
-                    ref="addLinkForm"
+                    :model="addMenuForm"
+                    :rules="rules"
+                    ref="addMenuForm"
                   >
                     <el-form-item label="资源名称" prop="name">
                       <el-input
-                        v-model="addLinkForm.name"
+                        v-model="addMenuForm.name"
                         auto-complete="off"
                         size="small"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="资源类型" prop="type">
-                      <el-select v-model="addLinkForm.type" size="small">
-                        <el-option
-                          label="目录"
-                          value="M"
-                          :disabled="true"
-                        ></el-option>
-                        <el-option label="链接" value="T"></el-option>
+                      <el-select v-model="addMenuForm.type" size="small">
+                        <el-option label="菜单" value="T"></el-option>
                       </el-select>
                     </el-form-item>
                     <el-form-item label="资源路径" prop="address">
                       <el-input
-                        v-model="addLinkForm.address"
+                        v-model="addMenuForm.address"
                         auto-complete="off"
                         size="small"
                       ></el-input>
@@ -233,12 +234,65 @@
                 <div class="el-drawer-footer">
                   <el-button
                     type="primary"
-                    @click="saveAddLink('addLinkForm', addLinkForm)"
+                    @click="saveAddMenu('addMenuForm', addMenuForm)"
                     >保存</el-button
                   >
-                  <el-button @click="cancelAddLinkForm" plain>取消</el-button>
+                  <el-button @click="cancelAddMenu" plain>取消</el-button>
                 </div>
               </el-drawer>
+              <!-- 新增按钮 -->
+              <el-button
+                size="small"
+                type="success"
+                v-if="scope.row.type == 'T'"
+                @click="addButton(scope.row.id)"
+                >新增按钮</el-button
+              >
+              <!-- 新增按钮Drawer开始 -->
+              <el-drawer
+                :visible.sync="addButtonDrawer"
+                :with-header="false"
+                :wrapperClosable="false"
+                :close-on-press-escape="false"
+                ref="addButtonDrawer"
+                size="30%"
+              >
+                <div class="el-drawer-header"><h3>新增按钮</h3></div>
+                <div class="el-drawer-content">
+                  <el-form
+                    :model="addButtonForm"
+                    :rules="rules"
+                    ref="addButtonForm"
+                  >
+                    <el-form-item label="资源名称" prop="name">
+                      <el-input
+                        v-model="addButtonForm.name"
+                        size="small"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item label="资源类型" prop="type">
+                      <el-select v-model="addButtonForm.type" size="small">
+                        <el-option label="按钮" value="B"></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="权限标识" prop="permission">
+                      <el-input
+                        v-model="addButtonForm.permission"
+                        size="small"
+                      ></el-input>
+                    </el-form-item>
+                  </el-form>
+                </div>
+                <div class="el-drawer-footer">
+                  <el-button
+                    type="primary"
+                    @click="saveAddButton('addButtonForm', addButtonForm)"
+                    >保存</el-button
+                  >
+                  <el-button plain @click="cancelAddButton">取消</el-button>
+                </div>
+              </el-drawer>
+              <!-- 新增按钮Drawer结束 -->
               <el-button
                 size="small"
                 type="danger"
@@ -271,7 +325,7 @@ export default {
       addCatalogueDrawer: false,
       addCatalogueForm: {
         name: "",
-        type: "",
+        type: "M",
         icon: ""
       },
       rules: {
@@ -280,38 +334,37 @@ export default {
         type: { required: true, message: "请输入资源类型", trigger: "blur" },
         address: { required: true, message: "请输入资源路径", trigger: "blur" }
       },
-      addLinkFormRules: {
-        name: [{ required: true, message: "请输入资源名称", trigger: "blur" }],
-        type: [{ required: true, message: "请输入资源类型", trigger: "blur" }],
-        address: [
-          { required: true, message: "请输入资源路径", trigger: "blur" }
-        ]
-      },
       form: {
         name: "",
         type: "",
         address: "",
         icon: ""
       },
-      addLinkForm: {
+      addMenuForm: {
         name: "",
-        type: "",
+        type: "T",
         address: ""
       },
+      addButtonForm: { name: "", type: "B", permission: "" },
       menusItem: [],
       editDrawer: false,
-      addLinkDrawer: false,
-      linkID: null
+      addMenuDrawer: false,
+      addButtonDrawer: false,
+      menuID: null,
+      buttonID: null
     };
   },
   beforeMount() {
-    api.systemService.menuManageList().then(res => {
-      if (res.code == "00") {
-        this.menusItem = this.listToTree(res.data);
-      }
-    });
+    this.getMenuList();
   },
   methods: {
+    getMenuList() {
+      api.systemService.menuManageList().then(res => {
+        if (res.code == "00") {
+          this.menusItem = this.listToTree(res.data);
+        }
+      });
+    },
     //将扁平数组转化为树形结构
     listToTree(list) {
       let map = {},
@@ -393,24 +446,9 @@ export default {
     },
     //保存新增的目录
     saveAddCatalogue(formName, addCatalogueForm) {
-      const { name, type, icon } = addCatalogueForm;
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          const params = { name, icon, type, pId: "" };
-          api.systemService.menuManageSaveAddCatalogue(params).then(res => {
-            if (res.code == "00") {
-              this.reload();
-              this.$notify.success({
-                message: "新增成功",
-                showClose: false,
-                duration: 1000
-              });
-            }
-          });
-        } else {
-          return false;
-        }
-      });
+      const { name, type, icon } = addCatalogueForm,
+        params = { name, icon, type, pId: "" };
+      this.saveMenu(formName, params);
     },
     //编辑目录
     edit(id) {
@@ -424,29 +462,49 @@ export default {
     cancelForm() {
       this.editDrawer = false;
     },
-    cancelAddLinkForm() {
-      this.addLinkDrawer = false;
+    cancelAddMenu() {
+      this.addMenuDrawer = false;
     },
-    //新增链接
-    addLink(id) {
-      this.addLinkDrawer = true;
-      this.linkID = id;
+    //新增菜单
+    addMenu(id) {
+      this.addMenuDrawer = true;
+      this.menuID = id;
     },
-    //保存新增的链接
-    saveAddLink(formName, addLinkForm) {
-      const { name, address, type } = addLinkForm,
-        pId = this.linkID;
+    //保存新增的菜单
+    saveAddMenu(formName, addMenuForm) {
+      const { name, address, type } = addMenuForm,
+        pId = this.menuID,
+        params = { pId, name, type, address };
+      this.saveMenu(formName, params);
+    },
+    //新增按钮
+    addButton(id) {
+      this.addButtonDrawer = true;
+      this.buttonID = id;
+    },
+    //保存新增的按钮
+    saveAddButton(formName, form) {
+      const { name, type, permission: permCode } = form,
+        pId = this.buttonID,
+        params = { name, type, permCode, pId };
+      this.saveMenu(formName, params);
+    },
+    //取消保存新增的菜单
+    cancelAddButton() {
+      this.addButtonDrawer = false;
+    },
+    //保存菜单
+    saveMenu(formName, params) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          const params = { pId, name, type, address };
           api.systemService.menuManageSaveAddCatalogue(params).then(res => {
             if (res.code == "00") {
-              this.reload();
               this.$notify.success({
                 message: "新增成功",
                 showClose: false,
                 duration: 1000
               });
+              this.reload();
             }
           });
         } else {
@@ -505,9 +563,12 @@ export default {
 .typeT {
   margin-left: 20px;
 }
+.typeB {
+  margin-left: 35px;
+}
 .editIcon,
 .addCatalogueIcon,
-.addLinkIcon,
+.addMenuIcon,
 .closeIcon,
 .checkIcon {
   font-size: 22px;

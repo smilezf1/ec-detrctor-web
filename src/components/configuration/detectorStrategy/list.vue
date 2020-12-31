@@ -575,12 +575,11 @@ export default {
     },
     //全选 子项目subHandleCheckAllChange
     subHandleCheckAllChange(val, index) {
-      const terminalType = this.terminalType,
-        selectedOptions = this.getSelectedOptions(
-          this.detectorTypeList[index].children,
-          val,
-          index
-        );
+      const selectedOptions = this.getSelectedOptions(
+        this.detectorTypeList[index].children,
+        val,
+        index
+      );
       this.detectorTypeList[index].selectedOptions = selectedOptions;
       this.isIndeterminate = val;
     },
