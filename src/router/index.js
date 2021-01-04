@@ -15,7 +15,7 @@ export default new Router({
         { path: "detector/ios/list", name: 'iosList', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/ios/list.vue") }
         , { path: "detector/ios/detail", name: 'iosDetail', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/ios/detail.vue") },
         {
-          path: 'system/role/list', name: 'role', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/system/roleManageMent.vue")
+          path: 'system/role/list', name: 'role', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/system/test.vue")
         },
         { path: "system/user/list", meta: { requireAuth: true, KeepAlive: false }, name: 'user', component: () => import("../components/system/userManageMent.vue") },
         { path: 'system/menu/list', meta: { requireAuth: true, KeepAlive: false }, name: 'menu', component: () => import('../components/system/menuManageMent.vue') },

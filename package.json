@@ -13,6 +13,7 @@
     "axios": "^0.20.0",
     "echarts": "^4.9.0",
     "element-ui": "^2.13.2",
+    "jquery": "^3.5.1",
     "js-md5": "^0.7.3",
     "nprogress": "^0.2.0",
     "sockjs-client": "^1.5.0",

@@ -1,7 +1,7 @@
 <template>
   <div class="roleManagement">
     <div class="roleManagementHeader">
-      <p>当前位置: 角色管理</p>
+      <p>当前位置: test管理</p>
     </div>
     <div class="searchForm">
       <div class="searchBox">
@@ -186,15 +186,17 @@
                 :visible.sync="menuDialog"
                 width="20%"
               >
-                <!--  check-strictly -->
                 <el-tree
                   ref="tree"
                   :data="menuTreeData"
                   node-key="id"
                   show-checkbox
+                  default-expand-all
                   :default-checked-keys="setMenuList"
                   :props="defaultProps"
-                  @check="handleCheck"
+                  @check-change="permissionCheckChange"
+                  :check-strictly="true"
+                  :render-content="renderContent"
                 ></el-tree>
                 <div class="el-dialog-footer" style="text-align:center">
                   <el-button type="primary" @click="setMenuSave"
@@ -230,6 +232,7 @@
 import api from "../request/api";
 import pagination from "../common/pagination";
 import pageMixins from "../../utils/pageMixins";
+import $ from "jquery";
 export default {
   name: "manageAbout",
   components: { pagination },
@@ -270,7 +273,8 @@ export default {
       setBtnList: [],
       curpage: 1,
       limit: 10,
-      xx: []
+      xx: [],
+      menuTreeStore: {} //菜单树store
     };
   },
   beforeMount() {
@@ -389,7 +393,7 @@ export default {
     },
     //设置菜单开始
     handleCheck(checkedNodes, treeStatus) {
-      this.checkedNodes = treeStatus.checkedNodes;
+      /* this.checkedNodes = treeStatus.checkedNodes;
       this.setMenuList = [];
       this.setBtnList = [];
       console.log(treeStatus.checkedNodes, "##");
@@ -399,8 +403,282 @@ export default {
         } else if (v.id.indexOf("B") != -1) {
           this.setBtnList.push(v.id);
         }
+      }); */
+    },
+    //选中节点
+    selectMenuNode(data, node) {
+      if (this.selectBtn) {
+        this.selectBtn = false;
+        return;
+      }
+      let isChecked = !node.checked,
+        key = node.key;
+      if (isChecked) {
+        this.addCheckedKeys(key);
+      } else {
+        this.removeCheckedKeys(key);
+      }
+    },
+    //权限切换
+    permissionCheckChange(data, isChecked, subIsChecked) {
+      let store = this.$refs.tree.store,
+        node = store.getNode(data.id);
+      if (!isChecked) {
+        //取消子节点选中
+        let operateItems = $(
+            "#operate_panel_" + data.id + ".el-checkbox__input"
+          ),
+          operateCheckedItems = $("#operate_panel_" + data.id + " input");
+        operateItems.removeClass("is-checked");
+        operateCheckedItems.attr("checked", false);
+        this.selectBtn = false;
+        if (!subIsChecked) {
+          this.cancelCheckedChildNodes(node);
+        }
+        //取消选中父
+        if (node.parent.level > 0 && node.parent.checked) {
+          this.cancelCheckedParentNode(node);
+          this.currentLevel = node.level;
+        } else {
+          this.currentLevel = null;
+        }
+      } else {
+        if (!this.selectBtn) {
+          let operateItems = $(
+              "#operate_panel_" + data.id + " .el-checkbox__input"
+            ),
+            operateCheckedItems = $("#operate_panel_" + data.id + " input");
+          operateItems.addClass("is-checked");
+          operateCheckedItems.attr("checked", true);
+        } else {
+          this.selectBtn = false;
+        }
+        // 大于当前层级的 不执行选中子节点
+        if (this.currentLevel && node.level < this.currentLevel) {
+          if (node.level == this.currentLevel - 1) {
+            this.currentLevel = null;
+          }
+          return false;
+        }
+
+        // 选中父
+        if (node.parent.level > 0 && !node.parent.checked) {
+          this.checkedParentNode(node);
+          this.currentLevel = node.level;
+        } else {
+          this.currentLevel = null;
+        }
+        // 选中子菜单
+        this.checkedChildNodes(node);
+      }
+    },
+    //选中父节点
+    checkedParentNode(node) {
+      let level = node.parent.level;
+      if (level == 0) {
+        this.currentLevel = null;
+        return false;
+      }
+
+      let data = node.parent.data,
+        store = this.$refs.tree.store,
+        parentNode = store.getNode(data.id);
+      if (parentNode) {
+        this.addCheckedKeys(parentNode.key);
+        this.checkedParentNode(parentNode);
+      }
+    },
+    //选中所有子节点
+    checkedChildNodes(node) {
+      let childNodes = node.childNodes;
+      if (!childNodes || childNodes.length <= 0) {
+        return false;
+      }
+      // 迭代子节点
+      childNodes.forEach(child => {
+        let key = child.key;
+        this.addCheckedKeys(key);
+        this.checkedChildNodes(child);
       });
     },
+    //取消选中父节点
+    cancelCheckedParentNode(node) {
+      let level = node.parent.level;
+      if (level <= 0) {
+        return false;
+      }
+      let store = this.$refs.tree.store,
+        data = node.parent.data,
+        parentNode = store.getNode(data.id),
+        childNodes = parentNode.childNodes,
+        isChecked = false;
+      if (!childNodes || childNodes.length <= 0) {
+        return false;
+      }
+      childNodes.forEach(child => {
+        isChecked = isChecked || child.checked;
+      });
+      if (!isChecked) {
+        this.removeCheckedKeys(data.id);
+      }
+    },
+    //取消选中子节点
+    cancelCheckedChildNodes(node) {
+      let childNodes = node.childNodes;
+      if (!childNodes || childNodes.length <= 0) {
+        return false;
+      }
+      let checkedKeys = this.$refs.tree.getCheckedKeys();
+      childNodes.forEach(child => {
+        let key = child.key,
+          index = $.inArray(key, checkedKeys);
+        if (index != -1) {
+          checkedKeys.splice(index, 1);
+          this.$refs.tree.setCheckedKeys(checkedKeys);
+        }
+      });
+    },
+    //移除选中key
+    removeCheckedKeys(key) {
+      let checkedKeys = this.$refs.tree.getCheckedKeys(),
+        index = $.inArray(key, checkedKeys);
+      if (index != -1) {
+        checkedKeys.splice(index, 1);
+        this.$refs.tree.setCheckedKeys(checkedKeys);
+      }
+    },
+    //添加选中key
+    addCheckedKeys(key) {
+      let checkedKeys = this.$refs.tree.getCheckedKeys();
+      if ($.inArray(key, checkedKeys) != -1) {
+        return false;
+      }
+      checkedKeys.push(key);
+      this.$refs.tree.setCheckedKeys(checkedKeys);
+    },
+    renderContent: function(createElement, { node, data, store }) {
+      let _this = this,
+        elements = [],
+        btnNodeList = data.btnNodeList;
+      this.menuTreeStore = store;
+      if (btnNodeList) {
+        let btnNode = null;
+        for (let i = 0; i < btnNodeList.length; i++) {
+          btnNode = btnNodeList[i];
+          /*  elements.push(
+            this.createOperateElement(_this, createElement, btnNode)
+          ); */
+        }
+      }
+
+      //操作面板
+      var operatePanel = createElement(
+        "div",
+        {
+          attrs: {
+            class: "tree-operate-panel",
+            id: "operate_panel_" + data.id
+          }
+        },
+        elements
+      );
+
+      //显示标题
+      var label = createElement(
+        "span",
+        {
+          on: {
+            click: function() {
+              _this.selectMenuNode(data, node);
+            }
+          }
+        },
+        node.label
+      );
+
+      return createElement("span", [label, operatePanel]);
+    },
+    // 创建操作按钮
+    /* createOperateElement(self, createElement, btnNode) {
+      let spanInnerEle = createElement("span", {
+          attrs: {
+            class: "el-checkbox__inner el-checkbox__input"
+          }
+        }),
+        inputEle = createElement("input", {
+          attrs: {
+            class: "el-checkbox__original",
+            name: "el-checkbox_btn",
+            type: "checkbox",
+            value: btnNode.id,
+            id: "operate_item_" + btnNode.id
+          },
+          on: {
+            click: function(event) {
+              self.selectBtn = true;
+              let $item = $("#operate_item_" + btnNode.id),
+                isChecked = !$item.attr("checked");
+              $item.attr("checked", isChecked);
+              if (isChecked) {
+                $("#operate_" + btnNode.id).addClass("is-checked");
+                self.addCheckedKeys(btnNode.parentNodeId);
+              } else {
+                $("#operate_" + btnNode.id).removeClass("is-checked");
+                self.removeCheckedKeys(btnNode.id);
+              }
+            }
+          }
+        });
+
+      var spanInputEle = createElement(
+        "span",
+        {
+          attrs: {
+            class: "el-checkbox__input",
+            name: "el-checkbox_btn_span",
+            id: "operate_" + btnNode.id
+          }
+        },
+        [spanInnerEle, inputEle]
+      );
+
+      var spanLabelEle = createElement(
+        "span",
+        {
+          attrs: {
+            class: "el-checkbox__label"
+          }
+        },
+        btnNode.nodeName
+      );
+
+      // label 父标签
+      var labelEle = createElement(
+        "label",
+        {
+          attrs: {
+            class: "tree-operate el-checkbox"
+          }
+        },
+        [spanInputEle, spanLabelEle]
+      );
+      return labelEle;
+    },
+ */
+    //返回数组中指定值,并返回它的索引
+    inArray(value, array) {
+      if (Array.prototype.indexOf) {
+        return array.indexOf(value);
+      } else {
+        for (let i = 0; i < array.length; i++) {
+          if (array[i] === value) {
+            return i;
+          }
+        }
+      }
+      return -1;
+    },
+
     //设置菜单
     setting(id) {
       this.menuDialog = true;
