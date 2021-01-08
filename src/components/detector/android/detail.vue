@@ -38,7 +38,13 @@
                     <p>版本:{{ listItem.appInfo.appVersion }}</p>
                     <img
                       class="appInfoImg"
+                      v-if="listItem.appInfo.appIcon"
                       :src="'data:image/jpg;base64,' + listItem.appInfo.appIcon"
+                    />
+                    <img
+                      class="appInfoImg"
+                      v-else
+                      src="../../../assets/android.png"
                     />
                   </div>
                 </div>
@@ -1432,7 +1438,7 @@ pre {
 }
 
 .applicationMessageBody {
-  margin-top: 20px;
+  margin: 20px 0;
 }
 .applicationMessageBody .imgBox {
   display: inline-block;
@@ -1468,6 +1474,7 @@ pre {
   margin-bottom: 10px;
 }
 .applicationMessageBody .appInfoImg {
+  width: 200px;
   width: 200px;
   margin-top: 30px;
 }

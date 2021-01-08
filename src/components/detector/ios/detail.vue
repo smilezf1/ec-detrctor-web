@@ -1135,7 +1135,6 @@ pre {
 .applicationMessage {
   border: 1px solid #e3e5e5;
   background: #f9fafa;
-  padding: 20px;
 }
 .applicationMessageHeader:after {
   content: "";
