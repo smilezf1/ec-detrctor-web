@@ -111,7 +111,11 @@
                   <el-collapse-item title="应用信息" :name="index + 1">
                     <el-row>
                       <el-col :span="6">
-                        <img :src="'data:image/jpg;base64,' + item.appIcon" />
+                        <img
+                          :src="'data:image/jpg;base64,' + item.appIcon"
+                          v-if="item.appIcon"
+                        />
+                        <img v-else src="../../../assets/android.png" />
                       </el-col>
                       <el-col :span="18">
                         <p class="appName">{{ item.appName }}</p>
@@ -187,9 +191,11 @@
           >
             <template slot-scope="scope">
               <img
+                v-if="scope.row.appIcon"
                 :src="'data:image/jpg;base64,' + scope.row.appIcon"
                 class="appIcon"
               />
+              <img v-else src="../../../assets/android.png" class="appIcon" />
               <el-tooltip
                 effect="dark"
                 :content="scope.row.appName"

@@ -19,9 +19,11 @@
           >
             <template slot-scope="scope">
               <img
-                :src="'data:image/jpg;base64,' + scope.row.appIcon"
+                v-if="scope.row.appIcon"
                 class="appIcon"
+                :src="'data:image/jpg;base64,' + scope.row.appIcon"
               />
+              <img v-else class="appIcon" src="../../assets/android.png" />
               <el-tooltip
                 effect="dark"
                 :content="scope.row.appName"
