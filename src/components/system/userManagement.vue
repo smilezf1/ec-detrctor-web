@@ -550,7 +550,7 @@ export default {
   },
   computed: {
     getLocalStorageUserName: function() {
-      return localStorage.getItem("userName");
+      return JSON.parse(localStorage.getItem("userInfo")).userName;
     }
   },
   beforeMount() {

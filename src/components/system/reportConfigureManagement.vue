@@ -839,26 +839,6 @@ export default {
           message: "请输入报告标题",
           trigger: "blur"
         }
-        /* reportHeaderLogo: {
-          required: true,
-          message: "请上传报告页眉",
-          trigger: "blur"
-        },
-        reportFooterLog: {
-          required: true,
-          message: "请上传报告页脚",
-          trigger: "blur"
-        },
-        reportCoverLogo: {
-          required: true,
-          message: "请上传首页logo",
-          trigger: "blur"
-        },
-        reportWatermarkLogo: {
-          required: true,
-          message: "请上传报告水印",
-          trigger: "blur"
-        } */
       },
       loading: false,
       listItem: [],

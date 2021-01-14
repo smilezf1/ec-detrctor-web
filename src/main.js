@@ -11,7 +11,9 @@ import axios from 'axios'
 import resetMessage from '../src/utils/resetMessage'//设置ElementUi的Message消息提示每次值弹出一次
 import confirm from '../src/utils/confirm';
 import store from '../src/store/getter';
+import permission from '../src/utils/permission';
 Vue.use(ElementUI);
+Vue.use(permission);
 Vue.prototype.$message = resetMessage;
 Vue.prototype.$messageTips = confirm;
 Vue.config.productionTip = false

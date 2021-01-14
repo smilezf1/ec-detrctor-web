@@ -6,10 +6,9 @@ const permission = Vue.directive("permission", {
             el.parentNode.removeChild(el)
         }
         function permissionJudge(value) {
-            let list = store.state.menuBtnList;
+            const list = store.state.menuBtnList;
             for (let item of list) {
-                //key 唯一标识
-                if (item.key == value) {
+                if (item == value) {
                     return true
                 }
             }

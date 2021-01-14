@@ -88,6 +88,9 @@ export default {
       initialGuid: this.guid.getGuid()
     };
   },
+  created() {
+    this.pressEnterToSubForm();
+  },
   methods: {
     ...mapMutations(["changeLogin"]),
     submitForm(formName) {
@@ -109,10 +112,9 @@ export default {
             .login(params)
             .then(res => {
               if (res.code == "00") {
-                const { accessToken, userName, id } = res.data;
-                localStorage.setItem("Authorization", accessToken);
-                localStorage.setItem("userName", userName);
-                localStorage.setItem("id", id);
+                const data = res.data;
+                localStorage.setItem("Authorization", data.accessToken);
+                localStorage.setItem("userInfo", JSON.stringify(data));
                 _this.$message({
                   message: "登录成功",
                   type: "success",
@@ -121,6 +123,7 @@ export default {
                     _this.$router.push("/home/index");
                   }
                 });
+                _this.getMenuBtnList();
               } else if (res.code == "03") {
                 _this.$message.error(res.message);
                 _this.initialGuid = this.guid.getGuid();
@@ -140,16 +143,13 @@ export default {
       this.initialGuid = this.guid.getGuid();
     },
     //得到菜单按钮全部数据
-    getMenuBtnList(treeData) {
-      let menuBtnList = [];
-      for (let item of treeData) {
-        if (item.type == "B") {
-          menuBtnList.push({ name: item.name, id: item.id });
-        } else if (item.children && item.children.length > 0) {
-          this.getMenuBtnList(item.children);
+    getMenuBtnList() {
+      api.systemService.getUserButtonPermissionList().then(res => {
+        if (res.code == "00") {
+          const menuBtnList = res.data;
+          this.$store.commit("updateMenuBtnList", menuBtnList);
         }
-      }
-      return menuBtnList;
+      });
     },
     pressEnterToSubForm() {
       document.onkeydown = e => {
@@ -159,9 +159,6 @@ export default {
         }
       };
     }
-  },
-  created() {
-    this.pressEnterToSubForm();
   }
 };
 </script>

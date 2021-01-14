@@ -1,9 +1,6 @@
-//http://192.168.3.58:9980/ec_detector
-// 58 9980
-// 100 8080
+
 const baseUrl = "http://192.168.3.58:9980/ec_detector",
     websocketUrl = "http://192.168.3.58:9980/ec_detector/websocket";
-import { configure } from 'nprogress';
 import { fetchGet, fetchPost, uploadFile } from './http'
 //登录
 let userService = {
@@ -76,7 +73,7 @@ let detectorAndroidService = {
     },
     //检测具体结果
     detailItemAndroidListById(params) {
-        /* return fetchGet("/detector/android/itemDetail?id=" + id + "&terminalType=" + terminalType + "&isCompliance=" + isCompliance).then(res => res.data) */
+
         return fetchPost("/detector/android/itemDetail", params).then(res => res.data)
     },
     //保存应用并开始检测
@@ -202,6 +199,10 @@ let systemService = {
     //启用
     userManageLaunch(params) {
         return fetchGet("/user/active?id=" + params).then(res => res.data)
+    },
+    //查询用户按钮权限集合
+    getUserButtonPermissionList() {
+        return fetchGet("/user/getUserPermission").then(res => res.data)
     },
     //用户管理结束--
     /* 报告模板设置开始 */

@@ -16,6 +16,21 @@ export default {
       reload: this.reload
     };
   },
+  created() {
+    if (sessionStorage.getItem("menuBtnList")) {
+      this.$store.commit(
+        "updateMenuBtnList",
+        JSON.parse(sessionStorage.getItem("menuBtnList"))
+      );
+    }
+    window.addEventListener("beforeunload", () => {
+      sessionStorage.setItem(
+        "menuBtnList",
+        JSON.stringify(this.$store.state.menuBtnList)
+      );
+    });
+  },
+
   methods: {
     reload() {
       this.isRouterAlive = false;

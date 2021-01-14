@@ -169,12 +169,13 @@
     <div class="iosBody">
       <template>
         <el-table
+          style="width:100%"
           ref="listItem"
           :data="listItem"
           v-loading="loading"
           element-loading-text="加载中"
         >
-          <el-table-column type="index" label="序号" min-width="10%">
+          <el-table-column type="index" label="序号" width="60">
             <template slot-scope="scope">
               <span>{{ (curpage - 1) * limit + scope.$index + 1 }}</span>
             </template>
@@ -183,6 +184,7 @@
             min-width="20%"
             prop="appName"
             label="应用名称"
+            width="180"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -200,7 +202,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            min-width="20%"
+            width="180"
             prop="appFileName"
             label="文件名称"
             :show-overflow-tooltip="true"
@@ -208,7 +210,7 @@
             <template slot-scope="scope">{{ scope.row.appFileName }}</template>
           </el-table-column>
           <el-table-column
-            min-width="15%"
+            width="150"
             prop="appVersion"
             label="版本"
             :show-overflow-tooltip="true"
@@ -224,7 +226,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            min-width="15%"
+            width="120"
             prop="detectionFormwork"
             label="检测策略"
             :show-overflow-tooltip="true"
@@ -233,11 +235,7 @@
               {{ scope.row.detectionFormwork }}
             </template>
           </el-table-column>
-          <el-table-column
-            min-width="12%"
-            prop="detectionNumber"
-            label="检测分数"
-          >
+          <el-table-column width="100" prop="detectionNumber" label="检测分数">
             <template slot-scope="scope">
               <span v-if="scope.row.detectionNumber">{{
                 scope.row.detectionNumber
@@ -248,14 +246,14 @@
           <el-table-column
             prop="detectionTime"
             label="检测时间"
-            min-width="20%"
+            width="180"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">{{
               scope.row.detectionTime
             }}</template>
           </el-table-column>
-          <el-table-column prop="terminalType" label="检测状态" min-width="18%">
+          <el-table-column prop="terminalType" label="检测状态" width="120">
             <template slot-scope="scope">
               <span v-if="scope.row.detectionStatus == 0">
                 <img
@@ -294,10 +292,10 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column prop="userName" label="上传人" min-width="13%">
+          <el-table-column prop="userName" label="上传人" width="100">
             <template slot-scope="scope">{{ scope.row.userName }}</template>
           </el-table-column>
-          <el-table-column label="操作" min-width="50%">
+          <el-table-column label="操作" width="450" fixed="right">
             <template slot-scope="scope">
               <el-button
                 size="small"
@@ -387,6 +385,14 @@
                 type="warning"
                 @click="downloadApk(scope.row.taskId)"
                 >应用</el-button
+              >
+              <el-button
+                type="warning"
+                size="small"
+                :disabled="scope.row.detectionStatus != 2"
+                @click="downloadJson(scope.row.taskId)"
+                v-permission="'ios_json'"
+                >数据包</el-button
               >
               <el-button
                 size="small"
@@ -525,7 +531,7 @@ export default {
     },
     initWebsocket() {
       const _this = this,
-        userId = localStorage.getItem("id"),
+        userId = JSON.parse(localStorage.getItem("userInfo")).id,
         url = api.websocketUrl,
         socket = new SockJsClient(url, null, { timeout: 15000 });
       this.stompClient = Stomp.over(socket);
@@ -706,15 +712,19 @@ export default {
     },
     //下载应用
     downloadApk(id) {
+      this.downloadFile("/detector/android/downloadApk?id=", id);
+    },
+    downloadJson(id) {
+      this.downloadFile("/detector/android/downloadReportJson?taskId=", id);
+    },
+    //下载文件
+    downloadFile(url, params) {
       const Authorization = localStorage.getItem("Authorization"),
         downloadUrl =
-          this.api.baseUrl +
-          "/detector/android/downloadApk?id=" +
-          id +
-          "&Authorization=" +
-          Authorization;
+          this.api.baseUrl + url + params + "&Authorization=" + Authorization;
       window.location.href = downloadUrl;
     },
+
     //得到报告模板
     getReportTemplate() {
       const params = { templateType: 2 };

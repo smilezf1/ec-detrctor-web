@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     userName() {
-      const userName = localStorage.getItem("userName");
+      const userName = JSON.parse(localStorage.getItem("userInfo")).userName;
       return userName ? userName : this.name;
     }
   },
@@ -42,7 +42,10 @@ export default {
           api.userService.logout().then(res => {
             if (res.code == "00") {
               this.$router.push({ path: "/" });
-              this.reload();
+              localStorage.removeItem("Authorization");
+              localStorage.removeItem("userInfo");
+              sessionStorage.removeItem("menuBtnList");
+              /*  this.reload(); */
             }
           });
         });

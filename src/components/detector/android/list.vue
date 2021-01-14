@@ -193,12 +193,13 @@
     <div class="androidBody">
       <template>
         <el-table
+          style="width:100%"
           ref="listItem"
           :data="listItem"
           v-loading="loading"
           element-loading-text="加载中"
         >
-          <el-table-column type="index" label="序号" min-width="10%">
+          <el-table-column type="index" label="序号" width="60">
             <template slot-scope="scope">
               <span>{{ (curpage - 1) * limit + scope.$index + 1 }}</span>
             </template>
@@ -206,7 +207,7 @@
           <el-table-column
             prop="appName"
             label="应用名称"
-            min-width="20%"
+            width="180"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -228,7 +229,7 @@
           <el-table-column
             prop="appFileName"
             label="文件名称"
-            min-width="20%"
+            width="180"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">{{ scope.row.appFileName }}</template>
@@ -236,7 +237,7 @@
           <el-table-column
             prop="appVersion"
             label="版本"
-            min-width="15%"
+            width="150"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope"
@@ -250,7 +251,7 @@
             >
           </el-table-column>
           <el-table-column
-            min-width="15%"
+            width="120"
             prop="detectionFormwork"
             label="检测策略"
             :show-overflow-tooltip="true"
@@ -259,11 +260,7 @@
               scope.row.detectionFormwork
             }}</template>
           </el-table-column>
-          <el-table-column
-            min-width="12%"
-            prop="detectionNumber"
-            label="检测分数"
-          >
+          <el-table-column width="100" prop="detectionNumber" label="检测分数">
             <template slot-scope="scope">
               <span v-if="scope.row.detectionNumber">{{
                 scope.row.detectionNumber
@@ -274,18 +271,14 @@
           <el-table-column
             prop="detectionTime"
             label="检测时间"
-            min-width="20%"
+            width="180"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">{{
               scope.row.detectionTime
             }}</template>
           </el-table-column>
-          <el-table-column
-            prop="detectionStatus"
-            label="检测状态"
-            min-width="18%"
-          >
+          <el-table-column prop="detectionStatus" label="检测状态" width="120">
             <template slot-scope="scope">
               <span v-if="scope.row.detectionStatus == 0">
                 <img
@@ -327,12 +320,17 @@
           <el-table-column
             prop="userName"
             label="上传人"
-            min-width="13%"
+            width="100"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">{{ scope.row.userName }}</template>
           </el-table-column>
-          <el-table-column label="操作" min-width="50%" prop="operate">
+          <el-table-column
+            label="操作"
+            prop="operate"
+            width="450"
+            fixed="right"
+          >
             <template slot-scope="scope">
               <el-button
                 size="small"
@@ -426,6 +424,23 @@
                 type="warning"
                 @click="downloadApk(scope.row.taskId)"
                 >应用</el-button
+              >
+              <el-button
+                type="warning"
+                size="small"
+                :disabled="scope.row.detectionStatus != 2"
+                v-permission="'android_dex'"
+                v-if="getUserId == 1 && scope.row.dexPath"
+                @click="downloadDex(scope.row.taskId)"
+                >Dex</el-button
+              >
+              <el-button
+                type="warning"
+                size="small"
+                v-permission="'android_json'"
+                :disabled="scope.row.detectionStatus != 2"
+                @click="downloadJson(scope.row.taskId)"
+                >数据包</el-button
               >
 
               <el-button
@@ -547,16 +562,10 @@ export default {
     getLoadingNum: function() {
       return (this.loadingNum =
         this.uploadTaskNum - this.uploadTaskFileItem.length);
+    },
+    getUserId() {
+      return JSON.parse(localStorage.userInfo).id;
     }
-    /*  getParameter() {
-      return reportParameter => {
-        if (reportParameter <= 2) {
-          return { isCompliance: reportParameter };
-        } else {
-          return { isCompliance: 2, reportDesignId: reportParameter };
-        }
-      };
-    } */
   },
   created() {
     this.initWebsocket();
@@ -583,7 +592,7 @@ export default {
     },
     initWebsocket() {
       const _this = this,
-        userId = localStorage.getItem("id"),
+        userId = JSON.parse(localStorage.getItem("userInfo")).id,
         url = api.websocketUrl,
         socket = new SockJsClient(url, null, { timeout: 15000 });
       this.stompClient = Stomp.over(socket);
@@ -627,6 +636,7 @@ export default {
             "detectionTime",
             data.data.detectionTime
           );
+          this.$set(this.listItem[index], "dexPath", data.data.dexPath);
         }
       });
     },
@@ -748,13 +758,21 @@ export default {
     },
     //下载应用
     downloadApk(id) {
+      this.downloadFile("/detector/android/downloadApk?id=", id);
+    },
+    //下载Dex
+    downloadDex(id) {
+      this.downloadFile("/detector/android/downloadDexZip?taskId=", id);
+    },
+    //下载json
+    downloadJson(id) {
+      this.downloadFile("/detector/android/downloadReportJson?taskId=", id);
+    },
+    //下载文件
+    downloadFile(url, params) {
       const Authorization = localStorage.getItem("Authorization"),
         downloadUrl =
-          this.api.baseUrl +
-          "/detector/android/downloadApk?id=" +
-          id +
-          "&Authorization=" +
-          Authorization;
+          this.api.baseUrl + url + params + "&Authorization=" + Authorization;
       window.location.href = downloadUrl;
     },
     //下载报告

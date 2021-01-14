@@ -186,18 +186,21 @@
                 :visible.sync="menuDialog"
                 width="20%"
               >
-                <!--  check-strictly -->
                 <el-tree
                   ref="tree"
                   :data="menuTreeData"
                   node-key="id"
                   show-checkbox
-                  :default-checked-keys="setMenuList"
+                  check-strictly
+                  :default-checked-keys="totalMenuList"
                   :props="defaultProps"
                   @check="handleCheck"
                 ></el-tree>
                 <div class="el-dialog-footer" style="text-align:center">
-                  <el-button type="primary" @click="setMenuSave"
+                  <el-button
+                    type="primary"
+                    @click="setMenuSave"
+                    v-if="menuTreeData"
                     >确定</el-button
                   >
                 </div>
@@ -270,7 +273,25 @@ export default {
       setBtnList: [],
       curpage: 1,
       limit: 10,
-      xx: []
+      totalMenuList: [],
+      catalogueMenuList: []
+      /* xx: [
+        "M1",
+        "T7",
+        "T3",
+        "T1",
+        "T2",
+        "T5",
+        "T13",
+        "T14",
+        "T6",
+        "T12",
+        "T10",
+        "T11",
+        "B8",
+        "B3",
+        "B2"
+      ] */
     };
   },
   beforeMount() {
@@ -390,17 +411,51 @@ export default {
     //设置菜单开始
     handleCheck(checkedNodes, treeStatus) {
       this.checkedNodes = treeStatus.checkedNodes;
+      //父子节点严格互不关联时,父节点勾选变化时通知子节点同步变化,实现单项关联
+      let selected = treeStatus.checkedKeys.indexOf(checkedNodes.id);
+      if (selected != -1) {
+        //子节点只要被选中父节点就被选中
+        this.selectedParent(checkedNodes);
+        //统一处理子节点为相同勾选状态
+        this.uniteChildSame(checkedNodes, true);
+      } else {
+        //未选中 处理子节点全部未选中
+        if (checkedNodes.children) {
+          this.uniteChildSame(checkedNodes, false);
+        }
+      }
       this.setMenuList = [];
       this.setBtnList = [];
-      console.log(treeStatus.checkedNodes, "##");
+      this.totalMenuList = [];
+      this.catalogueMenuList = [];
       treeStatus.checkedNodes.forEach(v => {
-        if (v.id.indexOf("T") != -1) {
+        if (v.id.indexOf("M") != -1) {
+          this.totalMenuList.push(v.id);
+        } else if (v.id.indexOf("T") != -1) {
           this.setMenuList.push(v.id);
         } else if (v.id.indexOf("B") != -1) {
           this.setBtnList.push(v.id);
         }
       });
     },
+    //统一处理子节点为相同的勾选状态
+    uniteChildSame(treeList, isSelected) {
+      this.$refs.tree.setChecked(treeList.id, isSelected);
+      if (treeList.children) {
+        for (let i = 0; i < treeList.children.length; i++) {
+          this.uniteChildSame(treeList.children[i], isSelected);
+        }
+      }
+    },
+    //统一处理父节点为选中
+    selectedParent(currentObj) {
+      let currentNode = this.$refs.tree.getNode(currentObj);
+      if (currentNode.parent.key !== undefined) {
+        this.$refs.tree.setChecked(currentNode.parent, true);
+        this.selectedParent(currentNode.parent);
+      }
+    },
+
     //设置菜单
     setting(id) {
       this.menuDialog = true;
@@ -415,7 +470,9 @@ export default {
     setSelectedList(menuTreeData) {
       for (let item of menuTreeData) {
         if (item.checked == true) {
-          if (item.id.indexOf("T") != -1) {
+          if (item.id.indexOf("M") != -1) {
+            this.catalogueMenuList.push(item.id);
+          } else if (item.id.indexOf("T") != -1) {
             this.setMenuList.push(item.id);
           }
           if (item.id.indexOf("B") != -1) {
@@ -428,6 +485,16 @@ export default {
       }
       this.setMenuList = Array.from(new Set(this.setMenuList));
       this.setBtnList = Array.from(new Set(this.setBtnList));
+      /* this.totalMenuList = Array.from(new Set(this.totalMenuList)); */
+      /* console.log(
+        this.setMenuList,
+        this.setBtnList,
+        this.catalogueMenuList,
+        "1111"
+      ); */
+      this.totalMenuList = this.catalogueMenuList
+        .concat(this.setMenuList)
+        .concat(this.setBtnList);
     },
     removeInitial(list) {
       let array = [];
@@ -456,6 +523,7 @@ export default {
           itemList: this.setMenuList,
           roleId: id
         };
+        console.log(params, "params");
         api.systemService.roleManageSettingMenuSave(params).then(res => {
           if (res.code == "00") {
             this.$notify({
