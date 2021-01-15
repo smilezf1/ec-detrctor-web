@@ -44,7 +44,6 @@
           :close-on-press-escape="false"
           size="30%"
           ref="addRoleDrawer"
-          @close="resetForm('addRoleForm')"
         >
           <div class="el-drawer-header">
             <h3>新增角色</h3>
@@ -275,23 +274,6 @@ export default {
       limit: 10,
       totalMenuList: [],
       catalogueMenuList: []
-      /* xx: [
-        "M1",
-        "T7",
-        "T3",
-        "T1",
-        "T2",
-        "T5",
-        "T13",
-        "T14",
-        "T6",
-        "T12",
-        "T10",
-        "T11",
-        "B8",
-        "B3",
-        "B2"
-      ] */
     };
   },
   beforeMount() {
@@ -485,13 +467,6 @@ export default {
       }
       this.setMenuList = Array.from(new Set(this.setMenuList));
       this.setBtnList = Array.from(new Set(this.setBtnList));
-      /* this.totalMenuList = Array.from(new Set(this.totalMenuList)); */
-      /* console.log(
-        this.setMenuList,
-        this.setBtnList,
-        this.catalogueMenuList,
-        "1111"
-      ); */
       this.totalMenuList = this.catalogueMenuList
         .concat(this.setMenuList)
         .concat(this.setBtnList);
@@ -523,7 +498,6 @@ export default {
           itemList: this.setMenuList,
           roleId: id
         };
-        console.log(params, "params");
         api.systemService.roleManageSettingMenuSave(params).then(res => {
           if (res.code == "00") {
             this.$notify({
@@ -533,11 +507,27 @@ export default {
             });
             this.reload();
             this.menuDialog = false;
+            api.systemService.getUserButtonPermissionList().then(res => {
+              if (res.code == "00") {
+                const menuBtnList = res.data;
+                this.$store.commit("updateMenuBtnList", menuBtnList);
+              }
+            });
+            this.getMenuBtnList();
           }
         });
       });
     },
-    resetForm() {},
+    //得到菜单按钮全部数据
+    //得到菜单按钮全部数据
+    getMenuBtnList() {
+      api.systemService.getUserButtonPermissionList().then(res => {
+        if (res.code == "00") {
+          const menuBtnList = res.data;
+          this.$store.commit("updateMenuBtnList", menuBtnList);
+        }
+      });
+    },
     //停用
     blockUp(id) {
       new this.$messageTips(({ alert }) => {

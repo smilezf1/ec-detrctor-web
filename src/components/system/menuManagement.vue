@@ -64,28 +64,13 @@
     </div>
     <div class="menuManagementBody">
       <template>
-        <el-table ref="menusTable" :row-style="showRow" :data="menusItem">
+        <el-table
+          ref="menusTable"
+          :row-style="showRow"
+          :data="menusItem"
+          row-key="id"
+        >
           <el-table-column prop="name" label="资源名称" min-width="30%">
-            <template slot-scope="scope">
-              <span :class="['type' + scope.row.type]">
-                <i
-                  v-if="scope.row.children"
-                  @click="openToggle(scope.row)"
-                  :class="[
-                    scope.row.open
-                      ? 'el-icon-caret-bottom'
-                      : 'el-icon-caret-right'
-                  ]"
-                ></i>
-                <span v-if="scope.row.type === 'M'"
-                  ><i class="el-icon-folder"></i
-                ></span>
-                <span v-if="scope.row.type === 'T'"
-                  ><i class="el-icon-document"></i
-                ></span>
-                {{ scope.row.name }}
-              </span>
-            </template>
           </el-table-column>
           <el-table-column prop="address" label="资源路径" min-width="30%">
             <template slot-scope="scope">
@@ -384,24 +369,6 @@ export default {
         }
       }
       return tree;
-    },
-    //树节点的展开
-    openToggle(item) {
-      Vue.set(item, "open", !item.open);
-      for (let j = 0; j < this.menusItem.length; j++) {
-        if (this.menusItem[j].id !== item.id) {
-          continue;
-        }
-        if (item.open) {
-          let menusItem = this.menusItem;
-          item.children.forEach((child, index) => {
-            menusItem.splice(j + index + 1, 0, child);
-          });
-        } else {
-          this.menusItem.splice(j + 1, item.children.length);
-        }
-        break;
-      }
     },
     addCatalogue() {
       this.addCatalogueDrawer = true;
