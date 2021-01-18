@@ -118,7 +118,9 @@
                 :rules="rules"
                 ref="uploadForm"
                 class="uploadForm"
+                label-width="35%"
               >
+                <!-- label-width="35%" -->
                 <el-collapse
                   v-model="activeNames"
                   class="applicationInfoCollapse"
@@ -144,12 +146,11 @@
                           <span>大小:&nbsp;&nbsp;{{ item.appMbyte }}MB</span>
                         </p>
                       </el-col>
-                      <!-- 检测策略名称 -->
+                    </el-row>
+                    <!-- 检测策略名称 -->
+                    <el-row>
                       <el-col class="detectorStrategyName">
-                        <el-form-item
-                          prop="detectorStrategyId"
-                          label-width="35%"
-                        >
+                        <el-form-item prop="detectorStrategyId">
                           <label slot="label">检测策略:</label>
                           <el-select
                             v-model="uploadForm[index].detectorStrategyId"
@@ -167,7 +168,42 @@
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <!-- 检测 -->
+                    <!-- 应用下载地址 -->
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item>
+                          <label slot="label">应用下载地址:</label>
+                          <el-input
+                            size="small"
+                            v-model="uploadForm[index].appDownloadAddress"
+                          ></el-input
+                        ></el-form-item>
+                      </el-col>
+                    </el-row>
+                    <!-- 开发者名称 -->
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item>
+                          <label slot="label">开发者名称:</label>
+                          <el-input
+                            size="small"
+                            v-model="uploadForm[index].developerName"
+                          ></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <!-- 属地 -->
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item>
+                          <label slot="label">属地:</label>
+                          <el-input
+                            size="small"
+                            v-model="uploadForm[index].possession"
+                          ></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
                   </el-collapse-item>
                 </el-collapse>
               </el-form>
@@ -676,7 +712,12 @@ export default {
           _this.$refs.uploadTask.clearFiles();
         }
         if (res.code == "00") {
-          this.uploadForm.push({ detectorStrategyId: "" });
+          this.uploadForm.push({
+            detectorStrategyId: "",
+            appDownloadAddress: "",
+            developerName: "",
+            possession: ""
+          });
           _this.uploadTaskFileItem.push(res.data);
           _this.uploadShow = false;
           for (let i = 0; i < _this.uploadTaskFileItem.length; i++) {
@@ -716,7 +757,10 @@ export default {
               appVersion: item.appVersion,
               detectionCount: item.detectionCount,
               md5: item.md5,
-              terminalType: item.terminalType
+              terminalType: item.terminalType,
+              appDownAddress: this.uploadForm[index].appDownloadAddress,
+              appDeveloperName: this.uploadForm[index].developerName,
+              appDependency: this.uploadForm[index].possession
             },
             detectionStrategyId: this.uploadForm[index].detectorStrategyId
           };
@@ -879,8 +923,14 @@ export default {
   overflow-y: auto !important;
 }
 .android .uploadForm .el-select {
-  width: 60%;
   position: relative;
+}
+.android .uploadForm .el-select,
+.android .uploadForm .el-input {
+  width: 60%;
+}
+.android .uploadForm .el-select .el-input {
+  width: 100%;
 }
 .android .el-collapse-item__content {
   padding-bottom: 80px;
@@ -943,9 +993,9 @@ export default {
   border-radius: 3px;
   vertical-align: middle;
 }
-.android .el-input {
+/* .android .el-input {
   width: auto;
-}
+} */
 .android .searchForm {
   display: flex;
 }

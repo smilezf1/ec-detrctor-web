@@ -103,6 +103,8 @@
                 :model="uploadForm[index]"
                 :rules="rules"
                 ref="uploadForm"
+                class="uploadForm"
+                label-width="35%"
               >
                 <el-collapse
                   v-model="activeNames"
@@ -126,10 +128,9 @@
                         </p>
                       </el-col>
                     </el-row>
-                    <!-- 检测 -->
                     <!-- 检测策略名称 -->
                     <el-row class="detectorStrategyName">
-                      <el-form-item prop="detectorStrategyId" label-width="35%">
+                      <el-form-item prop="detectorStrategyId">
                         <label slot="label">检测策略:</label>
                         <el-select
                           v-model="uploadForm[index].detectorStrategyId"
@@ -144,6 +145,42 @@
                           ></el-option>
                         </el-select>
                       </el-form-item>
+                    </el-row>
+                    <!-- 应用下载地址 -->
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item>
+                          <label slot="label">应用下载地址:</label>
+                          <el-input
+                            size="small"
+                            v-model="uploadForm[index].appDownloadAddress"
+                          ></el-input
+                        ></el-form-item>
+                      </el-col>
+                    </el-row>
+                    <!-- 开发者名称 -->
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item>
+                          <label slot="label">开发者名称:</label>
+                          <el-input
+                            size="small"
+                            v-model="uploadForm[index].developerName"
+                          ></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <!-- 属地 -->
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item>
+                          <label slot="label">属地:</label>
+                          <el-input
+                            size="small"
+                            v-model="uploadForm[index].possession"
+                          ></el-input>
+                        </el-form-item>
+                      </el-col>
                     </el-row>
                   </el-collapse-item>
                 </el-collapse>
@@ -626,7 +663,12 @@ export default {
           _this.$refs.uploadTask.clearFiles();
         }
         if (res.code == "00") {
-          _this.uploadForm.push({ detectorStrategyId: "" });
+          _this.uploadForm.push({
+            detectorStrategyId: "",
+            appDownloadAddress: "",
+            developerName: "",
+            possession: ""
+          });
           _this.uploadTaskFileItem.push(res.data);
           _this.uploadShow = false;
           api.detrctorTaskService.findStrategyList(2).then(res => {
@@ -656,7 +698,10 @@ export default {
               appVersion: item.appVersion,
               detectionCount: item.detectionCount,
               md5: item.md5,
-              terminalType: item.terminalType
+              terminalType: item.terminalType,
+              appDownAddress: this.uploadForm[index].appDownloadAddress,
+              appDeveloperName: this.uploadForm[index].developerName,
+              appDependency: this.uploadForm[index].possession
             },
             detectionStrategyId: this.uploadForm[index].detectorStrategyId
           };
@@ -813,12 +858,12 @@ export default {
   border-radius: 3px;
   vertical-align: middle;
 }
-.iosBody .version {
-  /* display: flex;
-  align-items: center; */
+.ios .uploadForm .el-select,
+.ios .uploadForm .el-input {
+  width: 60%;
 }
-.ios .el-input {
-  width: auto;
+.ios .uploadForm .el-select .el-input {
+  width: 100%;
 }
 .ios .searchForm {
   display: flex;

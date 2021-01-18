@@ -102,50 +102,69 @@
             <!-- 基本信息 -->
             <el-tab-pane label="基本信息" class="appInfo">
               <el-row type="flex">
-                <el-col :span="1"><span>应用名称</span></el-col>
-                <el-col :span="21"
+                <el-col :span="2"><span>应用名称</span></el-col>
+                <el-col :span="22"
                   ><span>{{ listItem.appInfo.appName }}</span></el-col
                 >
               </el-row>
               <el-row type="flex">
-                <el-col :span="1"><span>文件名称</span></el-col>
-                <el-col :span="21"
+                <el-col :span="2"><span>文件名称</span></el-col>
+                <el-col :span="22"
                   ><span>{{ listItem.appInfo.appFileName }}</span></el-col
                 >
               </el-row>
               <el-row type="flex">
-                <el-col :span="1"><span>包名</span></el-col>
-                <el-col :span="21"
+                <el-col :span="2"><span>应用包名</span></el-col>
+                <el-col :span="22"
                   ><span>{{ listItem.appInfo.appPackage }}</span></el-col
                 ></el-row
               >
               <el-row type="flex">
-                <el-col :span="1"><span>版本信息</span></el-col>
-                <el-col :span="21"
+                <el-col :span="2"><span>下载地址</span></el-col>
+                <el-col :span="22"
+                  ><span>{{ listItem.appInfo.appDownAddress }}</span></el-col
+                >
+              </el-row>
+              <el-row type="flex">
+                <el-col :span="2"><span>开发者名称</span></el-col>
+                <el-col :span="22"
+                  ><span>{{ listItem.appInfo.appDownAddress }}</span></el-col
+                >
+              </el-row>
+              <el-row type="flex">
+                <el-col :span="2"><span>属地</span></el-col>
+                <el-col :span="22"
+                  ><span>{{ listItem.appInfo.appDependency }}</span></el-col
+                >
+              </el-row>
+
+              <el-row type="flex">
+                <el-col :span="2"><span>版本信息</span></el-col>
+                <el-col :span="22"
                   ><span>{{ listItem.appInfo.appVersion }}</span></el-col
                 >
               </el-row>
               <el-row type="flex">
-                <el-col :span="1"><span>文件大小</span></el-col>
-                <el-col :span="21"
+                <el-col :span="2"><span>文件大小</span></el-col>
+                <el-col :span="22"
                   ><span>{{ listItem.appInfo.appMbyte }}</span></el-col
                 >
               </el-row>
               <el-row type="flex">
-                <el-col :span="1"><span>文件MD5</span></el-col>
-                <el-col :span="21"
+                <el-col :span="2"><span>文件MD5</span></el-col>
+                <el-col :span="22"
                   ><span>{{ listItem.appInfo.md5 }}</span></el-col
                 >
               </el-row>
               <el-row type="flex">
-                <el-col :span="1"><span>加固厂商</span></el-col>
-                <el-col :span="21"
+                <el-col :span="2"><span>加固厂商</span></el-col>
+                <el-col :span="22"
                   ><span>{{ listItem.appInfo.dealer }}</span></el-col
                 >
               </el-row>
               <el-row type="flex">
-                <el-col :span="1"><span>签名信息</span></el-col>
-                <el-col :span="21"
+                <el-col :span="2"><span>签名信息</span></el-col>
+                <el-col :span="22"
                   ><pre>{{ listItem.appInfo.signature }}</pre></el-col
                 >
               </el-row>
@@ -1135,6 +1154,7 @@ pre {
 .applicationMessage {
   border: 1px solid #e3e5e5;
   background: #f9fafa;
+  padding: 20px 0px 20px 20px;
 }
 .applicationMessageHeader:after {
   content: "";
@@ -1225,11 +1245,11 @@ pre {
 .detectorMessage .el-tabs__content .el-row .el-col:first-of-type {
   display: flex;
   align-items: center;
+  justify-content: center;
   font-weight: bolder;
   color: rgb(0, 0, 0);
   font-size: 12px;
   border-right: 1px solid rgb(230, 230, 230);
-  margin-left: 20px;
 }
 .detectorMessage .el-tabs__content .el-row .el-col:last-of-type {
   margin-left: 15px;

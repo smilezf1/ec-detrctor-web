@@ -235,6 +235,7 @@
               >
               <!-- 新增按钮Drawer开始 -->
               <el-drawer
+                title="新增按钮"
                 :visible.sync="addButtonDrawer"
                 :with-header="false"
                 :wrapperClosable="false"

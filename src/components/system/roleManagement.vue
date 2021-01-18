@@ -394,7 +394,7 @@ export default {
     handleCheck(checkedNodes, treeStatus) {
       this.checkedNodes = treeStatus.checkedNodes;
       //父子节点严格互不关联时,父节点勾选变化时通知子节点同步变化,实现单项关联
-      let selected = treeStatus.checkedKeys.indexOf(checkedNodes.id);
+      const selected = treeStatus.checkedKeys.indexOf(checkedNodes.id);
       if (selected != -1) {
         //子节点只要被选中父节点就被选中
         this.selectedParent(checkedNodes);
@@ -431,7 +431,8 @@ export default {
     },
     //统一处理父节点为选中
     selectedParent(currentObj) {
-      let currentNode = this.$refs.tree.getNode(currentObj);
+      const currentNode = this.$refs.tree.getNode(currentObj);
+      console.log(currentNode, "currentNode");
       if (currentNode.parent.key !== undefined) {
         this.$refs.tree.setChecked(currentNode.parent, true);
         this.selectedParent(currentNode.parent);
