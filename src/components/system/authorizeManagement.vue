@@ -81,15 +81,19 @@ export default {
       uploadAuthorizeFileDrawer: false
     };
   },
-  beforeMount() {
-    api.authorizeService.authorizeManageList().then(res => {
-      if (res.code == "00") {
-        this.listItem = res.data;
-        this.userCode = res.data.userCode;
-      }
-    });
+  created() {
+    this.getAuthorizeManageList();
   },
   methods: {
+    //获取授权信息
+    getAuthorizeManageList() {
+      api.authorizeService.authorizeManageList().then(res => {
+        if (res.code == "00") {
+          this.listItem = res.data;
+          this.userCode = res.data.userCode;
+        }
+      });
+    },
     //获取userCode
     getUserCode() {
       api.authorizeService.getUserCode().then(res => {
@@ -176,10 +180,5 @@ export default {
 }
 .authorizeBody .el-drawer-footer {
   width: 35%;
-}
-.authorizeBody .el-upload-dragger {
-  width: 100%;
-  height: 230px;
-  margin-top: 20px;
 }
 </style>

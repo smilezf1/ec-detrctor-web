@@ -39,9 +39,7 @@
                 <img src="../../assets/code.png" class="icon" />
                 <img
                   :src="
-                    this.api.baseUrl +
-                      '/captcha/getCaptchaCode?guid=' +
-                      initialGuid
+                    getBaseUrl + '/captcha/getCaptchaCode?guid=' + initialGuid
                   "
                   @click="getVerifyCode()"
                   class="verifyCode"
@@ -91,6 +89,11 @@ export default {
   created() {
     this.pressEnterToSubForm();
   },
+  computed: {
+    getBaseUrl() {
+      return config.baseUrl;
+    }
+  },
   methods: {
     ...mapMutations(["changeLogin"]),
     submitForm(formName) {
@@ -115,7 +118,7 @@ export default {
                 const data = res.data;
                 localStorage.setItem("Authorization", data.accessToken);
                 localStorage.setItem("userInfo", JSON.stringify(data));
-                _this.$message({
+                this.$message({
                   message: "登录成功",
                   type: "success",
                   duration: 1000,
@@ -123,23 +126,23 @@ export default {
                     _this.$router.push("/home/index");
                   }
                 });
-                _this.getMenuBtnList();
+                this.getMenuBtnList();
               } else if (res.code == "03") {
-                _this.$message.error(res.message);
-                _this.initialGuid = this.guid.getGuid();
+                this.$message.error(res.message);
+                this.initialGuid = this.guid.getGuid();
               } else {
-                _this.initialGuid = this.guid.getGuid();
+                this.initialGuid = this.guid.getGuid();
               }
             })
             .catch(() => {});
         } else {
-          _this.$message.error("必填项不能为空");
-          _this.initialGuid = this.guid.getGuid();
+          this.$message.error("必填项不能为空");
+          this.initialGuid = this.guid.getGuid();
           return false;
         }
       });
     },
-    getVerifyCode(event) {
+    getVerifyCode() {
       this.initialGuid = this.guid.getGuid();
     },
     //得到菜单按钮全部数据

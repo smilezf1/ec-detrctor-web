@@ -125,19 +125,19 @@
                 ></el-row
               >
 
-              <el-row type="flex">
+              <el-row type="flex" v-if="listItem.appInfo.appDownAddress">
                 <el-col :span="2"><span>下载地址</span></el-col>
                 <el-col :span="22"
                   ><span>{{ listItem.appInfo.appDownAddress }}</span></el-col
                 >
               </el-row>
-              <el-row type="flex">
+              <el-row type="flex" v-if="listItem.appInfo.appDeveloperName">
                 <el-col :span="2"><span>开发者名称</span></el-col>
                 <el-col :span="22"
-                  ><span>{{ listItem.appInfo.appDownAddress }}</span></el-col
+                  ><span>{{ listItem.appInfo.appDeveloperName }}</span></el-col
                 >
               </el-row>
-              <el-row type="flex">
+              <el-row type="flex" v-if="listItem.appInfo.appDependency">
                 <el-col :span="2"><span>属地</span></el-col>
                 <el-col :span="22"
                   ><span>{{ listItem.appInfo.appDependency }}</span></el-col
@@ -1275,7 +1275,7 @@ export default {
     },
     //得到检测项的所有数据
     getDetectorList(terminalType) {
-      const detectorItemList = api.detectorStrategyService
+      api.detectorStrategyService
         .getDetectionItemList(terminalType)
         .then(res => {
           if (res.code == "00") {
@@ -1368,40 +1368,15 @@ export default {
 };
 </script>
 <style>
-pre {
-  display: inline-block;
-  font-family: sans-serif;
-  margin-right: 10px;
-}
-.el-button--primary:hover,
-.el-button--primary {
-  background: #517fc3;
-  border-color: #517fc3;
-}
 .androidDetailHeader {
   line-height: 50px;
   line-height: 50px;
   font-size: 14px;
 }
 .androidDetail .androidBody {
-  margin-top: 15px;
   width: 90%;
 }
-.androidBody .el-icon-arrow-left,
-.androidBody .el-icon-arrow-right {
-  color: #517fc3;
-  font-weight: 700;
-  font-size: 18px;
-}
-.androidBody .el-tabs__nav-wrap.is-scrollable {
-  padding: 0 40px;
-}
-.androidBody .el-tabs__nav-prev {
-  left: 10px;
-}
-.androidBody .el-tabs__nav-next {
-  right: 10px;
-}
+
 .androidBody .searchForm {
   display: flex;
 }
@@ -1497,51 +1472,6 @@ pre {
 }
 .detectorMessage {
   margin-top: 15px;
-}
-.detectorMessage .el-col {
-  padding: 10px 0;
-  color: #606266;
-  font-size: 14px;
-  line-height: 20px;
-}
-.detectorMessage .el-collapse-item__content,
-.detectorMessage .detectorMessage .el-tabs__content {
-  font-family: 微软雅黑;
-  padding-bottom: 0px;
-}
-.detectorMessage .el-collapse-item__content .el-row .el-col:first-of-type {
-  display: flex;
-  align-items: center;
-  font-weight: bolder;
-  color: rgb(0, 0, 0);
-  font-size: 12px;
-  border-right: 1px solid rgb(220, 222, 226);
-}
-.detectorMessage .el-collapse-item__content .el-row .el-col:last-of-type {
-  margin-left: 15px;
-  font-size: 12px;
-  color: #525252;
-}
-.detectorMessage .el-tabs__content .el-row .el-col:first-of-type {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bolder;
-  color: rgb(0, 0, 0);
-  font-size: 12px;
-  border-right: 1px solid rgb(220, 222, 226);
-}
-.detectorMessage .el-tabs__content .el-row .el-col:last-of-type {
-  margin-left: 15px;
-  font-size: 12px;
-  color: #525252;
-}
-.detectorMessage .el-tabs--border-card > .el-tabs__content .appInfo {
-  border: 1px solid rgb(220, 222, 226);
-}
-
-.detectorMessage .el-row:not(:last-child) {
-  border-bottom: 1px solid rgb(230, 230, 230);
 }
 
 .androidBody .el-collapse-item__header {

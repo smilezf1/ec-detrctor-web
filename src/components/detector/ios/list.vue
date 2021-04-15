@@ -341,75 +341,7 @@
                 @click="downloadReport(scope.row.taskId)"
                 >报告</el-button
               >
-              <!-- 下载报告 -->
-              <el-drawer
-                title="下载报告"
-                :visible.sync="downloadReportDrawer"
-                :with-header="false"
-                :wrapperClosable="false"
-                :close-on-press-escape="false"
-                :destroy-on-close="true"
-                ref="downloadReportDrawer"
-                size="35%"
-                class="downloadReportDrawer"
-              >
-                <div class="el-drawer-header">
-                  <h3>下载报告</h3>
-                </div>
-                <div class="el-drawer-content">
-                  <el-form
-                    :model="addDownloadReportForm"
-                    ref="addDownloadReportForm"
-                    :rules="addDownloadReportFormRules"
-                  >
-                    <el-form-item
-                      prop="templateType"
-                      v-if="reportTemplateList.length > 0"
-                    >
-                      <label slot="label">报告模板:</label>
-                      <el-radio-group
-                        v-model="addDownloadReportForm.templateType"
-                      >
-                        <el-radio
-                          v-for="item in reportTemplateList"
-                          :key="item.id"
-                          :label="item.id"
-                          >{{ item.reportName }}</el-radio
-                        >
-                      </el-radio-group>
-                    </el-form-item>
-                    <el-form-item prop="isCompliance">
-                      <label slot="label">数据类型:</label>
-                      <el-radio-group
-                        v-model="addDownloadReportForm.isCompliance"
-                      >
-                        <el-radio :label="0">全量报告</el-radio>
-                        <el-radio :label="2">整改报告</el-radio>
-                      </el-radio-group>
-                    </el-form-item>
-                    <el-form-item prop="reportType">
-                      <label slot="label">报告类型:</label>
-                      <el-radio-group
-                        v-model="addDownloadReportForm.reportType"
-                      >
-                        <el-radio :label="2">PDF</el-radio>
-                        <el-radio :label="1">WORD</el-radio>
-                      </el-radio-group>
-                    </el-form-item>
-                  </el-form>
-                </div>
-                <div class="el-drawer-footer">
-                  <div class="buttonBox" style="display:inline-block">
-                    <el-button
-                      type="primary"
-                      @click="saveDownloadReport()"
-                      :disabled="reportTemplateList.length == 0"
-                      >保存</el-button
-                    >
-                    <el-button @click="cancelDownloadReport()">取消</el-button>
-                  </div>
-                </div>
-              </el-drawer>
+
               <el-button
                 size="small"
                 type="primary"
@@ -440,6 +372,70 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 下载报告开始drawer -->
+        <el-drawer
+          title="下载报告"
+          :visible.sync="downloadReportDrawer"
+          :with-header="false"
+          :wrapperClosable="false"
+          :close-on-press-escape="false"
+          :destroy-on-close="true"
+          ref="downloadReportDrawer"
+          size="35%"
+          class="downloadReportDrawer"
+        >
+          <div class="el-drawer-header">
+            <h3>下载报告</h3>
+          </div>
+          <div class="el-drawer-content">
+            <el-form
+              :model="addDownloadReportForm"
+              ref="addDownloadReportForm"
+              :rules="addDownloadReportFormRules"
+            >
+              <el-form-item
+                prop="templateType"
+                v-if="reportTemplateList.length > 0"
+              >
+                <label slot="label">报告模板:</label>
+                <el-radio-group v-model="addDownloadReportForm.templateType">
+                  <el-radio
+                    v-for="item in reportTemplateList"
+                    :key="item.id"
+                    :label="item.id"
+                    >{{ item.reportName }}</el-radio
+                  >
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item prop="isCompliance">
+                <label slot="label">数据类型:</label>
+                <el-radio-group v-model="addDownloadReportForm.isCompliance">
+                  <el-radio :label="0">全量报告</el-radio>
+                  <el-radio :label="2">整改报告</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item prop="reportType">
+                <label slot="label">报告类型:</label>
+                <el-radio-group v-model="addDownloadReportForm.reportType">
+                  <el-radio :label="2">PDF</el-radio>
+                  <el-radio :label="1">WORD</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="el-drawer-footer">
+            <div class="buttonBox" style="display:inline-block">
+              <el-button
+                type="primary"
+                @click="saveDownloadReport()"
+                :disabled="reportTemplateList.length == 0"
+                >保存</el-button
+              >
+              <el-button @click="cancelDownloadReport()">取消</el-button>
+            </div>
+          </div>
+        </el-drawer>
+        <!-- 下载报告drawer结束 -->
       </template>
     </div>
     <div class="iosBase">
@@ -569,7 +565,7 @@ export default {
     initWebsocket() {
       const _this = this,
         userId = JSON.parse(localStorage.getItem("userInfo")).id,
-        url = api.websocketUrl,
+        url = config.websocketUrl,
         socket = new SockJsClient(url, null, { timeout: 15000 });
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(
@@ -601,17 +597,11 @@ export default {
       const data = JSON.parse(message.body);
       this.listItem.map((item, index) => {
         if (item.taskId == data.data.id && data.title == "检测") {
-          this.$set(
-            this.listItem[index],
-            "detectionStatus",
-            data.data.detectionStatus
-          );
-          this.$set(this.listItem[index], "detectionNumber", data.content);
-          this.$set(
-            this.listItem[index],
-            "detectionTime",
-            data.data.detectionTime
-          );
+          this.listItem[index] = Object.assign({}, this.listItem[index], {
+            detectionStatus: data.data.detectionStatus,
+            detectionNumber: data.content,
+            detectionTime: data.data.detectionTime
+          });
         }
       });
     },
@@ -766,7 +756,11 @@ export default {
     downloadFile(url, params) {
       const Authorization = localStorage.getItem("Authorization"),
         downloadUrl =
-          this.api.baseUrl + url + params + "&Authorization=" + Authorization;
+          this.config.baseUrl +
+          url +
+          params +
+          "&Authorization=" +
+          Authorization;
       window.location.href = downloadUrl;
     },
 
@@ -802,7 +796,7 @@ export default {
         reportStrategyId = this.addDownloadReportForm.templateType,
         reportType = this.addDownloadReportForm.reportType,
         downloadUrl =
-          this.api.baseUrl +
+          this.config.baseUrl +
           "/detector/android/downloadReport?taskId=" +
           id +
           "&isCompliance=" +
@@ -894,29 +888,9 @@ export default {
 .ios .el-radio-group .el-radio {
   width: 40%;
 }
-.disabledIcon {
-  font-size: 22px;
-  margin-right: 10px;
-  cursor: not-allowed;
-  background: #517fc3;
-  color: #517fc394;
-}
-.dowmloadApplicationIcon,
-.detailIcon,
-.downloadReportIcon,
-.deleteIcon {
-  font-size: 22px;
-  color: #517fc3;
-  margin-right: 10px;
-  cursor: pointer;
-}
+
 .ios .el-drawer-footer {
   width: 35%;
-}
-.ios .el-upload-dragger {
-  width: 100%;
-  height: 230px;
-  margin-top: 20px;
 }
 .applicationInfoCollapse img {
   width: 55%;
@@ -936,15 +910,6 @@ export default {
 .applicationInfoCollapse .appName {
   font-size: 16px;
   font-weight: 700;
-}
-.el-upload {
-  width: 100%;
-}
-.el-upload_tip {
-  text-align: center;
-  font-size: 14px;
-  margin-top: 5px;
-  color: #a3a9b1;
 }
 .iosBase {
   margin-top: 15px;

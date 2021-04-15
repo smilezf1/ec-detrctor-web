@@ -225,137 +225,14 @@
               <el-button size="small" type="primary" @click="edit(scope.row.id)"
                 >编辑</el-button
               >
-              <el-drawer
-                title="编辑"
-                :visible.sync="editDrawer"
-                :with-header="false"
-                :wrapperClosable="false"
-                :close-on-press-escape="false"
-                ref="editDrawer"
-                size="30%"
-              >
-                <div class="el-drawer-header">
-                  <h3>编辑</h3>
-                </div>
-                <div class="el-drawer-content">
-                  <el-form
-                    :model="editForm"
-                    ref="editForm"
-                    :rules="editRules"
-                    :label-position="labelPosition"
-                  >
-                    <el-form-item prop="trueName" label="用户名">
-                      <el-input
-                        v-model="editForm.trueName"
-                        autocomplete="off"
-                        size="small"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item prop="userName" label="登录名">
-                      <el-input
-                        v-model="editForm.userName"
-                        :disabled="editForm.userName == getLocalStorageUserName"
-                        size="small"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item prop="sex" label="性别">
-                      <el-select v-model="editForm.sex" size="small">
-                        <el-option label="男" value="1"></el-option>
-                        <el-option label="女" value="0"></el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item prop="mobile" label="手机号">
-                      <el-input
-                        size="small"
-                        v-model="editForm.mobile"
-                        autocomplete="off"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item prop="email" label="电子邮箱">
-                      <el-input
-                        v-model="editForm.email"
-                        autocomplete="off"
-                        size="small"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item prop="status" label="是否有效">
-                      <el-select
-                        v-model="editForm.status"
-                        :disabled="editForm.userName == getLocalStorageUserName"
-                        size="small"
-                      >
-                        <el-option label="是" value="1"></el-option>
-                        <el-option label="否" value="0"></el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-form>
-                </div>
-                <div class="el-drawer-footer">
-                  <el-button
-                    type="primary"
-                    @click="editFormSave('editForm', editForm)"
-                  >
-                    保存</el-button
-                  >
-                  <el-button plain @click="editFormCancel">取消</el-button>
-                </div>
-              </el-drawer>
+
               <el-button
                 size="small"
                 type="warning"
                 @click="resetPassword(scope.row.id)"
                 >重置密码</el-button
               >
-              <el-drawer
-                title="重置密码"
-                :visible.sync="resetPasswordDrawer"
-                :with-header="false"
-                :wrapperClosable="false"
-                :close-on-press-escape="false"
-                ref="resetPasswordDrawer"
-                size="30%"
-              >
-                <div class="el-drawer-header">
-                  <h3>重置密码</h3>
-                </div>
-                <div class="el-drawer-content">
-                  <el-form
-                    :model="resetPasswordForm"
-                    ref="resetPasswordForm"
-                    :rules="resetPasswordRules"
-                    :label-position="labelPosition"
-                  >
-                    <el-form-item label="用户密码" prop="pass">
-                      <el-input
-                        size="small"
-                        show-password
-                        v-model="resetPasswordForm.pass"
-                        auto-complete="off"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="确认密码" prop="checkPass">
-                      <el-input
-                        size="small"
-                        show-password
-                        v-model="resetPasswordForm.checkPass"
-                        auto-complete="off"
-                      ></el-input>
-                    </el-form-item>
-                  </el-form>
-                </div>
-                <div class="el-drawer-footer">
-                  <el-button
-                    type="primary"
-                    @click="
-                      saveresetPassword('resetPasswordForm', resetPasswordForm)
-                    "
-                    >保存</el-button
-                  >
-                  <el-button @click="cancelresetPassword()" plain
-                    >取消</el-button
-                  >
-                </div>
-              </el-drawer>
+
               <el-button
                 size="small"
                 type="success"
@@ -401,6 +278,131 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 编辑用户开始drawer -->
+        <el-drawer
+          title="编辑"
+          :visible.sync="editDrawer"
+          :with-header="false"
+          :wrapperClosable="false"
+          :close-on-press-escape="false"
+          ref="editDrawer"
+          size="30%"
+        >
+          <div class="el-drawer-header">
+            <h3>编辑</h3>
+          </div>
+          <div class="el-drawer-content">
+            <el-form
+              :model="editForm"
+              ref="editForm"
+              :rules="editRules"
+              :label-position="labelPosition"
+            >
+              <el-form-item prop="trueName" label="用户名">
+                <el-input
+                  v-model="editForm.trueName"
+                  autocomplete="off"
+                  size="small"
+                ></el-input>
+              </el-form-item>
+              <el-form-item prop="userName" label="登录名">
+                <el-input
+                  v-model="editForm.userName"
+                  :disabled="editForm.userName == getLocalStorageUserName"
+                  size="small"
+                ></el-input>
+              </el-form-item>
+              <el-form-item prop="sex" label="性别">
+                <el-select v-model="editForm.sex" size="small">
+                  <el-option label="男" value="1"></el-option>
+                  <el-option label="女" value="0"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="mobile" label="手机号">
+                <el-input
+                  size="small"
+                  v-model="editForm.mobile"
+                  autocomplete="off"
+                ></el-input>
+              </el-form-item>
+              <el-form-item prop="email" label="电子邮箱">
+                <el-input
+                  v-model="editForm.email"
+                  autocomplete="off"
+                  size="small"
+                ></el-input>
+              </el-form-item>
+              <el-form-item prop="status" label="是否有效">
+                <el-select
+                  v-model="editForm.status"
+                  :disabled="editForm.userName == getLocalStorageUserName"
+                  size="small"
+                >
+                  <el-option label="是" value="1"></el-option>
+                  <el-option label="否" value="0"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="el-drawer-footer">
+            <el-button
+              type="primary"
+              @click="editFormSave('editForm', editForm)"
+            >
+              保存</el-button
+            >
+            <el-button plain @click="editFormCancel">取消</el-button>
+          </div>
+        </el-drawer>
+        <!-- 编辑用户drawer结束 -->
+        <!-- 重置密码drawer开始 -->
+        <el-drawer
+          title="重置密码"
+          :visible.sync="resetPasswordDrawer"
+          :with-header="false"
+          :wrapperClosable="false"
+          :close-on-press-escape="false"
+          ref="resetPasswordDrawer"
+          size="30%"
+        >
+          <div class="el-drawer-header">
+            <h3>重置密码</h3>
+          </div>
+          <div class="el-drawer-content">
+            <el-form
+              :model="resetPasswordForm"
+              ref="resetPasswordForm"
+              :rules="resetPasswordRules"
+              :label-position="labelPosition"
+            >
+              <el-form-item label="用户密码" prop="pass">
+                <el-input
+                  size="small"
+                  show-password
+                  v-model="resetPasswordForm.pass"
+                  auto-complete="off"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="确认密码" prop="checkPass">
+                <el-input
+                  size="small"
+                  show-password
+                  v-model="resetPasswordForm.checkPass"
+                  auto-complete="off"
+                ></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="el-drawer-footer">
+            <el-button
+              type="primary"
+              @click="saveresetPassword('resetPasswordForm', resetPasswordForm)"
+              >保存</el-button
+            >
+            <el-button @click="cancelresetPassword()" plain>取消</el-button>
+          </div>
+        </el-drawer>
+        <!-- 重置密码drawer结束 -->
       </template>
     </div>
     <div class="userManageBase">
@@ -553,7 +555,7 @@ export default {
       return JSON.parse(localStorage.getItem("userInfo")).userName;
     }
   },
-  beforeMount() {
+  created() {
     this.getData();
   },
   methods: {
@@ -827,16 +829,6 @@ export default {
 }
 .userManagement .el-drawer-footer {
   width: 30%;
-}
-
-.editIcon,
-.resetIcon,
-.settingIcon,
-.closeIcon {
-  font-size: 22px;
-  color: #517fc3;
-  margin-right: 10px;
-  cursor: pointer;
 }
 .userManagementBase {
   margin-top: 20px;

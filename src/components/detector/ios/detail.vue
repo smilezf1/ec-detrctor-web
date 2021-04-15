@@ -31,16 +31,20 @@
               <el-col :span="8">
                 <div class="app-box">
                   <div class="appInfoText">
-                    <p style="margin-top:-5px">
-                      应用:{{ listItem.appInfo.appName }}
-                    </p>
+                    <p>应用:{{ listItem.appInfo.appName }}</p>
                     <p>大小:{{ listItem.appInfo.appMbyte }}MB</p>
                     <p>版本:{{ listItem.appInfo.appVersion }}</p>
+                    <img
+                      class="appInfoImg"
+                      v-if="listItem.appInfo.appIcon"
+                      :src="'data:image/jpg;base64,' + listItem.appInfo.appIcon"
+                    />
+                    <img
+                      class="appInfoImg"
+                      v-else
+                      src="../../../assets/android.png"
+                    />
                   </div>
-                  <img
-                    class="appInfoImg"
-                    :src="'data:image/jpg;base64,' + listItem.appInfo.appIcon"
-                  />
                 </div>
               </el-col>
               <el-col :span="8">
@@ -119,19 +123,19 @@
                   ><span>{{ listItem.appInfo.appPackage }}</span></el-col
                 ></el-row
               >
-              <el-row type="flex">
+              <el-row type="flex" v-if="listItem.appInfo.appDownAddress">
                 <el-col :span="2"><span>下载地址</span></el-col>
                 <el-col :span="22"
                   ><span>{{ listItem.appInfo.appDownAddress }}</span></el-col
                 >
               </el-row>
-              <el-row type="flex">
+              <el-row type="flex" v-if="listItem.appInfo.appDeveloperName">
                 <el-col :span="2"><span>开发者名称</span></el-col>
                 <el-col :span="22"
-                  ><span>{{ listItem.appInfo.appDownAddress }}</span></el-col
+                  ><span>{{ listItem.appInfo.appDeveloperName }}</span></el-col
                 >
               </el-row>
-              <el-row type="flex">
+              <el-row type="flex" v-if="listItem.appInfo.appDependency">
                 <el-col :span="2"><span>属地</span></el-col>
                 <el-col :span="22"
                   ><span>{{ listItem.appInfo.appDependency }}</span></el-col
@@ -1098,14 +1102,6 @@ export default {
 };
 </script>
 <style>
-pre {
-  font-family: sans-serif;
-}
-.el-button--primary:hover,
-.el-button--primary {
-  background: #517fc3;
-  border-color: #517fc3;
-}
 .iOSDetailHeader {
   line-height: 50px;
   line-height: 50px;
@@ -1114,21 +1110,7 @@ pre {
 .iOSBody {
   width: 90%;
 }
-.iOSBody .el-icon-arrow-left,
-.iOSBody .el-icon-arrow-right {
-  color: #517fc3;
-  font-weight: 700;
-  font-size: 18px;
-}
-.iOSBody .el-tabs__nav-wrap.is-scrollable {
-  padding: 0 40px;
-}
-.iOSBody .el-tabs__nav-prev {
-  left: 10px;
-}
-.iOSBody .el-tabs__nav-next {
-  right: 10px;
-}
+
 .iOSBody .searchForm {
   display: flex;
 }
@@ -1184,6 +1166,9 @@ pre {
   display: inline-block;
   position: relative;
 }
+.applicationMessageBody .appInfoText img {
+  margin-top: 20px;
+}
 .applicationMessageBody .imgBox cite {
   position: absolute;
   top: 50%;
@@ -1203,8 +1188,15 @@ pre {
 .applicationMessageBody .appBox {
   display: inline-block;
 }
+.detectorMessage {
+  margin-top: 15px;
+}
 .applicationMessage .el-col {
   text-align: center;
+  padding: 20px 0;
+  color: #606266;
+  font-size: 14px;
+  line-height: 20px;
 }
 .applicationMessageBody .el-col p:first-of-type {
   margin-top: 15px;
@@ -1212,55 +1204,6 @@ pre {
 .applicationMessageBody p {
   font-size: 13px;
   margin-bottom: 10px;
-}
-.detectorMessage {
-  margin-top: 15px;
-}
-.detectorMessage .el-col {
-  padding: 20px 0;
-  color: #606266;
-  font-size: 14px;
-  line-height: 20px;
-}
-.detectorMessage .el-collapse-item__content,
-.detectorMessage .detectorMessage .el-tabs__content {
-  font-family: 微软雅黑;
-  padding-bottom: 0px;
-  border-left: 1px solid rgb(230, 230, 230);
-  border-right: 1px solid rgb(230, 230, 230);
-}
-.detectorMessage .el-collapse-item__content .el-row .el-col:first-of-type {
-  display: flex;
-  align-items: center;
-  font-weight: bolder;
-  color: rgb(0, 0, 0);
-  font-size: 12px;
-  border-right: 1px solid rgb(230, 230, 230);
-}
-.detectorMessage .el-collapse-item__content .el-row .el-col:last-of-type {
-  margin-left: 15px;
-  font-size: 12px;
-  color: #525252;
-}
-.detectorMessage .el-tabs__content .el-row .el-col:first-of-type {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bolder;
-  color: rgb(0, 0, 0);
-  font-size: 12px;
-  border-right: 1px solid rgb(230, 230, 230);
-}
-.detectorMessage .el-tabs__content .el-row .el-col:last-of-type {
-  margin-left: 15px;
-  font-size: 12px;
-  color: #525252;
-}
-.detectorMessage .el-tabs--border-card > .el-tabs__content .appInfo {
-  border: 1px solid rgb(220, 222, 226);
-}
-.detectorMessage .el-row:not(:last-child) {
-  border-bottom: 1px solid rgb(230, 230, 230);
 }
 .iOSBody .el-collapse-item__header {
   font-size: 17px;

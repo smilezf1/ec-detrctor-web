@@ -120,60 +120,6 @@
               <el-button size="small" type="primary" @click="edit(scope.row.id)"
                 >编辑</el-button
               >
-              <el-drawer
-                title="编辑"
-                :visible.sync="editDrawer"
-                :with-header="false"
-                :wrapperClosable="false"
-                :close-on-press-escape="false"
-                size="30%"
-                ref="editDrawer"
-              >
-                <div class="el-drawer-header">
-                  <h3>编辑</h3>
-                </div>
-                <div class="el-drawer-content">
-                  <el-form
-                    :model="editForm"
-                    ref="editForm"
-                    :rules="editFormRules"
-                  >
-                    <el-form-item label="角色名称" prop="name">
-                      <el-input
-                        v-model="editForm.name"
-                        auto-complete="off"
-                        size="small"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="是否有效">
-                      <el-select
-                        v-model="editForm.status"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          label="是"
-                          value="1"
-                          :value-key="1"
-                        ></el-option>
-                        <el-option
-                          label="否"
-                          value="0"
-                          :value-key="0"
-                        ></el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-form>
-                </div>
-                <div class="el-drawer-footer">
-                  <el-button
-                    type="primary"
-                    @click="saveEditForm('editForm', editForm)"
-                    >保存</el-button
-                  >
-                  <el-button @click="cancelForm" plain>取消</el-button>
-                </div>
-              </el-drawer>
               <el-button
                 size="small"
                 type="success"
@@ -221,6 +167,46 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 编辑角色drawer开始 -->
+        <el-drawer
+          title="编辑"
+          :visible.sync="editDrawer"
+          :with-header="false"
+          :wrapperClosable="false"
+          :close-on-press-escape="false"
+          size="30%"
+          ref="editDrawer"
+        >
+          <div class="el-drawer-header">
+            <h3>编辑</h3>
+          </div>
+          <div class="el-drawer-content">
+            <el-form :model="editForm" ref="editForm" :rules="editFormRules">
+              <el-form-item label="角色名称" prop="name">
+                <el-input
+                  v-model="editForm.name"
+                  auto-complete="off"
+                  size="small"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="是否有效">
+                <el-select v-model="editForm.status" size="small" disabled>
+                  <el-option label="是" value="1" :value-key="1"></el-option>
+                  <el-option label="否" value="0" :value-key="0"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="el-drawer-footer">
+            <el-button
+              type="primary"
+              @click="saveEditForm('editForm', editForm)"
+              >保存</el-button
+            >
+            <el-button @click="cancelForm" plain>取消</el-button>
+          </div>
+        </el-drawer>
+        <!-- 编辑角色drawer结束 -->
       </template>
     </div>
     <div class="roleManagementBase">
@@ -276,7 +262,7 @@ export default {
       catalogueMenuList: []
     };
   },
-  beforeMount() {
+  created() {
     this.getData();
   },
   methods: {
@@ -432,7 +418,6 @@ export default {
     //统一处理父节点为选中
     selectedParent(currentObj) {
       const currentNode = this.$refs.tree.getNode(currentObj);
-      console.log(currentNode, "currentNode");
       if (currentNode.parent.key !== undefined) {
         this.$refs.tree.setChecked(currentNode.parent, true);
         this.selectedParent(currentNode.parent);
@@ -597,15 +582,6 @@ export default {
 .roleManagementBody .el-select,
 .roleManagementBody .el-input {
   width: 100%;
-}
-.editIcon,
-.settingIcon,
-.closeIcon,
-.checkIcon {
-  font-size: 22px;
-  color: #517fc3;
-  margin-right: 10px;
-  cursor: pointer;
 }
 .roleManagementBase {
   margin-top: 10px;

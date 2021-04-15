@@ -19,7 +19,7 @@
             <el-button
               type="primary"
               size="small"
-              @click="search(ruleForm)"
+              @click="search()"
               class="searchButton"
               >查询</el-button
             >
@@ -80,67 +80,63 @@
                     "
                     >详情</el-button
                   >
-
-                  <el-drawer
-                    title="检测项详情"
-                    :visible.sync="detailDetectorAndroidItemDrawer"
-                    :with-header="false"
-                    :wrapperClosable="false"
-                    :close-on-press-esape="false"
-                    :destroy-on-close="true"
-                    size="30%"
-                  >
-                    <div class="el-drawer-header">
-                      <h3>检测项详情</h3>
-                    </div>
-                    <div class="el-drawer-content">
-                      <template v-if="detailItem">
-                        <el-form>
-                          <el-form-item>
-                            <label slot="label"
-                              >检测项名称:&nbsp;&nbsp;{{
-                                detailItem.name
-                              }}</label
-                            >
-                          </el-form-item>
-                          <el-form-item>
-                            <label slot="label"
-                              >风险等级:&nbsp;&nbsp;{{
-                                detailItem.riskGroup
-                              }}</label
-                            >
-                          </el-form-item>
-                          <el-form-item>
-                            <label slot="label"
-                              >适用系统:&nbsp;&nbsp;{{ detailItem.type }}</label
-                            >
-                          </el-form-item>
-                          <el-form-item
-                            ><label slot="label"
-                              >检测项分类:&nbsp;&nbsp;{{
-                                detailItem.itemTypeName
-                              }}</label
-                            ></el-form-item
-                          >
-                          <el-form-item>
-                            <label slot="label"
-                              >检测项描述:&nbsp;&nbsp;{{
-                                detailItem.riskDesc
-                              }}</label
-                            >
-                          </el-form-item>
-                        </el-form>
-                      </template>
-                    </div>
-                    <div class="el-drawer-footer">
-                      <div class="buttonBox" style="display:inline-block">
-                        <el-button @click="cancel()" plain>取消</el-button>
-                      </div>
-                    </div>
-                  </el-drawer>
                 </template>
               </el-table-column>
             </el-table>
+            <!-- 检测项详情drawer开始 android-->
+            <el-drawer
+              title="检测项详情"
+              :visible.sync="detailDetectorAndroidItemDrawer"
+              :with-header="false"
+              :wrapperClosable="false"
+              :close-on-press-esape="false"
+              :destroy-on-close="true"
+              size="30%"
+            >
+              <div class="el-drawer-header">
+                <h3>检测项详情</h3>
+              </div>
+              <div class="el-drawer-content">
+                <template v-if="detailItem">
+                  <el-form>
+                    <el-form-item>
+                      <label slot="label"
+                        >检测项名称:&nbsp;&nbsp;{{ detailItem.name }}</label
+                      >
+                    </el-form-item>
+                    <el-form-item>
+                      <label slot="label"
+                        >风险等级:&nbsp;&nbsp;{{ detailItem.riskGroup }}</label
+                      >
+                    </el-form-item>
+                    <el-form-item>
+                      <label slot="label"
+                        >适用系统:&nbsp;&nbsp;{{ detailItem.type }}</label
+                      >
+                    </el-form-item>
+                    <el-form-item
+                      ><label slot="label"
+                        >检测项分类:&nbsp;&nbsp;{{
+                          detailItem.itemTypeName
+                        }}</label
+                      ></el-form-item
+                    >
+                    <el-form-item>
+                      <label slot="label"
+                        >检测项描述:&nbsp;&nbsp;{{ detailItem.riskDesc }}</label
+                      >
+                    </el-form-item>
+                  </el-form>
+                </template>
+              </div>
+              <div class="el-drawer-footer">
+                <div class="buttonBox" style="display:inline-block">
+                  <el-button @click="cancel()" plain>取消</el-button>
+                </div>
+              </div>
+            </el-drawer>
+            <!-- 检测项详情drawrandroid结束 -->
+
             <div class="detectorItemBase">
               <pagination @pageChanged="onPageChanged"></pagination>
             </div>
@@ -174,7 +170,7 @@
                 label="检测项描述"
                 :show-overflow-tooltip="true"
               ></el-table-column>
-              <el-table-column label="操作"  min-width="20%">
+              <el-table-column label="操作" min-width="20%">
                 <template slot-scope="scope">
                   <el-button
                     type="primary"
@@ -191,62 +187,6 @@
                     "
                     >详情</el-button
                   >
-                  <el-drawer
-                    title="检测项详情"
-                    :visible.sync="detailDetectorIosItemDrawer"
-                    :with-header="false"
-                    size="30%"
-                    :direction="direction"
-                    :show-close="false"
-                  >
-                    <div class="el-drawer-header">
-                      <h3>检测项详情</h3>
-                    </div>
-                    <div class="el-drawer-content">
-                      <template v-if="detailItem">
-                        <el-form>
-                          <el-form-item>
-                            <label slot="label"
-                              >检测项名称:&nbsp;&nbsp;{{
-                                detailItem.name
-                              }}</label
-                            >
-                          </el-form-item>
-                          <el-form-item>
-                            <label slot="label"
-                              >风险等级:&nbsp;&nbsp;{{
-                                detailItem.riskGroup
-                              }}</label
-                            >
-                          </el-form-item>
-                          <el-form-item>
-                            <label slot="label"
-                              >适用系统:&nbsp;&nbsp;{{ detailItem.type }}</label
-                            >
-                          </el-form-item>
-                          <el-form-item
-                            ><label slot="label"
-                              >检测项分类:&nbsp;&nbsp;{{
-                                detailItem.itemTypeName
-                              }}</label
-                            ></el-form-item
-                          >
-                          <el-form-item>
-                            <label slot="label"
-                              >检测项描述:&nbsp;&nbsp;{{
-                                detailItem.riskDesc
-                              }}</label
-                            >
-                          </el-form-item>
-                        </el-form>
-                      </template>
-                    </div>
-                    <div class="el-drawer-footer">
-                      <div class="buttonBox" style="display:inline-block">
-                        <el-button @click="cancel()" plain>取消</el-button>
-                      </div>
-                    </div>
-                  </el-drawer>
                 </template>
               </el-table-column>
             </el-table>
@@ -255,6 +195,56 @@
             </div>
           </el-tab-pane>
         </el-tabs>
+        <!-- 检测项详情drawer ios -->
+        <el-drawer
+          title="检测项详情"
+          :visible.sync="detailDetectorIosItemDrawer"
+          :with-header="false"
+          size="30%"
+          :direction="direction"
+          :show-close="false"
+        >
+          <div class="el-drawer-header">
+            <h3>检测项详情</h3>
+          </div>
+          <div class="el-drawer-content">
+            <template v-if="detailItem">
+              <el-form>
+                <el-form-item>
+                  <label slot="label"
+                    >检测项名称:&nbsp;&nbsp;{{ detailItem.name }}</label
+                  >
+                </el-form-item>
+                <el-form-item>
+                  <label slot="label"
+                    >风险等级:&nbsp;&nbsp;{{ detailItem.riskGroup }}</label
+                  >
+                </el-form-item>
+                <el-form-item>
+                  <label slot="label"
+                    >适用系统:&nbsp;&nbsp;{{ detailItem.type }}</label
+                  >
+                </el-form-item>
+                <el-form-item
+                  ><label slot="label"
+                    >检测项分类:&nbsp;&nbsp;{{ detailItem.itemTypeName }}</label
+                  ></el-form-item
+                >
+                <el-form-item>
+                  <label slot="label"
+                    >检测项描述:&nbsp;&nbsp;{{ detailItem.riskDesc }}</label
+                  >
+                </el-form-item>
+              </el-form>
+            </template>
+          </div>
+          <div class="el-drawer-footer">
+            <div class="buttonBox" style="display:inline-block">
+              <el-button @click="cancel()" plain>取消</el-button>
+            </div>
+          </div>
+        </el-drawer>
+        <!-- 检测项详情drawer结束ios -->
       </template>
     </div>
   </div>
@@ -286,7 +276,7 @@ export default {
       }
     };
   },
-  beforeMount() {
+  created() {
     this.getData();
   },
   methods: {
@@ -324,7 +314,7 @@ export default {
       this.getData(tab.label);
     },
     //查询
-    search(ruleForm) {
+    search() {
       this.getData();
     },
     //刷新
@@ -348,21 +338,10 @@ export default {
         this.detailDetectorIosItemDrawer = false;
       }
     }
-  },
-  mounted() {
-    api.detectorItemService.findDetectionItemList;
   }
 };
 </script>
 <style>
-:focus {
-  outline: 0;
-}
-.el-tooltip__popper {
-  max-width: 400px;
-  text-align: justify;
-  line-height: 20px;
-}
 .detectorItemHeader {
   height: 50px;
   line-height: 50px;
@@ -380,17 +359,6 @@ export default {
 .detectorItem .el-drawer-footer {
   width: 30%;
 }
-.refreshButton,
-.searchButton {
-  background: #517fc3;
-  border-color: #517fc3;
-}
-.detailIcon {
-  font-size: 22px;
-  color: #517fc3;
-  margin-right: 10px;
-  cursor: pointer;
-}
 .searchBox .el-input {
   width: auto;
 }
@@ -401,8 +369,5 @@ export default {
   background: red;
   font-size: 12px;
   max-width: 400px;
-}
-.el-pager li.active {
-  color: #517fc3;
 }
 </style>

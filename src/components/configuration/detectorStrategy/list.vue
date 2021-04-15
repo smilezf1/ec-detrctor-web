@@ -268,74 +268,74 @@
                 @click="detail(scope.row.strategy_id, scope.row.strategy_type)"
                 >详情</el-button
               >
-              <!-- 检测策略详情 -->
-              <el-drawer
-                title="检测策略详情"
-                :visible.sync="detectorStrategyDetailDrawer"
-                :with-header="false"
-                :wrapperClosable="false"
-                :close-on-press-esape="false"
-                :destroy-on-close="true"
-                size="40%"
-              >
-                <div class="el-drawer-header">
-                  <h3>检测策略详情</h3>
-                </div>
-                <div class="el-drawer-content">
-                  <template v-if="detectorStrategyDetailItem">
-                    <el-form :model="detectorStrategyDetailItem">
-                      <el-form-item
-                        >检测策略名称:&nbsp;&nbsp;{{
-                          detectorStrategyDetailItem.strategyName
-                        }}</el-form-item
-                      >
-                      <el-form-item
-                        >适用系统:&nbsp;&nbsp;
-                        <el-radio-group
-                          v-model="detectorStrategyDetailItem.strategyType"
-                        >
-                          <el-radio :label="1" disabled>Android</el-radio>
-                          <el-radio :label="2" disabled>iOS</el-radio>
-                        </el-radio-group>
-                      </el-form-item>
-                      <el-form-item
-                        >检测项目{{
-                          detectorStrategyDetailItem.detectionItemList.length
-                        }}项</el-form-item
-                      >
-                      <el-collapse v-model="activeNames">
-                        <el-collapse-item
-                          v-for="(item,
-                          index) in detectorStrategyDetailItem.children"
-                          :name="index"
-                          :key="item.id"
-                          v-show="item.children.length"
-                        >
-                          <label slot="title">{{ item.name }}</label>
-                          <el-checkbox
-                            v-for="subItem in item.children"
-                            :key="subItem.id"
-                            style="width:45%;margin-bottom:15px"
-                            :disabled="true"
-                            :checked="true"
-                            >{{ subItem.name }}</el-checkbox
-                          >
-                        </el-collapse-item>
-                      </el-collapse>
-                    </el-form>
-                  </template>
-                </div>
-                <div class="el-drawer-footer">
-                  <div class="buttonBox" style="display:inline-block">
-                    <el-button @click="cancelDetectorStrategyDetail()" plain
-                      >取消</el-button
-                    >
-                  </div>
-                </div>
-              </el-drawer>
             </template>
           </el-table-column>
         </el-table>
+        <!-- 检测策略详情drawer开始 -->
+        <el-drawer
+          title="检测策略详情"
+          :visible.sync="detectorStrategyDetailDrawer"
+          :with-header="false"
+          :wrapperClosable="false"
+          :close-on-press-esape="false"
+          :destroy-on-close="true"
+          size="40%"
+        >
+          <div class="el-drawer-header">
+            <h3>检测策略详情</h3>
+          </div>
+          <div class="el-drawer-content">
+            <template v-if="detectorStrategyDetailItem">
+              <el-form :model="detectorStrategyDetailItem">
+                <el-form-item
+                  >检测策略名称:&nbsp;&nbsp;{{
+                    detectorStrategyDetailItem.strategyName
+                  }}</el-form-item
+                >
+                <el-form-item
+                  >适用系统:&nbsp;&nbsp;
+                  <el-radio-group
+                    v-model="detectorStrategyDetailItem.strategyType"
+                  >
+                    <el-radio :label="1" disabled>Android</el-radio>
+                    <el-radio :label="2" disabled>iOS</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item
+                  >检测项目{{
+                    detectorStrategyDetailItem.detectionItemList.length
+                  }}项</el-form-item
+                >
+                <el-collapse v-model="activeNames">
+                  <el-collapse-item
+                    v-for="(item, index) in detectorStrategyDetailItem.children"
+                    :name="index"
+                    :key="item.id"
+                    v-show="item.children.length"
+                  >
+                    <label slot="title">{{ item.name }}</label>
+                    <el-checkbox
+                      v-for="subItem in item.children"
+                      :key="subItem.id"
+                      style="width:45%;margin-bottom:15px"
+                      :disabled="true"
+                      :checked="true"
+                      >{{ subItem.name }}</el-checkbox
+                    >
+                  </el-collapse-item>
+                </el-collapse>
+              </el-form>
+            </template>
+          </div>
+          <div class="el-drawer-footer">
+            <div class="buttonBox" style="display:inline-block">
+              <el-button @click="cancelDetectorStrategyDetail()" plain
+                >取消</el-button
+              >
+            </div>
+          </div>
+        </el-drawer>
+        <!-- 检测策略详情drawer结束 -->
       </template>
     </div>
     <div class="detectorStrategyBase">
@@ -405,7 +405,7 @@ export default {
       selectedOptions: []
     };
   },
-  beforeMount() {
+  created() {
     this.getData();
   },
   methods: {
@@ -753,8 +753,7 @@ export default {
     cancelDetectorStrategyDetail() {
       this.detectorStrategyDetailDrawer = false;
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 <style>
@@ -762,35 +761,6 @@ export default {
   height: 50px;
   line-height: 50px;
   font-size: 14px;
-}
-.detailIcon {
-  font-size: 22px;
-  color: #517fc3;
-  margin-right: 10px;
-  cursor: pointer;
-}
-.detectorStrategy .el-checkbox__input.is-checked .el-checkbox__inner,
-.detectorStrategy
-  .el-checkbox__input.is-disabled.is-checked
-  .el-checkbox__inner,
-.detectorStrategy
-  .el-checkbox__input.is-disabled.is-indeterminate
-  .el-checkbox__inner,
-.detectorStrategy .el-radio__input.is-checked .el-radio__inner,
-.detectorStrategy .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-  background: #517fc3;
-  border-color: #517fc3;
-}
-.el-checkbox__input.is-checked + .el-checkbox__label,
-.el-radio__input.is-checked + .el-radio__label,
-.el-pager li.active {
-  color: #517fc3;
-}
-.el-radio__input.is-disabled.is-checked .el-radio__inner {
-  background-color: #5aa4f0 !important;
-}
-.el-checkbox__input.is-disabled + span.el-checkbox__label {
-  color: #606266;
 }
 .detectorStrategy .el-collapse-item__header {
   padding-left: 0px;
@@ -812,12 +782,5 @@ export default {
 }
 .detectorStrategy .el-form-item__label {
   text-align: left;
-}
-.detectorStrategy .el-select-dropdown {
-  position: absolute !important;
-  top: 35px !important;
-  left: 0 !important;
-  height: 205% !important;
-  overflow-y: auto !important;
 }
 </style>

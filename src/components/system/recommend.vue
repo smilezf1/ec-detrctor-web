@@ -51,12 +51,17 @@ export default {
       listItem: null
     };
   },
-  beforeMount() {
-    api.systemService.systemAbout().then(res => {
-      if (res.code == "00") {
-        this.listItem = res.data;
-      }
-    });
+  created() {
+    this.getAboutSystemMessage();
+  },
+  methods: {
+    getAboutSystemMessage() {
+      api.systemService.systemAbout().then(res => {
+        if (res.code == "00") {
+          this.listItem = res.data;
+        }
+      });
+    }
   }
 };
 </script>

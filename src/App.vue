@@ -17,17 +17,19 @@ export default {
     };
   },
   created() {
-    if (sessionStorage.getItem("menuBtnList")) {
-      this.$store.commit(
-        "updateMenuBtnList",
-        JSON.parse(sessionStorage.getItem("menuBtnList"))
+    //页面加载时读取sessionStorage里的状态信息
+    if (sessionStorage.getItem("store")) {
+      this.$store.replaceState(
+        Object.assign(
+          {},
+          this.$store.state,
+          JSON.parse(sessionStorage.getItem("store"))
+        )
       );
     }
+    //页面刷新时将vuex里的信息保存到sessionStorage里
     window.addEventListener("beforeunload", () => {
-      sessionStorage.setItem(
-        "menuBtnList",
-        JSON.stringify(this.$store.state.menuBtnList)
-      );
+      sessionStorage.setItem("store", JSON.stringify(this.$store.state));
     });
   },
 
@@ -41,13 +43,3 @@ export default {
   }
 };
 </script>
-<style>
-.icon,
-.iconfont {
-  font-family: "iconfont" !important;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-stroke-width: 0.2px;
-  -moz-osx-font-smoothing: grayscale;
-}
-</style>

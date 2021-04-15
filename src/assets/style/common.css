@@ -1,0 +1,270 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow: overlay;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+a {
+  list-style: none;
+  color: #333 !important;
+}
+:focus {
+  outline: 0;
+}
+.el-tooltip__popper {
+  max-width: 400px;
+  text-align: justify;
+  line-height: 20px;
+}
+.icon,
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+.typeM {
+  margin-left: 5px;
+}
+
+.typeT {
+  margin-left: 20px;
+}
+.typeB {
+  margin-left: 35px;
+}
+
+.disabledIcon {
+  font-size: 22px;
+  margin-right: 10px;
+  cursor: not-allowed;
+  background: #517fc3;
+  color: #517fc394;
+}
+.el-input__inner,
+.el-upload-dragger,
+.el-input__inner,
+.el-upload-dragger {
+  border-radius: 0px;
+}
+.el-button + .el-button {
+  margin-right: 10px;
+}
+
+.resetIcon,
+.settingIcon,
+.editIcon,
+.addCatalogueIcon,
+.addMenuIcon,
+.closeIcon,
+.checkIcon,
+.dowmloadApplicationIcon,
+.detailIcon,
+.downloadReportIcon,
+.deleteIcon {
+  font-size: 22px;
+  color: #517fc3;
+  margin-right: 10px;
+  cursor: pointer;
+}
+pre {
+  display: inline-block;
+  font-family: sans-serif;
+  margin-right: 10px;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-disabled.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-disabled.is-indeterminate .el-checkbox__inner,
+.el-radio__input.is-checked .el-radio__inner,
+y .el-checkbox__input.is-indeterminate .el-checkbox__inner,
+.refreshButton,
+.searchButton {
+  background: #517fc3;
+  border-color: #517fc3;
+}
+.el-checkbox__input.is-checked + .el-checkbox__label,
+.el-radio__input.is-checked + .el-radio__label,
+.el-pager li.active {
+  color: #517fc3;
+}
+.el-radio__input.is-disabled.is-checked .el-radio__inner {
+  background-color: #5aa4f0 !important;
+}
+.el-checkbox__input.is-disabled + span.el-checkbox__label {
+  color: #606266;
+}
+
+.el-button--primary:hover,
+.el-button--primary {
+  background: #517fc3;
+  border-color: #517fc3;
+}
+.el-icon-arrow-left,
+.iOSBody .el-icon-arrow-right {
+  color: #517fc3;
+  font-weight: 700;
+  font-size: 18px;
+}
+.el-tabs__nav-wrap.is-scrollable {
+  padding: 0 40px;
+}
+.el-tabs__nav-prev {
+  left: 10px;
+}
+.el-tabs__nav-next {
+  right: 10px;
+}
+.detectorStrategy .el-select-dropdown,
+.android .el-select-dropdown {
+  position: absolute !important;
+  top: 35px !important;
+  left: 0 !important;
+  height: 205% !important;
+  overflow-y: auto !important;
+}
+.detectorMessage .el-collapse-item__content,
+.detectorMessage .detectorMessage .el-tabs__content {
+  font-family: 微软雅黑;
+  padding-bottom: 0px;
+  border-left: 1px solid rgb(230, 230, 230);
+  border-right: 1px solid rgb(230, 230, 230);
+}
+.detectorMessage .el-collapse-item__content .el-row .el-col:first-of-type {
+  display: flex;
+  align-items: center;
+  font-weight: bolder;
+  color: rgb(0, 0, 0);
+  font-size: 12px;
+  border-right: 1px solid rgb(230, 230, 230);
+}
+.detectorMessage .el-collapse-item__content .el-row .el-col:last-of-type {
+  margin-left: 15px;
+  font-size: 12px;
+  color: #525252;
+}
+.detectorMessage .el-col {
+  padding: 10px 0;
+  color: #606266;
+  font-size: 14px;
+  line-height: 20px;
+}
+.detectorMessage .el-tabs__content .el-row .el-col:first-of-type {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bolder;
+  color: rgb(0, 0, 0);
+  font-size: 12px;
+  border-right: 1px solid rgb(230, 230, 230);
+}
+.detectorMessage .el-tabs__content .el-row .el-col:last-of-type {
+  margin-left: 15px;
+  font-size: 12px;
+  color: #525252;
+}
+.detectorMessage .el-tabs--border-card > .el-tabs__content .appInfo {
+  border: 1px solid rgb(220, 222, 226);
+}
+
+.detectorMessage .el-row:not(:last-child) {
+  border-bottom: 1px solid rgb(230, 230, 230);
+}
+
+.el-table {
+  font-size: 12px;
+  border: 1px solid #dcdee2;
+  border-bottom: 1px solid transparent;
+}
+
+.el-table thead {
+  color: #515a6e !important;
+  font-weight: 700;
+}
+
+.el-table__header-wrapper {
+  background: #f8f8f9;
+}
+
+.el-table__header-wrapper th {
+  background: #f2f5f7;
+}
+
+.el-table__fixed-header-wrapper th {
+  background: #f2f5f7;
+}
+
+.el-table ::before {
+  background: white;
+}
+
+.el-dialog {
+  box-shadow: none;
+}
+
+.el-button {
+  margin-right: 10px;
+}
+
+.el-drawer {
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+}
+
+.el-drawer-header {
+  width: 100%;
+  position: fixed;
+  background: white;
+  z-index: 99;
+  height: 50px;
+  padding: 17px 20px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.el-drawer-header h3 {
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.el-drawer-content {
+  margin: 40px 0 60px 0;
+  position: relative;
+  overflow: auto;
+  padding: 20px;
+}
+
+.el-drawer-footer {
+  width: 40%;
+  position: fixed;
+  bottom: 0px;
+  background: white;
+  z-index: 9;
+  padding: 10px 20px;
+  border-top: 1px solid #ebebeb;
+  right: 0;
+  text-align: right;
+}
+
+.el-upload {
+  width: 100%;
+}
+.el-upload_tip {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 5px;
+  color: #a3a9b1;
+}
+.el-upload-dragger {
+  width: 100%;
+  height: 230px;
+  margin-top: 20px;
+}

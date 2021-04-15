@@ -104,71 +104,7 @@
               <el-button size="small" type="primary" @click="edit(scope.row.id)"
                 >编辑</el-button
               >
-              <el-drawer
-                title="编辑"
-                :visible.sync="editDrawer"
-                :with-header="false"
-                :wrapperClosable="false"
-                :close-on-press-escape="false"
-                ref="editDrawer"
-                size="30%"
-              >
-                <div class="el-drawer-header">
-                  <h3>编辑目录</h3>
-                </div>
-                <div class="el-drawer-content">
-                  <el-form :model="form" :rules="rules" ref="form">
-                    <el-form-item label="资源名称" prop="name">
-                      <el-input
-                        v-model="form.name"
-                        auto-complete="off"
-                        size="small"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="资源类型" prop="type">
-                      <el-select
-                        v-model="form.type"
-                        size="small"
-                        :disabled="true"
-                      >
-                        <el-option label="目录" value="M"></el-option>
-                        <el-option label="菜单" value="T"></el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item
-                      label="资源路径"
-                      prop="address"
-                      v-if="form.type == 'T'"
-                    >
-                      <el-input
-                        v-model="form.address"
-                        auto-complete="off"
-                        size="small"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item
-                      label="资源图标"
-                      prop="icon"
-                      v-if="form.type == 'M'"
-                    >
-                      <el-input
-                        v-model="form.icon"
-                        auto-complete="off"
-                        size="small"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="权限标识"></el-form-item>
-                  </el-form>
-                </div>
-                <div class="el-drawer-footer">
-                  <el-button
-                    type="primary"
-                    @click="saveAmendCatalogue('form', form, scope.row.id)"
-                    >保存</el-button
-                  >
-                  <el-button @click="cancelForm" plain>取消</el-button>
-                </div>
-              </el-drawer>
+
               <!-- 只有在资源类型为目录时才能显示新增菜单 -->
               <el-button
                 size="small"
@@ -177,54 +113,7 @@
                 v-if="scope.row.type === 'M'"
                 >新增菜单</el-button
               >
-              <el-drawer
-                title="新增菜单"
-                :visible.sync="addMenuDrawer"
-                :with-header="false"
-                :wrapperClosable="false"
-                :close-on-press-escape="false"
-                ref="addMenuDrawer"
-                size="30%"
-              >
-                <div class="el-drawer-header">
-                  <h3>新增菜单</h3>
-                </div>
-                <div class="el-drawer-content">
-                  <el-form
-                    :model="addMenuForm"
-                    :rules="rules"
-                    ref="addMenuForm"
-                  >
-                    <el-form-item label="资源名称" prop="name">
-                      <el-input
-                        v-model="addMenuForm.name"
-                        auto-complete="off"
-                        size="small"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="资源类型" prop="type">
-                      <el-select v-model="addMenuForm.type" size="small">
-                        <el-option label="菜单" value="T"></el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item label="资源路径" prop="address">
-                      <el-input
-                        v-model="addMenuForm.address"
-                        auto-complete="off"
-                        size="small"
-                      ></el-input>
-                    </el-form-item>
-                  </el-form>
-                </div>
-                <div class="el-drawer-footer">
-                  <el-button
-                    type="primary"
-                    @click="saveAddMenu('addMenuForm', addMenuForm)"
-                    >保存</el-button
-                  >
-                  <el-button @click="cancelAddMenu" plain>取消</el-button>
-                </div>
-              </el-drawer>
+
               <!-- 新增按钮 -->
               <el-button
                 size="small"
@@ -296,6 +185,115 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 编辑目录drawer开始 -->
+        <el-drawer
+          title="编辑"
+          :visible.sync="editDrawer"
+          :with-header="false"
+          :wrapperClosable="false"
+          :close-on-press-escape="false"
+          ref="editDrawer"
+          size="30%"
+        >
+          <div class="el-drawer-header">
+            <h3>编辑目录</h3>
+          </div>
+          <div class="el-drawer-content">
+            <el-form :model="form" :rules="rules" ref="form">
+              <el-form-item label="资源名称" prop="name">
+                <el-input
+                  v-model="form.name"
+                  auto-complete="off"
+                  size="small"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="资源类型" prop="type">
+                <el-select v-model="form.type" size="small" :disabled="true">
+                  <el-option label="目录" value="M"></el-option>
+                  <el-option label="菜单" value="T"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                label="资源路径"
+                prop="address"
+                v-if="form.type == 'T'"
+              >
+                <el-input
+                  v-model="form.address"
+                  auto-complete="off"
+                  size="small"
+                ></el-input>
+              </el-form-item>
+              <el-form-item
+                label="资源图标"
+                prop="icon"
+                v-if="form.type == 'M'"
+              >
+                <el-input
+                  v-model="form.icon"
+                  auto-complete="off"
+                  size="small"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="权限标识"></el-form-item>
+            </el-form>
+          </div>
+          <div class="el-drawer-footer">
+            <el-button
+              type="primary"
+              @click="saveAmendCatalogue('form', form, scope.row.id)"
+              >保存</el-button
+            >
+            <el-button @click="cancelForm" plain>取消</el-button>
+          </div>
+        </el-drawer>
+        <!-- 编辑目录drawer结束 -->
+        <!-- 新增菜单drawer开始 -->
+        <el-drawer
+          title="新增菜单"
+          :visible.sync="addMenuDrawer"
+          :with-header="false"
+          :wrapperClosable="false"
+          :close-on-press-escape="false"
+          ref="addMenuDrawer"
+          size="30%"
+        >
+          <div class="el-drawer-header">
+            <h3>新增菜单</h3>
+          </div>
+          <div class="el-drawer-content">
+            <el-form :model="addMenuForm" :rules="rules" ref="addMenuForm">
+              <el-form-item label="资源名称" prop="name">
+                <el-input
+                  v-model="addMenuForm.name"
+                  auto-complete="off"
+                  size="small"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="资源类型" prop="type">
+                <el-select v-model="addMenuForm.type" size="small">
+                  <el-option label="菜单" value="T"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="资源路径" prop="address">
+                <el-input
+                  v-model="addMenuForm.address"
+                  auto-complete="off"
+                  size="small"
+                ></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="el-drawer-footer">
+            <el-button
+              type="primary"
+              @click="saveAddMenu('addMenuForm', addMenuForm)"
+              >保存</el-button
+            >
+            <el-button @click="cancelAddMenu" plain>取消</el-button>
+          </div>
+        </el-drawer>
+        <!-- 新增菜单drawer结束 -->
       </template>
     </div>
   </div>
@@ -340,7 +338,7 @@ export default {
       buttonID: null
     };
   },
-  beforeMount() {
+  created() {
     this.getMenuList();
   },
   methods: {
@@ -523,26 +521,6 @@ export default {
   line-height: 50px;
   line-height: 50px;
   font-size: 14px;
-}
-.typeM {
-  margin-left: 5px;
-}
-
-.typeT {
-  margin-left: 20px;
-}
-.typeB {
-  margin-left: 35px;
-}
-.editIcon,
-.addCatalogueIcon,
-.addMenuIcon,
-.closeIcon,
-.checkIcon {
-  font-size: 22px;
-  color: #517fc3;
-  margin-right: 10px;
-  cursor: pointer;
 }
 .menuManagement .el-drawer-footer {
   width: 30%;

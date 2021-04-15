@@ -109,7 +109,7 @@
                 <template v-else>
                   <img
                     :src="
-                      this.api.baseUrl +
+                      getBaseUrl +
                         `/api/common/viewFile/${reportStrategyForm.reportHeaderLogo}?Authorization=${getAuthorization}`
                     "
                     style="width:70%"
@@ -156,7 +156,7 @@
                 <template v-else>
                   <img
                     :src="
-                      this.api.baseUrl +
+                      getBaseUrl +
                         `/api/common/viewFile/${reportStrategyForm.reportFooterLogo}?Authorization=${getAuthorization}`
                     "
                     style="width:70%"
@@ -202,7 +202,7 @@
                 <template v-else>
                   <img
                     :src="
-                      this.api.baseUrl +
+                      getBaseUrl +
                         `/api/common/viewFile/${reportStrategyForm.reportCoverLogo}?Authorization=${getAuthorization}`
                     "
                     style="width:70%"
@@ -248,7 +248,7 @@
                 <template v-else>
                   <img
                     :src="
-                      this.api.baseUrl +
+                      getBaseUrl +
                         `/api/common/viewFile/${reportStrategyForm.reportWatermarkLogo}?Authorization=${getAuthorization}`
                     "
                     style="width:70%"
@@ -352,422 +352,14 @@
                 @click="editReportStrategy(scope.row.id)"
                 >编辑</el-button
               >
-              <!-- 报告策略编辑Drawer开始 -->
-              <el-drawer
-                title="编辑报告策略"
-                :visible.sync="editReportStrategyDrawer"
-                :with-header="false"
-                :wrapperClosable="false"
-                :close-on-press-escape="false"
-                :destroy-on-close="true"
-                size="40%"
-                class="editReportStrategyDrawer"
-              >
-                <div class="el-drawer-header">
-                  <h3>编辑报告策略</h3>
-                </div>
-                <div class="el-drawer-content">
-                  <template v-if="reportStrategyDetailList">
-                    <el-form
-                      :model="reportStrategyDetailList"
-                      :rules="rules"
-                      ref="reportStrategyDetailList"
-                    >
-                      <el-form-item prop="templateType">
-                        <label slot="label">模板类型</label>
-                        <el-radio-group
-                          v-model="reportStrategyDetailList.templateType"
-                          @change="label => handleRadioChange(label, 'edit')"
-                        >
-                          <el-radio :label="1">Android</el-radio>
-                          <el-radio :label="2"> iOS</el-radio>
-                        </el-radio-group>
-                      </el-form-item>
-                      <el-form-item prop="templateId">
-                        <label slot="label">报告模板:</label>
-                        <el-radio-group
-                          v-model="reportStrategyDetailList.templateId"
-                          style="margin-top:13px"
-                        >
-                          <el-radio
-                            style="margin-bottom:20px"
-                            v-for="item in reportTemplateList"
-                            :key="item.id"
-                            :label="item.id"
-                            >{{ item.templateName }}</el-radio
-                          >
-                        </el-radio-group>
-                      </el-form-item>
-                      <el-form-item prop="reportCorporateName">
-                        <label slot="label">公司名称:</label>
-                        <el-input
-                          size="small"
-                          v-model="reportStrategyDetailList.reportCorporateName"
-                        ></el-input>
-                      </el-form-item>
-                      <el-form-item prop="reportName">
-                        <label slot="label">报告名称:</label>
-                        <el-input
-                          size="small"
-                          v-model="reportStrategyDetailList.reportName"
-                        ></el-input>
-                      </el-form-item>
-                      <el-form-item prop="reportTitle">
-                        <label slot="label">报告标题:</label>
-                        <el-input
-                          size="small"
-                          v-model="reportStrategyDetailList.reportTitle"
-                        ></el-input>
-                      </el-form-item>
-                      <el-form-item prop="reportHeaderLogo">
-                        <label slot="label">&nbsp;&nbsp;报告页眉:</label>
-                        <el-upload
-                          drag
-                          action="/"
-                          :http-request="
-                            templateType =>
-                              uploadTaskFile(
-                                templateType,
-                                'reportHeaderLogo',
-                                'edit'
-                              )
-                          "
-                          :limit="1"
-                          list-type="picture"
-                          :on-exceed="handleExceed"
-                          v-if="!reportStrategyDetailList.reportHeaderLogo"
-                          accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-                        >
-                          <i class="el-icon-upload"></i>
-                          <div class="el-upload__text">
-                            建议分辨率221*55 <em>点击上传</em>
-                          </div>
-                        </el-upload>
-                        <template v-else>
-                          <img
-                            :src="
-                              api.baseUrl +
-                                `/api/common/viewFile/${reportStrategyDetailList.reportHeaderLogo}?Authorization=${getAuthorization}`
-                            "
-                            style="width:70%"
-                          />
-                          <el-upload
-                            action="/"
-                            :http-request="
-                              templateType =>
-                                uploadTaskFile(
-                                  templateType,
-                                  'reportHeaderLogo',
-                                  'edit'
-                                )
-                            "
-                            accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-                            :limit="1"
-                            list-type="picture"
-                            :on-exceed="handleExceed"
-                          >
-                            <div class="amendUploadImageBtn">
-                              <span>修改</span>
-                            </div>
-                          </el-upload>
-                        </template>
-                      </el-form-item>
-                      <el-form-item prop="reportFooterLogo">
-                        <label slot="label">&nbsp;&nbsp;报告页脚:</label>
-                        <el-upload
-                          drag
-                          action="/"
-                          :http-request="
-                            templateType =>
-                              uploadTaskFile(
-                                templateType,
-                                'reportFooterLogo',
-                                'edit'
-                              )
-                          "
-                          accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-                          :limit="1"
-                          list-type="picture"
-                          :on-exceed="handleExceed"
-                          v-if="!reportStrategyDetailList.reportFooterLogo"
-                        >
-                          <i class="el-icon-upload"></i>
-                          <div class="el-upload__text">
-                            建议分辨率267*26 <em>点击上传</em>
-                          </div>
-                        </el-upload>
-                        <template v-else>
-                          <img
-                            :src="
-                              api.baseUrl +
-                                `/api/common/viewFile/${reportStrategyDetailList.reportFooterLogo}?Authorization=${getAuthorization}`
-                            "
-                            style="width:70%"
-                          />
-                          <el-upload
-                            action="/"
-                            :http-request="
-                              templateType =>
-                                uploadTaskFile(
-                                  templateType,
-                                  'reportFooterLogo',
-                                  'edit'
-                                )
-                            "
-                            accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-                            :limit="1"
-                            list-type="picture"
-                            :on-exceed="handleExceed"
-                          >
-                            <div class="amendUploadImageBtn">
-                              <span>修改</span>
-                            </div>
-                          </el-upload>
-                        </template>
-                      </el-form-item>
-                      <el-form-item prop="reportCoverLogo">
-                        <label slot="label">&nbsp;&nbsp;首页logo:</label>
-                        <el-upload
-                          drag
-                          action="/"
-                          :http-request="
-                            templateType =>
-                              uploadTaskFile(
-                                templateType,
-                                'reportCoverLogo',
-                                'edit'
-                              )
-                          "
-                          list-type="picture"
-                          :limit="1"
-                          accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-                          v-if="!reportStrategyDetailList.reportCoverLogo"
-                        >
-                          <i class="el-icon-upload"></i>
-                          <div class="el-upload__text">
-                            建议分辨率321*210 <em>点击上传</em>
-                          </div>
-                        </el-upload>
-                        <template v-else>
-                          <img
-                            :src="
-                              api.baseUrl +
-                                `/api/common/viewFile/${reportStrategyDetailList.reportCoverLogo}?Authorization=${getAuthorization}`
-                            "
-                            style="width:70%"
-                          />
-                          <el-upload
-                            action="/"
-                            :http-request="
-                              templateType =>
-                                uploadTaskFile(
-                                  templateType,
-                                  'reportCoverLogo',
-                                  'edit'
-                                )
-                            "
-                            accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-                            :limit="1"
-                            list-type="picture"
-                            :on-exceed="handleExceed"
-                          >
-                            <div class="amendUploadImageBtn">
-                              <span>修改</span>
-                            </div>
-                          </el-upload>
-                        </template>
-                      </el-form-item>
-                      <el-form-item prop="reportWatermarkLogo">
-                        <label slot="label">&nbsp;&nbsp;报告水印:</label>
-                        <el-upload
-                          drag
-                          action="/"
-                          :http-request="
-                            templateType =>
-                              uploadTaskFile(
-                                templateType,
-                                'reportWatermarkLogo',
-                                'edit'
-                              )
-                          "
-                          list-type="picture"
-                          :limit="1"
-                          accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-                          v-if="!reportStrategyDetailList.reportWatermarkLogo"
-                        >
-                          <i class="el-icon-upload"></i>
-                          <div class="el-upload__text">
-                            建议分辨率800*600 <em>点击上传</em>
-                          </div>
-                        </el-upload>
-                        <template v-else>
-                          <img
-                            :src="
-                              api.baseUrl +
-                                `/api/common/viewFile/${reportStrategyDetailList.reportWatermarkLogo}?Authorization=${getAuthorization}`
-                            "
-                            style="width:70%"
-                          />
-                          <el-upload
-                            action="/"
-                            :http-request="
-                              templateType =>
-                                uploadTaskFile(
-                                  templateType,
-                                  'reportWatermarkLogo',
-                                  'edit'
-                                )
-                            "
-                            accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-                            :limit="1"
-                            list-type="picture"
-                            :on-exceed="handleExceed"
-                          >
-                            <div class="amendUploadImageBtn">
-                              <span>修改</span>
-                            </div>
-                          </el-upload>
-                        </template>
-                      </el-form-item>
-                    </el-form>
-                  </template>
-                </div>
-                <div class="el-drawer-footer">
-                  <el-button
-                    type="primary"
-                    @click="saveEditReportStrategy('reportStrategyDetailList')"
-                    >保存</el-button
-                  >
-                  <el-button plain @click="cancelEditReportStrategy()"
-                    >取消</el-button
-                  >
-                </div>
-              </el-drawer>
 
-              <!-- 报告策略编辑Drawer结束 -->
               <el-button
                 size="small"
                 type="success"
                 @click="reportDetail(scope.row.id)"
                 >详情</el-button
               >
-              <!-- 报告策略详情Drawer开始 -->
-              <el-drawer
-                title="报告策略详情"
-                :visible.sync="reportStrategyDetailDrawer"
-                :with-header="false"
-                :wrapperClosable="false"
-                :close-on-press-escape="false"
-                :destroy-on-close="true"
-                size="35%"
-                class="reportStrategyDetailDrawer"
-              >
-                <div class="el-drawer-header">
-                  <h3>报告策略详情</h3>
-                </div>
-                <div class="el-drawer-content">
-                  <template v-if="reportStrategyDetailList">
-                    <el-form :model="reportStrategyDetailList">
-                      <el-form-item prop="templateType">
-                        <label slot="label"
-                          >模板类型:<span v-if="templateType == 1"
-                            >Android</span
-                          >
-                          <span v-if="templateType == 2">iOS</span>
-                        </label>
-                      </el-form-item>
-                      <el-form-item prop="templateName">
-                        <label slot="label"
-                          >报告模板:{{
-                            reportStrategyDetailList.templateName
-                          }}</label
-                        >
-                      </el-form-item>
-                      <el-form-item prop="reportCorporateName">
-                        <label slot="label"
-                          >公司名称:{{
-                            reportStrategyDetailList.reportCorporateName
-                          }}</label
-                        >
-                      </el-form-item>
-                      <el-form-item prop="reportName">
-                        <label slot="label"
-                          >报告名称:{{
-                            reportStrategyDetailList.reportName
-                          }}</label
-                        >
-                      </el-form-item>
-                      <el-form-item prop="reportTitle">
-                        <label slot="label"
-                          >报告标题:{{
-                            reportStrategyDetailList.reportTitle
-                          }}</label
-                        >
-                      </el-form-item>
-                      <template
-                        v-if="reportStrategyDetailList.reportHeaderLogo"
-                      >
-                        <el-form-item prop="reportHeaderLogo">
-                          <label slot="label">报告页眉:</label>
-                          <img
-                            style="width:40%"
-                            :src="
-                              api.baseUrl +
-                                `/api/common/viewFile/${reportStrategyDetailList.reportHeaderLogo}?Authorization=${getAuthorization}`
-                            "
-                          />
-                        </el-form-item>
-                      </template>
-                      <template
-                        v-if="reportStrategyDetailList.reportFooterLogo"
-                      >
-                        <el-form-item prop="reportFooterLogo">
-                          <label slot="label">报告页脚:</label>
-                          <img
-                            style="width:40%"
-                            :src="
-                              api.baseUrl +
-                                `/api/common/viewFile/${reportStrategyDetailList.reportFooterLogo}?Authorization=${getAuthorization}`
-                            "
-                          />
-                        </el-form-item>
-                      </template>
-                      <template v-if="reportStrategyDetailList.reportCoverLogo">
-                        <el-form-item prop="reportCoverLogo">
-                          <label slot="label">首页logo:</label>
-                          <img
-                            style="width:40%"
-                            :src="
-                              api.baseUrl +
-                                `/api/common/viewFile/${reportStrategyDetailList.reportCoverLogo}?Authorization=${getAuthorization}`
-                            "
-                          />
-                        </el-form-item>
-                      </template>
-                      <template
-                        v-if="reportStrategyDetailList.reportWatermarkLogo"
-                      >
-                        <el-form-item prop="reportWatermarkLogo">
-                          <label slot="label">报告水印:</label>
-                          <img
-                            style="width:40%"
-                            :src="
-                              api.baseUrl +
-                                `/api/common/viewFile/${reportStrategyDetailList.reportWatermarkLogo}?Authorization=${getAuthorization}`
-                            "
-                          />
-                        </el-form-item>
-                      </template>
-                    </el-form>
-                  </template>
-                </div>
-                <div class="el-drawer-footer">
-                  <el-button plain @click="cancelReportDetail()"
-                    >取消</el-button
-                  >
-                </div>
-              </el-drawer>
-              <!--报告策略详情Drawer结束 -->
+
               <el-button
                 size="small"
                 type="danger"
@@ -777,6 +369,387 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 报告策略编辑Drawer开始 -->
+        <el-drawer
+          title="编辑报告策略"
+          :visible.sync="editReportStrategyDrawer"
+          :with-header="false"
+          :wrapperClosable="false"
+          :close-on-press-escape="false"
+          :destroy-on-close="true"
+          size="40%"
+          class="editReportStrategyDrawer"
+        >
+          <div class="el-drawer-header">
+            <h3>编辑报告策略</h3>
+          </div>
+          <div class="el-drawer-content">
+            <template v-if="reportStrategyDetailList">
+              <el-form
+                :model="reportStrategyDetailList"
+                :rules="rules"
+                ref="reportStrategyDetailList"
+              >
+                <el-form-item prop="templateType">
+                  <label slot="label">模板类型</label>
+                  <el-radio-group
+                    v-model="reportStrategyDetailList.templateType"
+                    @change="label => handleRadioChange(label, 'edit')"
+                  >
+                    <el-radio :label="1">Android</el-radio>
+                    <el-radio :label="2"> iOS</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item prop="templateId">
+                  <label slot="label">报告模板:</label>
+                  <el-radio-group
+                    v-model="reportStrategyDetailList.templateId"
+                    style="margin-top:13px"
+                  >
+                    <el-radio
+                      style="margin-bottom:20px"
+                      v-for="item in reportTemplateList"
+                      :key="item.id"
+                      :label="item.id"
+                      >{{ item.templateName }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item prop="reportCorporateName">
+                  <label slot="label">公司名称:</label>
+                  <el-input
+                    size="small"
+                    v-model="reportStrategyDetailList.reportCorporateName"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item prop="reportName">
+                  <label slot="label">报告名称:</label>
+                  <el-input
+                    size="small"
+                    v-model="reportStrategyDetailList.reportName"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item prop="reportTitle">
+                  <label slot="label">报告标题:</label>
+                  <el-input
+                    size="small"
+                    v-model="reportStrategyDetailList.reportTitle"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item prop="reportHeaderLogo">
+                  <label slot="label">&nbsp;&nbsp;报告页眉:</label>
+                  <el-upload
+                    drag
+                    action="/"
+                    :http-request="
+                      templateType =>
+                        uploadTaskFile(templateType, 'reportHeaderLogo', 'edit')
+                    "
+                    :limit="1"
+                    list-type="picture"
+                    :on-exceed="handleExceed"
+                    v-if="!reportStrategyDetailList.reportHeaderLogo"
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                  >
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">
+                      建议分辨率221*55 <em>点击上传</em>
+                    </div>
+                  </el-upload>
+                  <template v-else>
+                    <img
+                      :src="
+                        getBaseUrl +
+                          `/api/common/viewFile/${reportStrategyDetailList.reportHeaderLogo}?Authorization=${getAuthorization}`
+                      "
+                      style="width:70%"
+                    />
+                    <el-upload
+                      action="/"
+                      :http-request="
+                        templateType =>
+                          uploadTaskFile(
+                            templateType,
+                            'reportHeaderLogo',
+                            'edit'
+                          )
+                      "
+                      accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                      :limit="1"
+                      list-type="picture"
+                      :on-exceed="handleExceed"
+                    >
+                      <div class="amendUploadImageBtn">
+                        <span>修改</span>
+                      </div>
+                    </el-upload>
+                  </template>
+                </el-form-item>
+                <el-form-item prop="reportFooterLogo">
+                  <label slot="label">&nbsp;&nbsp;报告页脚:</label>
+                  <el-upload
+                    drag
+                    action="/"
+                    :http-request="
+                      templateType =>
+                        uploadTaskFile(templateType, 'reportFooterLogo', 'edit')
+                    "
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                    :limit="1"
+                    list-type="picture"
+                    :on-exceed="handleExceed"
+                    v-if="!reportStrategyDetailList.reportFooterLogo"
+                  >
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">
+                      建议分辨率267*26 <em>点击上传</em>
+                    </div>
+                  </el-upload>
+                  <template v-else>
+                    <img
+                      :src="
+                        getBaseUrl +
+                          `/api/common/viewFile/${reportStrategyDetailList.reportFooterLogo}?Authorization=${getAuthorization}`
+                      "
+                      style="width:70%"
+                    />
+                    <el-upload
+                      action="/"
+                      :http-request="
+                        templateType =>
+                          uploadTaskFile(
+                            templateType,
+                            'reportFooterLogo',
+                            'edit'
+                          )
+                      "
+                      accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                      :limit="1"
+                      list-type="picture"
+                      :on-exceed="handleExceed"
+                    >
+                      <div class="amendUploadImageBtn">
+                        <span>修改</span>
+                      </div>
+                    </el-upload>
+                  </template>
+                </el-form-item>
+                <el-form-item prop="reportCoverLogo">
+                  <label slot="label">&nbsp;&nbsp;首页logo:</label>
+                  <el-upload
+                    drag
+                    action="/"
+                    :http-request="
+                      templateType =>
+                        uploadTaskFile(templateType, 'reportCoverLogo', 'edit')
+                    "
+                    list-type="picture"
+                    :limit="1"
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                    v-if="!reportStrategyDetailList.reportCoverLogo"
+                  >
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">
+                      建议分辨率321*210 <em>点击上传</em>
+                    </div>
+                  </el-upload>
+                  <template v-else>
+                    <img
+                      :src="
+                        getBaseUrl +
+                          `/api/common/viewFile/${reportStrategyDetailList.reportCoverLogo}?Authorization=${getAuthorization}`
+                      "
+                      style="width:70%"
+                    />
+                    <el-upload
+                      action="/"
+                      :http-request="
+                        templateType =>
+                          uploadTaskFile(
+                            templateType,
+                            'reportCoverLogo',
+                            'edit'
+                          )
+                      "
+                      accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                      :limit="1"
+                      list-type="picture"
+                      :on-exceed="handleExceed"
+                    >
+                      <div class="amendUploadImageBtn">
+                        <span>修改</span>
+                      </div>
+                    </el-upload>
+                  </template>
+                </el-form-item>
+                <el-form-item prop="reportWatermarkLogo">
+                  <label slot="label">&nbsp;&nbsp;报告水印:</label>
+                  <el-upload
+                    drag
+                    action="/"
+                    :http-request="
+                      templateType =>
+                        uploadTaskFile(
+                          templateType,
+                          'reportWatermarkLogo',
+                          'edit'
+                        )
+                    "
+                    list-type="picture"
+                    :limit="1"
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                    v-if="!reportStrategyDetailList.reportWatermarkLogo"
+                  >
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">
+                      建议分辨率800*600 <em>点击上传</em>
+                    </div>
+                  </el-upload>
+                  <template v-else>
+                    <img
+                      :src="
+                        getBaseUrl +
+                          `/api/common/viewFile/${reportStrategyDetailList.reportWatermarkLogo}?Authorization=${getAuthorization}`
+                      "
+                      style="width:70%"
+                    />
+                    <el-upload
+                      action="/"
+                      :http-request="
+                        templateType =>
+                          uploadTaskFile(
+                            templateType,
+                            'reportWatermarkLogo',
+                            'edit'
+                          )
+                      "
+                      accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+                      :limit="1"
+                      list-type="picture"
+                      :on-exceed="handleExceed"
+                    >
+                      <div class="amendUploadImageBtn">
+                        <span>修改</span>
+                      </div>
+                    </el-upload>
+                  </template>
+                </el-form-item>
+              </el-form>
+            </template>
+          </div>
+          <div class="el-drawer-footer">
+            <el-button
+              type="primary"
+              @click="saveEditReportStrategy('reportStrategyDetailList')"
+              >保存</el-button
+            >
+            <el-button plain @click="cancelEditReportStrategy()"
+              >取消</el-button
+            >
+          </div>
+        </el-drawer>
+        <!-- 报告策略编辑Drawer结束 -->
+        <!-- 报告策略详情Drawer开始 -->
+        <el-drawer
+          title="报告策略详情"
+          :visible.sync="reportStrategyDetailDrawer"
+          :with-header="false"
+          :wrapperClosable="false"
+          :close-on-press-escape="false"
+          :destroy-on-close="true"
+          size="35%"
+          class="reportStrategyDetailDrawer"
+        >
+          <div class="el-drawer-header">
+            <h3>报告策略详情</h3>
+          </div>
+          <div class="el-drawer-content">
+            <template v-if="reportStrategyDetailList">
+              <el-form :model="reportStrategyDetailList">
+                <el-form-item prop="templateType">
+                  <label slot="label"
+                    >模板类型:<span v-if="templateType == 1">Android</span>
+                    <span v-if="templateType == 2">iOS</span>
+                  </label>
+                </el-form-item>
+                <el-form-item prop="templateName">
+                  <label slot="label"
+                    >报告模板:{{ reportStrategyDetailList.templateName }}</label
+                  >
+                </el-form-item>
+                <el-form-item prop="reportCorporateName">
+                  <label slot="label"
+                    >公司名称:{{
+                      reportStrategyDetailList.reportCorporateName
+                    }}</label
+                  >
+                </el-form-item>
+                <el-form-item prop="reportName">
+                  <label slot="label"
+                    >报告名称:{{ reportStrategyDetailList.reportName }}</label
+                  >
+                </el-form-item>
+                <el-form-item prop="reportTitle">
+                  <label slot="label"
+                    >报告标题:{{ reportStrategyDetailList.reportTitle }}</label
+                  >
+                </el-form-item>
+                <template v-if="reportStrategyDetailList.reportHeaderLogo">
+                  <el-form-item prop="reportHeaderLogo">
+                    <label slot="label">报告页眉:{{ config }}</label>
+                    <img
+                      style="width:40%"
+                      :src="
+                        getBaseUrl +
+                          `/api/common/viewFile/${reportStrategyDetailList.reportHeaderLogo}?Authorization=${getAuthorization}`
+                      "
+                    />
+                  </el-form-item>
+                </template>
+                <template v-if="reportStrategyDetailList.reportFooterLogo">
+                  <el-form-item prop="reportFooterLogo">
+                    <label slot="label">报告页脚:</label>
+                    <img
+                      style="width:40%"
+                      :src="
+                        getBaseUrl +
+                          `/api/common/viewFile/${reportStrategyDetailList.reportFooterLogo}?Authorization=${getAuthorization}`
+                      "
+                    />
+                  </el-form-item>
+                </template>
+                <template v-if="reportStrategyDetailList.reportCoverLogo">
+                  <el-form-item prop="reportCoverLogo">
+                    <label slot="label">首页logo:</label>
+                    <img
+                      style="width:40%"
+                      :src="
+                        getBaseUrl +
+                          `/api/common/viewFile/${reportStrategyDetailList.reportCoverLogo}?Authorization=${getAuthorization}`
+                      "
+                    />
+                  </el-form-item>
+                </template>
+                <template v-if="reportStrategyDetailList.reportWatermarkLogo">
+                  <el-form-item prop="reportWatermarkLogo">
+                    <label slot="label">报告水印:</label>
+                    <img
+                      style="width:40%"
+                      :src="
+                        getBaseUrl +
+                          `/api/common/viewFile/${reportStrategyDetailList.reportWatermarkLogo}?Authorization=${getAuthorization}`
+                      "
+                    />
+                  </el-form-item>
+                </template>
+              </el-form>
+            </template>
+          </div>
+          <div class="el-drawer-footer">
+            <el-button plain @click="cancelReportDetail()">取消</el-button>
+          </div>
+        </el-drawer>
+        <!--报告策略详情Drawer结束 -->
       </template>
     </div>
     <div class="reportConfigureManagementBase">
@@ -851,6 +824,9 @@ export default {
   computed: {
     getAuthorization() {
       return localStorage.getItem("Authorization");
+    },
+    getBaseUrl() {
+      return config.baseUrl;
     }
   },
   created() {
@@ -1062,29 +1038,10 @@ export default {
 .reportConfigureManagementBase {
   margin-top: 10px;
 }
-.reportConfigureManagement .el-button + .el-button {
-  margin-right: 10px;
-}
-.reportConfigureManagement .addReportStrategyDrawer .el-input__inner,
-.reportConfigureManagement .addReportStrategyDrawer .el-upload-dragger,
-.reportConfigureManagement .editReportStrategyDrawer .el-input__inner,
-.reportConfigureManagement .editReportStrategyDrawer .el-upload-dragger {
-  border-radius: 0px;
-}
-.reportConfigureManagement .el-upload {
+.reportConfigureManagement .reportConfigureManagement .el-upload {
   width: 70%;
 }
-.reportConfigureManagement .el-upload-dragger {
-  width: 100%;
-}
-.editIcon,
-.detailIcon,
-.deleteIcon {
-  font-size: 22px;
-  color: #517fc3;
-  margin-right: 10px;
-  cursor: pointer;
-}
+
 .reportConfigureManagement .el-upload-list--picture {
   width: 69%;
   margin-left: 11%;

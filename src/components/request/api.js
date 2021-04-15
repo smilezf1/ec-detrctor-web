@@ -1,6 +1,6 @@
 
-const baseUrl = "http://192.168.3.58:9980/ec_detector",
-    websocketUrl = "http://192.168.3.58:9980/ec_detector/websocket";
+/* const baseUrl = "http://192.168.3.58:9980/ec_detector",
+    websocketUrl = "http://192.168.3.58:9980/ec_detector/websocket"; */
 import { fetchGet, fetchPost, uploadFile } from './http'
 //登录
 let userService = {
@@ -233,4 +233,5 @@ let systemService = {
     }
     /* 报告模板设置结束 */
 }
-export default { baseUrl, websocketUrl, userService, detrctorTaskService, detectorItemService, detectorStrategyService, detectorAndroidService, uploadService, systemService, authorizeService }
+/* baseUrl, websocketUrl, */
+export default { userService, detrctorTaskService, detectorItemService, detectorStrategyService, detectorAndroidService, uploadService, systemService, authorizeService }

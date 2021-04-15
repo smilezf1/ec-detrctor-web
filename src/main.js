@@ -5,13 +5,15 @@ import router from './router'
 import ElementUI, { Form, TabPane } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/fonts/iconfont.css';
-import api from './components/request/api'
-import guid from '../src/utils/guid'
-import axios from 'axios'
-import resetMessage from '../src/utils/resetMessage'//设置ElementUi的Message消息提示每次值弹出一次
+import api from './components/request/api';
+import config from '../static/config';
+import guid from '../src/utils/guid';
+import axios from 'axios';
+import resetMessage from '../src/utils/resetMessage';//设置ElementUi的Message消息提示每次值弹出一次
 import confirm from '../src/utils/confirm';
 import store from '../src/store/getter';
 import permission from '../src/utils/permission';
+import commonCss from '../src/assets/style/common.css'
 Vue.use(ElementUI);
 Vue.use(permission);
 Vue.prototype.$message = resetMessage;
@@ -20,6 +22,7 @@ Vue.config.productionTip = false
 Vue.prototype.guid = guid;
 Vue.prototype.axios = axios;
 Vue.prototype.api = api;
+Vue.prototype.config = config;
 new Vue({
   el: '#app',
   router,
