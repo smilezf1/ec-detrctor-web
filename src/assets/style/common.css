@@ -167,9 +167,10 @@ y .el-checkbox__input.is-indeterminate .el-checkbox__inner,
   border-right: 1px solid rgb(230, 230, 230);
 }
 .detectorMessage .el-tabs__content .el-row .el-col:last-of-type {
-  margin-left: 15px;
+  padding: 15px;
   font-size: 12px;
   color: #525252;
+  word-wrap: break-word;
 }
 .detectorMessage .el-tabs--border-card > .el-tabs__content .appInfo {
   border: 1px solid rgb(220, 222, 226);

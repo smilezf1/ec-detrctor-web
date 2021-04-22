@@ -14,9 +14,9 @@
             <div class="applicationMessageHeaderRight">
               <span
                 ><i class="el-icon-menu"></i
-                ><b>&nbsp;检测模板:&nbsp;&nbsp;&nbsp;</b>
+                ><b>&nbsp;检测策略:&nbsp;&nbsp;&nbsp;</b>
                 <span style="color:#333">{{
-                  listItem.taskInfo.detectionFormwork
+                  listItem.detectionStrategy.strategyName
                 }}</span></span
               >
               <span

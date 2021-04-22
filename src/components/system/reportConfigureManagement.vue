@@ -38,6 +38,7 @@
               :model="reportStrategyForm"
               :rules="rules"
               ref="reportStrategyForm"
+              label-position="left"
             >
               <el-form-item prop="templateType">
                 <label slot="label">模板类型:</label>
@@ -85,6 +86,38 @@
                   v-model="reportStrategyForm.reportTitle"
                 ></el-input>
               </el-form-item>
+
+              <el-form-item prop="isContact">
+                <label slot="label">联系方式:</label>
+
+                <el-radio-group v-model="reportStrategyForm.isContact">
+                  <el-radio label="1">自定义</el-radio>
+                  <el-radio label="2">不展示</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <template v-if="reportStrategyForm.isContact == 1">
+                <el-form-item prop="contactName">
+                  <label slot="label">联系名称:</label>
+                  <el-input
+                    size="small"
+                    v-model="reportStrategyForm.contactName"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item prop="contactNumber">
+                  <label slot="label">联系电话:</label>
+                  <el-input
+                    size="small"
+                    v-model="reportStrategyForm.contactNumber"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item prop="emailAddress">
+                  <label slot="label">联系邮箱:</label>
+                  <el-input
+                    size="small"
+                    v-model="reportStrategyForm.emailAddress"
+                  ></el-input>
+                </el-form-item>
+              </template>
               <el-form-item prop="reportHeaderLogo">
                 <label slot="label">&nbsp;&nbsp;报告页眉:</label>
                 <el-upload
@@ -436,6 +469,37 @@
                     v-model="reportStrategyDetailList.reportTitle"
                   ></el-input>
                 </el-form-item>
+                <el-form-item prop="isContact">
+                  <label slot="label">联系方式:</label>
+                  <el-radio-group v-model="reportStrategyDetailList.isContact">
+                    <el-radio :label="1">自定义</el-radio>
+                    <el-radio :label="2">不展示</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <template v-if="reportStrategyDetailList.isContact == 1">
+                  <el-form-item prop="contactName">
+                    <label slot="label">联系名称:</label>
+                    <el-input
+                      size="small"
+                      v-model="reportStrategyDetailList.contactName"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item prop="contactNumber">
+                    <label slot="label">联系电话:</label>
+                    <el-input
+                      size="small"
+                      v-model="reportStrategyDetailList.contactNumber"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item prop="emailAddress">
+                    <label slot="label">联系邮箱:</label>
+                    <el-input
+                      size="small"
+                      v-model="reportStrategyDetailList.emailAddress"
+                    ></el-input>
+                  </el-form-item>
+                </template>
+
                 <el-form-item prop="reportHeaderLogo">
                   <label slot="label">&nbsp;&nbsp;报告页眉:</label>
                   <el-upload
@@ -665,40 +729,99 @@
           </div>
           <div class="el-drawer-content">
             <template v-if="reportStrategyDetailList">
-              <el-form :model="reportStrategyDetailList">
+              <el-form
+                :model="reportStrategyDetailList"
+                label-position="left"
+                label-width="80px"
+              >
                 <el-form-item prop="templateType">
-                  <label slot="label"
-                    >模板类型:<span v-if="templateType == 1">Android</span>
-                    <span v-if="templateType == 2">iOS</span>
-                  </label>
+                  <label slot="label">模板类型:</label>
+                  <el-radio-group v-model="templateType" disabled>
+                    <el-radio :label="1">Android</el-radio>
+                    <el-radio :label="2">iOS</el-radio>
+                  </el-radio-group>
                 </el-form-item>
                 <el-form-item prop="templateName">
-                  <label slot="label"
-                    >报告模板:{{ reportStrategyDetailList.templateName }}</label
+                  <label slot="label">报告模板: </label>
+                  <el-radio-group
+                    v-model="reportStrategyDetailList.templateId"
+                    disabled
+                    style="margin-top:13px"
                   >
+                    <el-radio
+                      style="margin-bottom:20px"
+                      v-for="item in reportTemplateList"
+                      :key="item.id"
+                      :label="item.id"
+                      >{{ item.templateName }}</el-radio
+                    >
+                  </el-radio-group>
                 </el-form-item>
                 <el-form-item prop="reportCorporateName">
-                  <label slot="label"
-                    >公司名称:{{
-                      reportStrategyDetailList.reportCorporateName
-                    }}</label
-                  >
+                  <label slot="label">公司名称:</label>
+                  <el-input
+                    size="small"
+                    v-model="reportStrategyDetailList.reportCorporateName"
+                    disabled
+                  ></el-input>
                 </el-form-item>
                 <el-form-item prop="reportName">
-                  <label slot="label"
-                    >报告名称:{{ reportStrategyDetailList.reportName }}</label
-                  >
+                  <label slot="label">报告名称:</label>
+                  <el-input
+                    disabled
+                    size="small"
+                    v-model="reportStrategyDetailList.reportName"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item prop="reportTitle">
-                  <label slot="label"
-                    >报告标题:{{ reportStrategyDetailList.reportTitle }}</label
-                  >
+                  <label slot="label">报告标题:</label>
+                  <el-input
+                    disabled
+                    size="small"
+                    v-model="reportStrategyDetailList.reportTitle"
+                  ></el-input>
                 </el-form-item>
+                <el-form-item prop="isContact">
+                  <label slot="label">联系方式:</label>
+                  <el-radio-group
+                    v-model="reportStrategyDetailList.isContact"
+                    disabled
+                  >
+                    <el-radio :label="1">自定义</el-radio>
+                    <el-radio :label="2">不展示</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <template v-if="reportStrategyDetailList.isContact == 1">
+                  <el-form-item prop="contactName">
+                    <label slot="label">联系名称:</label>
+                    <el-input
+                      size="small"
+                      disabled
+                      v-model="reportStrategyDetailList.contactName"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item prop="contactNumber">
+                    <label slot="label">联系电话:</label>
+                    <el-input
+                      size="small"
+                      disabled
+                      v-model="reportStrategyDetailList.contactNumber"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item prop="emailAddress">
+                    <label slot="label">联系邮箱:</label>
+                    <el-input
+                      size="small"
+                      disabled
+                      v-model="reportStrategyDetailList.emailAddress"
+                    ></el-input>
+                  </el-form-item>
+                </template>
                 <template v-if="reportStrategyDetailList.reportHeaderLogo">
                   <el-form-item prop="reportHeaderLogo">
-                    <label slot="label">报告页眉:{{ config }}</label>
+                    <label slot="label">报告页眉:</label>
                     <img
-                      style="width:40%"
+                      style="width:100%"
                       :src="
                         getBaseUrl +
                           `/api/common/viewFile/${reportStrategyDetailList.reportHeaderLogo}?Authorization=${getAuthorization}`
@@ -710,7 +833,7 @@
                   <el-form-item prop="reportFooterLogo">
                     <label slot="label">报告页脚:</label>
                     <img
-                      style="width:40%"
+                      style="width:100%"
                       :src="
                         getBaseUrl +
                           `/api/common/viewFile/${reportStrategyDetailList.reportFooterLogo}?Authorization=${getAuthorization}`
@@ -722,7 +845,7 @@
                   <el-form-item prop="reportCoverLogo">
                     <label slot="label">首页logo:</label>
                     <img
-                      style="width:40%"
+                      style="width:100%"
                       :src="
                         getBaseUrl +
                           `/api/common/viewFile/${reportStrategyDetailList.reportCoverLogo}?Authorization=${getAuthorization}`
@@ -734,7 +857,7 @@
                   <el-form-item prop="reportWatermarkLogo">
                     <label slot="label">报告水印:</label>
                     <img
-                      style="width:40%"
+                      style="width:100%"
                       :src="
                         getBaseUrl +
                           `/api/common/viewFile/${reportStrategyDetailList.reportWatermarkLogo}?Authorization=${getAuthorization}`
@@ -780,6 +903,10 @@ export default {
         reportCorporateName: "",
         reportName: "",
         reportTitle: "",
+        isContact: "2",
+        contactName: "",
+        contactNumber: "",
+        emailAddress: "",
         reportHeaderLogo: "",
         reportFooterLogo: "",
         reportCoverLogo: "",
@@ -810,6 +937,39 @@ export default {
         reportTitle: {
           required: true,
           message: "请输入报告标题",
+          trigger: "blur"
+        },
+        contactName: {
+          required: true,
+          message: "请输入联系人名称",
+          trigger: "blur"
+        },
+        contactNumber: [
+          {
+            required: true,
+            message: "请输入联系电话",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[1][3|4|5|6|7|8|9][0-9]{9}$/,
+            message: "请输入正确的手机号"
+          }
+        ],
+        emailAddress: [
+          {
+            required: true,
+            message: "请输入邮箱",
+            trigger: "blur"
+          },
+          {
+            type: "email",
+            message: "请输入正确的邮箱地址",
+            trigger: ["blur", "change"]
+          }
+        ],
+        isContact: {
+          required: true,
+          message: "请选择联系方式",
           trigger: "blur"
         }
       },
@@ -927,8 +1087,7 @@ export default {
     },
     cancelAddReportStrategy(formName) {
       this.addReportStrategyDrawer = false;
-      /* this.$refs[formName].resetFields();
-      this.$refs["upload"].clearFiles(); */
+
       this.reload();
     },
     getReportDetail(id) {
@@ -968,30 +1127,9 @@ export default {
     },
     //保存编辑的报告策略
     saveEditReportStrategy(formName) {
-      const {
-          id,
-          reportCorporateName,
-          reportCoverLogo,
-          reportFooterLogo,
-          reportHeaderLogo,
-          reportName,
-          reportTitle,
-          reportWatermarkLogo,
-          templateId,
-          templateType
-        } = this.reportStrategyDetailList,
-        params = {
-          id,
-          reportCorporateName,
-          reportCoverLogo,
-          reportFooterLogo,
-          reportHeaderLogo,
-          reportName,
-          reportTitle,
-          reportWatermarkLogo,
-          templateId,
-          templateType
-        };
+      const params = this.reportStrategyDetailList;
+      delete params.createTime;
+      delete params.updateTime;
       this.$refs[formName].validate((valid, message) => {
         if (valid) {
           api.systemService.saveOrUpdateReportStrategy(params).then(res => {
