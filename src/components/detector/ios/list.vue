@@ -332,7 +332,7 @@
           <el-table-column prop="userName" label="上传人" width="100">
             <template slot-scope="scope">{{ scope.row.userName }}</template>
           </el-table-column>
-          <el-table-column label="操作" width="450" fixed="right">
+          <el-table-column label="操作" width="530" fixed="right">
             <template slot-scope="scope">
               <el-button
                 size="small"
@@ -341,7 +341,26 @@
                 @click="downloadReport(scope.row.taskId)"
                 >报告</el-button
               >
-
+              <el-button
+                size="small"
+                type="primary"
+                v-if="getUserId == 1"
+                :disabled="
+                  !(
+                    scope.row.detectionStatus == 2 ||
+                    scope.row.detectionStatus == 3 ||
+                    scope.row.detectionStatus == 4
+                  )
+                "
+                @click="
+                  viewLog(
+                    scope.row.taskId,
+                    scope.row.appName,
+                    scope.row.detectionStatus
+                  )
+                "
+                >日志</el-button
+              >
               <el-button
                 size="small"
                 type="primary"
@@ -537,10 +556,13 @@ export default {
       reportTemplateList: []
     };
   },
-  beforeMount() {
-    this.getData();
+  computed: {
+    getUserId() {
+      return JSON.parse(localStorage.userInfo).id;
+    }
   },
   created() {
+    this.getData();
     this.initWebsocket();
   },
   methods: {
@@ -819,6 +841,13 @@ export default {
     //取消下载报告
     cancelDownloadReport() {
       this.downloadReportDrawer = false;
+    },
+    //日志
+    viewLog(id, appName, detectionStatus) {
+      this.$router.push({
+        path: "/home/detector/ios/log",
+        query: { id, appName, detectionStatus }
+      });
     }
   },
   destroyed() {

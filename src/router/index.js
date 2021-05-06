@@ -12,8 +12,10 @@ export default new Router({
         { path: '/404', name: 'notFound', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/error/404.vue") },
         { path: "detector/android/list", name: 'androidList', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/android/list.vue") },
         { path: "detector/android/detail", name: 'androidDetail', meta: { requireAuth: true, KeepAlive: false }, component: () => import('../components/detector/android/detail.vue') },
+        { path: 'detector/android/log', name: 'androidLog', meta: { requireAuth: true, KeepAlive: false }, component: () => import('../components/detector/android/log.vue') },
         { path: "detector/ios/list", name: 'iosList', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/ios/list.vue") }
         , { path: "detector/ios/detail", name: 'iosDetail', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/ios/detail.vue") },
+        { path: 'detector/ios/log', name: 'iosLog', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/detector/ios/log.vue") },
         {
           path: 'system/role/list', name: 'role', meta: { requireAuth: true, KeepAlive: false }, component: () => import("../components/system/roleManagement.vue")
         },

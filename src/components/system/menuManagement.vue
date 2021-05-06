@@ -239,9 +239,7 @@
             </el-form>
           </div>
           <div class="el-drawer-footer">
-            <el-button
-              type="primary"
-              @click="saveAmendCatalogue('form', form, scope.row.id)"
+            <el-button type="primary" @click="saveAmendCatalogue('form', form)"
               >保存</el-button
             >
             <el-button @click="cancelForm" plain>取消</el-button>
@@ -300,7 +298,6 @@
 </template>
 <script>
 import api from "../request/api";
-import Vue from "vue";
 export default {
   name: "menuManagement",
   inject: ["reload"],
@@ -335,7 +332,8 @@ export default {
       addMenuDrawer: false,
       addButtonDrawer: false,
       menuID: null,
-      buttonID: null
+      buttonID: null,
+      editId: null
     };
   },
   created() {
@@ -388,8 +386,9 @@ export default {
         : "display:none;";
     },
     //保存修改的目录
-    saveAmendCatalogue(formName, form, id) {
+    saveAmendCatalogue(formName, form) {
       const { name, icon, type } = form,
+        id = this.editId,
         reg = /[1-9][0-9]*/g,
         ids = parseInt(id.match(reg)[0]);
       this.$refs[formName].validate(valid => {
@@ -397,12 +396,12 @@ export default {
           const params = { id: ids, name, icon, type };
           api.systemService.menuManageEditSave(params).then(res => {
             if (res.code == "00") {
-              this.reload();
               this.$notify.success({
                 message: "保存成功",
                 showClose: false,
                 duration: 1000
               });
+              this.reload();
             }
           });
         } else {
@@ -419,6 +418,7 @@ export default {
     //编辑目录
     edit(id) {
       this.editDrawer = true;
+      this.editId = id;
       api.systemService.menuManageEdit(id).then(res => {
         if (res.code == "00") {
           this.form = res.data;

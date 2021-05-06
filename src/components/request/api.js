@@ -83,6 +83,10 @@ let detectorAndroidService = {
     //查询策略详情
     getStrategyDetail(params) {
         return fetchGet("/api/detection/strategy/getStrategyDetail?strategyId=" + params).then(res => res.data)
+    },
+    //查看日志
+    getDetectionLogById(params) {
+        return fetchGet(`/detector/android/findDetectionLogByTaskId/${params}`).then(res => res.data)
     }
 
 }

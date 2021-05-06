@@ -364,7 +364,7 @@
           <el-table-column
             label="操作"
             prop="operate"
-            width="450"
+            width="530"
             fixed="right"
           >
             <template slot-scope="scope">
@@ -375,7 +375,26 @@
                 @click="downloadReport(scope.row.taskId)"
                 >报告</el-button
               >
-
+              <el-button
+                size="small"
+                type="primary"
+                v-if="getUserId == 1"
+                :disabled="
+                  !(
+                    scope.row.detectionStatus == 2 ||
+                    scope.row.detectionStatus == 3 ||
+                    scope.row.detectionStatus == 4
+                  )
+                "
+                @click="
+                  viewLog(
+                    scope.row.taskId,
+                    scope.row.appName,
+                    scope.row.detectionStatus
+                  )
+                "
+                >日志</el-button
+              >
               <el-button
                 size="small"
                 type="primary"
@@ -873,6 +892,13 @@ export default {
       this.$router.push({
         path: "/home/detector/android/detail",
         query: { id }
+      });
+    },
+    //日志
+    viewLog(id, appName, detectionStatus) {
+      this.$router.push({
+        path: "/home/detector/android/log",
+        query: { id, appName, detectionStatus }
       });
     },
     //删除任务
