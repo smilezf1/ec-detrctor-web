@@ -24,13 +24,7 @@
                 :src="'data:image/jpg;base64,' + scope.row.appIcon"
               />
               <img v-else class="appIcon" src="../../assets/android.png" />
-              <el-tooltip
-                effect="dark"
-                :content="scope.row.appName"
-                placement="top-start"
-              >
-                <span style="margin-left:7px">{{ scope.row.appName }}</span>
-              </el-tooltip>
+              <span style="margin-left:7px">{{ scope.row.appName }}</span>
             </template>
           </el-table-column>
           <el-table-column

@@ -1,16 +1,15 @@
 import axios from 'axios'
 import router from '../../router'
 import Vue from 'vue';
-import { config } from 'shelljs';
 let v = new Vue(),
     baseURL;
 //环境的切换
 if (process.env.NODE_ENV == 'development') {//开发环境
-    baseURL = 'http://192.168.3.58:9980/ec_detector';
+    baseURL = config.baseUrl;
 } else if (process.env.NODE_ENV == 'debug') { //测试环境
-    baseURL = 'http://192.168.3.58:9980/ec_detector';
+    baseURL = config.baseUrl;
 } else if (process.env.NODE_ENV == 'production') { //生产环境
-    baseURL = 'http://192.168.3.58:9980/ec_detector';
+    baseURL = config.baseUrl;
 }
 axios.defaults.baseURL = baseURL;
 axios.defaults.timeout = 2000000;//设置超时时间
