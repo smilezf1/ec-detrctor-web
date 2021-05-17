@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/fonts/iconfont.css';
 import api from './components/request/api';
 import config from '../static/config';
+import MxConfig from './utils/MxConfig';
 import guid from '../src/utils/guid';
 import axios from 'axios';
 import resetMessage from '../src/utils/resetMessage';//设置ElementUi的Message消息提示每次值弹出一次
@@ -18,6 +19,7 @@ Vue.use(ElementUI);
 Vue.use(permission);
 Vue.prototype.$message = resetMessage;
 Vue.prototype.$messageTips = confirm;
+Vue.prototype.$MxConfig = MxConfig;
 Vue.config.productionTip = false
 Vue.prototype.guid = guid;
 Vue.prototype.axios = axios;

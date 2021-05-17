@@ -637,7 +637,7 @@ export default {
     initWebsocket() {
       const _this = this,
         userId = JSON.parse(localStorage.getItem("userInfo")).id,
-        url = config.websocketUrl,
+        url = this.$MxConfig.getWsUrl(),
         socket = new SockJsClient(url, null, { timeout: 15000 });
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(
@@ -818,7 +818,11 @@ export default {
     downloadFile(url, params) {
       const Authorization = localStorage.getItem("Authorization"),
         downloadUrl =
-          config.baseUrl + url + params + "&Authorization=" + Authorization;
+          this.$MxConfig.getBaseUrl() +
+          url +
+          params +
+          "&Authorization=" +
+          Authorization;
       window.location.href = downloadUrl;
     },
     //下载报告
@@ -836,7 +840,7 @@ export default {
         isCompliance = this.reportConfigureForm.reportParameter;
       let downloadUrl = null;
       downloadUrl =
-        config.baseUrl +
+        this.$MxConfig.getBaseUrl() +
         "/detector/android/downloadReport?taskId=" +
         id +
         "&isCompliance=" +

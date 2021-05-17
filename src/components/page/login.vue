@@ -91,7 +91,7 @@ export default {
   },
   computed: {
     getBaseUrl() {
-      return config.baseUrl;
+      return this.$MxConfig.getBaseUrl();
     }
   },
   methods: {

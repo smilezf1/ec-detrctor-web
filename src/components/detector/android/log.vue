@@ -46,7 +46,6 @@ export default {
     //得到日志详细
     getDetectorLog(params) {
       api.detectorAndroidService.getDetectionLogById(params).then(res => {
-        console.log(res);
         this.listItem = res.data;
       });
     }

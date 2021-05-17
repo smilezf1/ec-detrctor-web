@@ -460,6 +460,7 @@
 import api from "../../request/api";
 import pagination from "../../common/pagination";
 import pageMixins from "../../../utils/pageMixins";
+/* import MxConfig from "../../../utils/MxConfig"; */
 //Websocket
 import SockJsClient from "sockjs-client";
 import Stomp from "stompjs";
@@ -581,7 +582,7 @@ export default {
     initWebsocket() {
       const _this = this,
         userId = JSON.parse(localStorage.getItem("userInfo")).id,
-        url = config.websocketUrl,
+        url = this.$MxConfig.getWsUrl(),
         socket = new SockJsClient(url, null, { timeout: 15000 });
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(
@@ -772,7 +773,7 @@ export default {
     downloadFile(url, params) {
       const Authorization = localStorage.getItem("Authorization"),
         downloadUrl =
-          this.config.baseUrl +
+          this.$MxConfig.getBaseUrl() +
           url +
           params +
           "&Authorization=" +
@@ -812,7 +813,7 @@ export default {
         reportStrategyId = this.addDownloadReportForm.templateType,
         reportType = this.addDownloadReportForm.reportType,
         downloadUrl =
-          this.config.baseUrl +
+          this.$MxConfig.getBaseUrl() +
           "/detector/android/downloadReport?taskId=" +
           id +
           "&isCompliance=" +

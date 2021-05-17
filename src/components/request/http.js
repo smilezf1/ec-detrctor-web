@@ -1,6 +1,7 @@
 import axios from 'axios'
 import router from '../../router'
 import Vue from 'vue';
+/* import config from '../../../static/config'; */
 let v = new Vue(),
     baseURL;
 //环境的切换
