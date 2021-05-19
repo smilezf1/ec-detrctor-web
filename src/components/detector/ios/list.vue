@@ -614,11 +614,12 @@ export default {
       const data = JSON.parse(message.body);
       this.listItem.map((item, index) => {
         if (item.taskId == data.data.id && data.title == "检测") {
-          this.listItem[index] = Object.assign({}, this.listItem[index], {
+          let filterObj = Object.assign({}, this.listItem[index], {
             detectionStatus: data.data.detectionStatus,
             detectionNumber: data.content,
             detectionTime: data.data.detectionTime
           });
+          this.$set(this.listItem, index, filterObj);
         }
       });
     },

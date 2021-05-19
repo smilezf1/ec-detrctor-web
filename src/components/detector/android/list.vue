@@ -669,12 +669,13 @@ export default {
       const data = JSON.parse(msg.body);
       this.listItem.map((item, index) => {
         if (item.taskId == data.data.id && data.title == "检测") {
-          this.listItem[index] = Object.assign({}, this.listItem[index], {
+          let filterObj = Object.assign({}, this.listItem[index], {
             detectionStatus: data.data.detectionStatus,
             detectionNumber: data.content,
             detectionTime: data.data.detectionTime,
             dexPath: data.data.dexPath
           });
+          this.$set(this.listItem, index, filterObj);
         }
       });
     },

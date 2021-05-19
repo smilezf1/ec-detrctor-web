@@ -128,7 +128,8 @@ y .el-checkbox__input.is-indeterminate .el-checkbox__inner,
   position: absolute !important;
   top: 35px !important;
   left: 0 !important;
-  height: 205% !important;
+  height: auto;
+  max-height: 540% !important;
   overflow-y: auto !important;
 }
 .detectorMessage .el-collapse-item__content,
