@@ -7,16 +7,19 @@
       <div class="searchBox">
         <el-form :model="ruleForm" ref="ruleForm">
           <el-input
+            :clearable="true"
             size="small"
             placeholder="请输入应用名称"
             v-model="ruleForm.appName"
           ></el-input>
           <el-input
+            :clearable="true"
             size="small"
             placeholder="请选择版本号"
             v-model="ruleForm.appVersion"
           ></el-input>
           <el-select
+            :clearable="true"
             placeholder="请选择检测状态"
             v-model="ruleForm.detectionStatus"
             size="small"
@@ -50,7 +53,7 @@
         <el-button
           type="primary"
           size="small"
-          @click="search(ruleForm)"
+          @click="search()"
           class="searchButton"
           >查询</el-button
         >
@@ -576,6 +579,7 @@ export default {
           this.curpage = number;
           this.limit = size;
           this.onGotPageData({ totalElements: count, size, number });
+          this.loading = false;
         }
       });
     },
@@ -628,16 +632,9 @@ export default {
         this.stompClient.disconnect();
       }
     },
-    search(ruleForm) {
-      const params = {};
-      params.queryInfo = ruleForm;
-      params.queryInfo.terminalType = 2;
+    search() {
       this.loading = true;
-      this.addPageInfo(params);
-      this.getDataItem(params);
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
+      this.getData();
     },
     detailTask(id) {
       this.$router.push({ path: "/home/detector/ios/detail", query: { id } });

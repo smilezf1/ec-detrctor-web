@@ -7,11 +7,13 @@
       <div class="searchBox">
         <el-form :model="ruleForm" ref="ruleForm">
           <el-input
+            :clearable="true"
             size="small"
             placeholder="请输入策略名称"
             v-model="ruleForm.strategyName"
           ></el-input>
           <el-input
+            :clearable="true"
             size="small"
             placeholder="请输入创建者"
             v-model="ruleForm.userName"
@@ -22,7 +24,7 @@
         <el-button
           type="primary"
           size="small"
-          @click="search(ruleForm)"
+          @click="search()"
           class="searchButton"
           >查询</el-button
         >
@@ -428,18 +430,13 @@ export default {
           this.curPage = number;
           this.limit = size;
           this.onGotPageData({ totalElements: count, size, number, queryInfo });
+          this.loading = false;
         }
       });
     },
-    search(ruleForm) {
+    search() {
       this.loading = true;
-      const params = {};
-      params.queryInfo = ruleForm;
-      this.addPageInfo(params);
-      this.getDataItem(params);
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
+      this.getData();
     },
     refresh() {
       this.reload();
@@ -775,10 +772,7 @@ export default {
   margin-left: 15px;
 }
 .detectorStrategyBody {
-  margin-top: 15px;
-}
-.detectorStrategyBase {
-  margin-top: 15px;
+  margin: 15px 0;
 }
 .detectorStrategy .el-form-item__label {
   text-align: left;

@@ -7,11 +7,13 @@
       <div class="searchBox">
         <el-form :model="ruleForm" ref="ruleForm">
           <el-input
+            :clearable="true"
             placeholder="请输入角色名称"
             size="small"
             v-model="ruleForm.name"
           ></el-input>
           <el-select
+            :clearable="true"
             placeholder="是否有效"
             v-model="ruleForm.status"
             size="small"
@@ -25,7 +27,7 @@
         <el-button
           type="primary"
           size="small"
-          @click="search(ruleForm)"
+          @click="search()"
           class="searchButton"
           >查询</el-button
         >
@@ -281,19 +283,14 @@ export default {
           this.curpage = number;
           this.limit = size;
           this.onGotPageData({ totalElements: count, size, number });
+          this.loading = false;
         }
       });
     },
     //查询
-    search(ruleForm) {
-      const params = {};
-      params.queryInfo = ruleForm;
+    search() {
       this.loading = true;
-      this.addPageInfo(params);
-      this.getDataItem(params);
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
+      this.getData();
     },
     //将数据转化为树形结构
     toTreeData(data) {

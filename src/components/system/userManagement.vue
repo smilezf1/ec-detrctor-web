@@ -11,26 +11,31 @@
           :label-position="labelPosition"
         >
           <el-input
+            :clearable="true"
             placeholder="请输入用户姓名"
             size="small"
             v-model="ruleForm.trueName"
           ></el-input>
           <el-input
+            :clearable="true"
             placeholder="请输入登录名"
             size="small"
             v-model="ruleForm.userName"
           ></el-input>
           <el-input
+            :clearable="true"
             placeholder="请输入手机号"
             size="small"
             v-model="ruleForm.mobile"
           ></el-input>
           <el-input
+            :clearable="true"
             placeholder="请输入邮箱"
             size="small"
             v-model="ruleForm.email"
           ></el-input>
           <el-select
+            :clearable="true"
             placeholder="是否有效"
             v-model="ruleForm.status"
             size="small"
@@ -44,7 +49,7 @@
         <el-button
           type="primary"
           size="small"
-          @click="search(ruleForm)"
+          @click="search()"
           class="searchButton"
           >查询</el-button
         >
@@ -574,18 +579,13 @@ export default {
           this.curpage = number;
           this.limit = size;
           this.onGotPageData({ totalElements: count, size, number });
+          this.loading = false;
         }
       });
     },
-    search(ruleForm) {
-      const params = {};
-      params.queryInfo = ruleForm;
+    search() {
       this.loading = true;
-      this.addPageInfo(params);
-      this.getDataItem(params);
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
+      this.getData();
     },
     refresh() {
       this.reload();
@@ -801,7 +801,7 @@ export default {
 }
 .userManagementBody {
   width: 99%;
-  margin-top: 15px;
+  margin: 15px 0;
 }
 .userManagement .searchBox .el-input {
   margin: 0px 5px 5px 0px;
@@ -829,11 +829,5 @@ export default {
 }
 .userManagement .el-drawer-footer {
   width: 30%;
-}
-.userManagementBase {
-  margin-top: 20px;
-}
-.userManageBase {
-  margin-top: 10px;
 }
 </style>

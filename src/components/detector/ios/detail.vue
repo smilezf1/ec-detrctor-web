@@ -1035,6 +1035,7 @@ export default {
               }
             }
           }
+          this.loading = false;
         }
       });
     },
@@ -1094,9 +1095,6 @@ export default {
           itemName: searchForm.detectorKeyword
         };
       this.getDetailItem(params);
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
     }
   }
 };

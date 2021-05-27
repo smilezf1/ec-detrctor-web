@@ -7,16 +7,19 @@
       <div class="searchBox">
         <el-form :model="ruleForm" ref="ruleForm">
           <el-input
+            :clearable="true"
             size="small"
             placeholder="请输入应用名称"
             v-model="ruleForm.appName"
           ></el-input>
           <el-input
+            :clearable="true"
             size="small"
             placeholder="请选择版本号"
             v-model="ruleForm.appVersion"
           ></el-input>
           <el-select
+            :clearable="true"
             placeholder="请选择检测状态"
             v-model="ruleForm.detectionStatus"
             size="small"
@@ -52,7 +55,7 @@
           type="primary"
           class="searchButton"
           size="small"
-          @click="search(ruleForm)"
+          @click="search()"
           >查询</el-button
         >
         <el-button
@@ -630,6 +633,7 @@ export default {
           this.curpage = number;
           this.limit = size;
           this.onGotPageData({ totalElements: count, size, number });
+          this.loading = false;
         }
       });
       return params;
@@ -731,16 +735,9 @@ export default {
       });
     },
     //上传任务结束
-    search(ruleForm) {
-      const params = {};
-      params.queryInfo = ruleForm;
-      params.queryInfo.terminalType = 1;
+    search() {
       this.loading = true;
-      this.addPageInfo(params);
-      this.getDataItem(params);
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
+      this.getData();
     },
     addTask() {
       this.addTaskDrawer = true;
